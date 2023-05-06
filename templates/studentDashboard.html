@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Student Dashboard</title>
+	<!-- Bootstrap CSS -->
+	<!-- CSS files -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<!-- JavaScript files -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNS3vx" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-M1GZhkKjJPhzvyvESX9k+OC4A4V7Qih8sO/Gg7Kx+pkT0Tl3qyntvDy9uIR4j4K7VW2c8KVv7RjKxt+dnTFFVg==" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-DnmQrq1e5/5w5fZXM5KjxjjN5iNpOvmOa/djK9X6cCiv0hJUq3YoxbNsoP6WeHm6r0r0QjzVEe9R1B2rn+IXeA==" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<!-- Navigation bar -->
+    
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <a style="color: wheat;" class="navbar-brand" href="#">{{user.username|title}}'s Class</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/logout_view"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+      <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="error-modal-label">Error</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                An error occurred. Please try again later.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          {% for item in topics %}
+          <div class="col-sm-4 mb-4">
+            <div class="box">
+              <h2 class="mt-2">{{item.topic_name}}</h2>
+              <p>Choose your level of difficulty:</p>
+              <div class="row">
+                <div class="col-4">
+                  <div class="level easy">
+                    <a id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
+                    <form id="ez{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="easy" name="easy{{item.topic_id}}">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="level medium">
+                    <a id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
+                    <form id="med{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="medium" name="medium{{item.topic_id}}">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="level hard">
+                    <a id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
+                    <form id="dif{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="difficult" name="difficult{{item.topic_id}}">
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmationModalLabel">Confirm Difficulty Level</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="color:black;" class="modal-body">
+            Are you sure you want to proceed with this difficulty level?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmButton" onclick="navigateTo()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      
+      
+</body>
+</html>
+
+<style>
+.level-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ccc;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.level-button:hover {
+  background-color: #aaa;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-image: url("{% static 'img/DashboardBG.png' %}");
+  background-size: cover; /* Set to cover to make the image full screen */
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  margin-top: 20px;
+}
+
+.col-4{
+  padding: 0%;
+  
+}
+
+.col-sm-4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+ul li {
+  margin: 10px;
+}
+
+ul li a {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  background-image: linear-gradient(to bottom, #007bff, #0056b3);
+}
+
+ul li a:hover {
+  background-color: #0056b3;
+  background-image: none;
+}
+
+.box {
+background-color: #f7ebe8;
+border-radius: 20px;
+box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+padding: 30px;
+text-align: center;
+transition: transform 0.3s ease-in-out;
+font-family: 'Roboto', sans-serif;
+color: #5e5e5e;
+font-size: 20px;
+border: 2px solid #ff6b6b;
+position: relative;
+overflow: hidden;
+}
+
+.box:before {
+content: '';
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: linear-gradient(45deg, #ff6b6b, #ffa62b);
+transform: rotate(45deg);
+z-index: -1;
+}
+
+.box:hover {
+transform: scale(1.05);
+cursor: pointer;
+color: #ff6b6b;
+border-color: #ffa62b;
+}
+
+.box:hover:before {
+animation: wave 1s ease-out forwards;
+}
+
+@keyframes wave {
+0% {
+transform: translate(-50%, -50%) rotate(45deg) scale(1);
+opacity: 1;
+}
+100% {
+transform: translate(-50%, -50%) rotate(45deg) scale(2);
+opacity: 0;
+}
+}
+
+
+h2 {
+  font-size: 3rem;
+  text-transform: uppercase;
+  color: #333;
+  margin-bottom: 30px;
+  position: relative;
+  display: inline-block;
+}
+
+h2::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 10px;
+  background-color: #FFC000;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  z-index: -1;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+h2:hover::before {
+  transform: scale(1.1);
+}
+
+h2 span {
+  color: #FFF;
+  font-size: 2rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+h2 span::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 10px;
+  background-color: #C00000;
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  z-index: -1;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+h2 span:hover::before {
+  transform: scale(1.1);
+}
+
+
+.box p {
+  margin-bottom: 20px;
+}
+
+.box ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.box li {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.box li:last-child {
+  margin-right: 0;
+}
+
+.box a {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  background-image: linear-gradient(to bottom, #007bff, #0056b3);
+}
+
+.box a:hover {
+  background-color: #0056b3;
+  background-image: none;
+}
+
+.box .easy a {
+  border: 2px solid #5cb85c;
+}
+
+.box .medium a {
+  border: 2px solid #f0ad4e;
+  padding: 10px; 
+}
+
+.box .hard a {
+  border: 2px solid #d9534f;
+  padding: 10px;
+}
+
+.navbar {
+  background-color: #2c3e50;
+  border-bottom: 1px solid #1e2b38;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 20px;
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  color: #ddd;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/../icons/bootstrap.svg');
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background-color: #2c3e50;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+
+  .nav-link {
+    display: block;
+    margin: 0;
+  }
+
+  .nav-link:hover {
+    background-color: #1e2b38;
+  }
+}
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+
+.btn-primary {
+      background-color: #ff8c00; /* DarkOrange */
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #ff4500; /* OrangeRed */
+      border: none;
+    }
+    
+    .btn-primary:focus {
+      box-shadow: none;
+    }
+    
+    .btn-primary:active {
+      background-color: #8b0000; /* DarkRed */
+      border: none;
+    }
+    
+    .modal-header {
+      background-color: #ff8c00; /* DarkOrange */
+      color: white;
+      border-bottom: none;
+    }
+    
+    .modal-footer {
+      border-top: none;
+    }
+
+</style>
+
+<script>
+
+function showConfirmationModal(levelId) {
+  $('#confirmButton').data('level-id', levelId);
+  $('#confirmationModal').modal('show');
+}
+
+
+function navigateTo(form_id, topic_id, difficulty) {
+  var myForm = document.querySelector(form_id);
+  var formData = new FormData(myForm);
+  formData.append('difficulty', difficulty);
+  formData.append('topic_id', topic_id);
+  fetch('/studentdashboard/', {
+    method: 'POST',
+    body: formData
+  }).then(response => response.json())
+  .then(data => {
+    document.cookie = data.questions
+    window.location.href = window.location.origin + "/studentdashboard/studentactivity"
+    
+  }).catch(error => {
+    $('#error-modal').modal('show')
+    setTimeout(function() {
+      $('#error-modal').modal('hide')
+    }, 5000)
+    console.error(error)
+  })
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("[id^='easy']").forEach(function(el) {
+      // Add an event listener to each element
+      el.addEventListener("click", function(event) {
+        stringReplace = el.id.replace("easy", "")
+        event.preventDefault();
+        // Add event listener to confirm button
+        const confirmButton = document.getElementById("confirmButton");
+        confirmButton.addEventListener("click", function(event) {
+          event.preventDefault();
+          // Call navigateTo function here
+          navigateTo("#ez"+stringReplace, stringReplace, "easy")
+        });
+        
+      });
+    })
+  })
+  document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id^='medium']").forEach(function(el) {
+            // Add an event listener to each element
+            el.addEventListener("click", function(event) {
+              stringReplace = el.id.replace("medium", "")
+              event.preventDefault();
+              const confirmButton = document.getElementById("confirmButton");
+              confirmButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                // Call navigateTo function here
+                navigateTo("#med"+stringReplace, stringReplace, "medium")
+              });  
+          });
+        })
+    })
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id^='difficult']").forEach(function(el) {
+            // Add an event listener to each element
+            el.addEventListener("click", function(event) {
+              stringReplace = el.id.replace("difficult", "")
+              event.preventDefault();
+              const confirmButton = document.getElementById("confirmButton");
+              confirmButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                // Call navigateTo function here
+                navigateTo("#dif"+stringReplace, stringReplace, "difficult")
+              });  
+              
+          });
+        })
+    })
+    
+</script>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <title>My Topics</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    body {
+      background-color: #ffebcd00; /* PeachPuff */
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Luckiest Guy', cursive;
+    }
+    
+    .container {
+      margin-top: 30px;
+    }
+    
+    .card {
+      background-color: #fffacd; /* LemonChiffon */
+      border: 2px solid #ff8c00; /* DarkOrange */
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    
+    .card:hover {
+      box-shadow: 5px 5px 15px #ff8c00; /* DarkOrange */
+    }
+    
+    .card-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff8c00; /* DarkOrange */
+    }
+    
+    .card-text {
+      font-size: 18px;
+      font-weight: bold;
+      color: #8b0000; /* DarkRed */
+    }
+    
+    .btn-primary {
+      background-color: #ff8c00; /* DarkOrange */
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #ff4500; /* OrangeRed */
+      border: none;
+    }
+    
+    .btn-primary:focus {
+      box-shadow: none;
+    }
+    
+    .btn-primary:active {
+      background-color: #8b0000; /* DarkRed */
+      border: none;
+    }
+    
+    .modal-header {
+      background-color: #ff8c00; /* DarkOrange */
+      color: white;
+      border-bottom: none;
+    }
+    
+    .modal-footer {
+      border-top: none;
+    }
+    
+    .form-group label {
+      font-weight: bold;
+    }
+    .navbar-brand {
+          font-size: 2rem;
+        }
+        .logo-img {
+          max-height: 50px;
+        }
+        .nav-link {
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: #fff;
+        }
+        .nav-link:hover {
+          color: #007bff;
+        }
+        .dropdown-menu {
+          border: none;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+          border-radius: 0.5rem;
+        }
+        .dropdown-item {
+          font-size: 1rem;
+          letter-spacing: 1px;
+          color: #212529;
+        }
+        .dropdown-item:hover {
+          background-color: #f8f9fa;
+        }
+
+        .navbar-nav .nav-link {
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+          .navbar-nav .nav-link:hover {
+          background-color: #5442a1;
+          color: #fff;
+        }
+
+        .navbar {
+          padding: 0;
+      }
+  </style>
+
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div style="background-color: #333;" class="container-fluid">
+          <a style="color: #fff;" class="navbar-brand" href="#">
+            <img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active" style="border-right: 1px solid white;">
+                <a style="color: #fff;" class="nav-link" href="/dashboard">Home</a>
+              </li>
+              <li class="nav-item active" style="border-right: 1px solid white;">
+                <a style="color: #fff;" class="nav-link" href="/dashboard/mytopic">View Topics</a>
+              </li>
+              <li class="nav-item" style="border-right: 1px solid white;">
+                <a style="color: #fff;" class="nav-link" onclick="showPopUp()">My Teacher's Key</a>
+              </li>
+              <li class="nav-item dropdown" style="border-right: 1px solid white;">
+                <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Settings
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="#">Setting 1</a>
+                  <a class="dropdown-item" href="#">Setting 2</a>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a style="color: #fff;" class="nav-link" href="/logout_view">Logout</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+
+  <div class="container mt-5">
+
+    <div class="row">
+        <div class="col-md-8 float-right">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClassModal">
+                Create Topic
+            </button>              
+        </div>
+      </div>
+  
+      <div class="row mt-4">
+  
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Sample Topic</h5>
+              <p class="card-text">Difficulty</p>
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal1">Edit Details</a>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Sample Topic</h5>
+                <p class="card-text">Difficulty</p>
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal2">Edit Details</a>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Sample Topic</h5>
+                <p class="card-text">Difficulty</p>
+              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal3">Edit Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Create Topic Modal -->
+<div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createClassModalLabel">Create Topic</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="classNameInput">Topic Name</label>
+              <input type="text" class="form-control" id="classNameInput" placeholder="Enter class name">
+            </div>
+            <div class="form-group">
+              <label for="timeLimitInput">Time Limit (in minutes)</label>
+              <input type="number" class="form-control" id="timeLimitInput" placeholder="Enter time limit">
+            </div>
+            <div class="form-group">
+              <label for="difficultyLevelInput">Difficulty Level</label>
+              <select class="form-control" id="difficultyLevelInput">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="topicWords3">Words (separated by commas)</label>
+              <input type="text" class="form-control" id="topicWords3" placeholder="Enter words">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary">Create Topic</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal 1 -->
+<div class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModal1Label">Edit Topic Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="topicTitle1">Title</label>
+              <input type="text" class="form-control" id="topicTitle1" placeholder="Enter title">
+            </div>
+            <div class="form-group">
+              <label for="topicDifficulty1">Difficulty Level</label>
+              <select class="form-control" id="topicDifficulty1">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="topicDuration1">Time Duration (in minutes)</label>
+              <input type="number" class="form-control" id="topicDuration1" placeholder="Enter time duration">
+            </div>
+            <div class="form-group">
+              <label for="topicWords1">Words (separated by commas)</label>
+              <input type="text" class="form-control" id="topicWords1" placeholder="Enter words">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2 -->
+<div class="modal fade" id="editModal2" tabindex="-1" role="dialog" aria-labelledby="editModal2Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModal2Label">Edit Topic Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="topicTitle2">Title</label>
+              <input type="text" class="form-control" id="topicTitle2" placeholder="Enter title">
+            </div>
+            <div class="form-group">
+              <label for="topicDifficulty2">Difficulty Level</label>
+              <select class="form-control" id="topicDifficulty2">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="topicDuration2">Time Duration (in minutes)</label>
+              <input type="number" class="form-control" id="topicDuration2" placeholder="Enter time duration">
+            </div>
+            <div class="form-group">
+              <label for="topicWords2">Words (separated by commas)</label>
+              <input type="text" class="form-control" id="topicWords2" placeholder="Enter words">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3 -->
+<div class="modal fade" id="editModal3" tabindex="-1" role="dialog" aria-labelledby="editModal3Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModal3Label">Edit Topic Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="topicTitle3">Title</label>
+              <input type="text" class="form-control" id="topicTitle3" placeholder="Enter title">
+            </div>
+            <div class="form-group">
+              <label for="topicDifficulty3">Difficulty Level</label>
+              <select class="form-control" id="topicDifficulty3">
+                <option>Easy</option>
+                <option>Medium</option>
+                <option>Hard</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="topicDuration3">Time Duration (in minutes)</label>
+              <input type="number" class="form-control" id="topicDuration3" placeholder="Enter time duration">
+            </div>
+            <div class="form-group">
+              <label for="topicWords3">Words (separated by commas)</label>
+              <input type="text" class="form-control" id="topicWords3" placeholder="Enter words">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

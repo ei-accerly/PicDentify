@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Search</title>
+</head>
+<body>
+    <h1>Image Search</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="search_term">Search Term:</label>
+        <input type="text" id="search_term" name="search_term" required>
+        <button type="submit">Search</button>
+    </form>
+    
+    {% if results %}
+        {% for result in results %}
+            <p> {{result}} </p>
+        {% endfor %}
+
+        
+    {% endif %}
+
+
+</body>
+</html>

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<title>Teacher Login Page</title>
+	<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<!-- jQuery, Popper.js, and Bootstrap JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">PicDentify</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+	  
+		<div class="collapse navbar-collapse" id="navbarNav">
+		  <ul class="navbar-nav mr-auto">
+		  </ul>
+		  <ul class="navbar-nav">
+			<li class="nav-item">
+				<button type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" data-toggle="modal" data-target="#studentModal">
+					Student
+				</button>
+			</li>
+		  </ul>
+		</div>
+	  </nav>
+	  
+	  <!-- Modal -->
+	<div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5 class="modal-title" id="studentModalLabel">Confirmation</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				</div>
+				<div class="modal-body">
+				Are you sure you want to navigate to the student login page?
+				</div>
+				<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<a class="btn btn-primary" href="/studentlogin">Proceed</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<h1 class="move-in">Welcome to the Teacher's Lounge!</h1>
+		<form id="admin_key_submit"> 
+			{% csrf_token %}
+			<div style="color: whitesmoke; text-align: center;" class="form-group">
+			  <label for="admin_key">ADMIN KEY</label>
+			  <input type="password" id="admin_key" name="admin_key" required>
+			</div>
+			<div class="form-group" style="text-align: center;">
+			  <input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
+			</div>
+			<div id="error-message"></div>
+		  </form>
+		  
+		  <div id="myModal" class="modal">
+			<!-- Modal content -->
+			<div class="modal-content1">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLongTitle">User Login</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="noButton()">
+					  <span aria-hidden="true">&times;</span>
+					</button>
+				  </div>
+				  
+			  <form id="new_admin_name">
+				{% csrf_token %}
+				{% if admins %}
+				<select class="form-select mb-3 mt-2" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)">
+				  {% for item in admins %}
+				  <option value="{{item.username}}">{{ item.username }}</option>
+				  {% endfor %}
+				  <option value="add-new-user">Add New</option>
+				</select>
+				<div id="existing-user-section" style="display: block;">
+				  <label style="color: #080101; text-align: center;" for="password">Password:</label>
+				  <input style="margin-bottom: 1rem;" type="password" id="password" name="password_existing" required class="form-control">
+				  <div class="text-center">
+					<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
+				  </div>
+				</div>
+				<div id="new-user-section" style="display: none;">
+				  <label style="color: #080101;" for="new_user">Type Your Name:</label>
+				  <input type="text" id="new_user" name="new_user" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password">Password:</label>
+				  <input type="password" id="password" name="password" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password1">Type Your Password Again:</label>
+				  <input style="margin-bottom: 1rem;" type="password" id="password1" name="password1" required class="form-control mb-3">
+				  <button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
+				</div>
+				{% else %}
+				<div>
+				  <label style="color: #080101;" for="new_user">Type Your Name:</label>
+				  <input type="text" id="new_user" name="new_user" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password">Password:</label>
+				  <input type="password" id="password" name="password" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password1">Type Your Password Again:</label>
+				  <input style="margin-bottom: 1rem;" type="password" id="password1" name="password1" required class="form-control mb-3">
+				  {% if messages %}
+				  <p class="messages">
+					{% for message in messages %}
+					<p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
+					{% endfor %}
+				  </p>
+				  {% endif %}
+				  <button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
+				</div>
+				{% endif %}
+			  </form>
+			</div>
+		  </div>
+		  
+	
+		</div>
+	</div>
+</body>
+</html>
+
+<style>
+.move-in {
+  position: relative;
+  animation: moveIn 1s ease-in-out forwards;
+}
+
+@keyframes moveIn {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+body {
+  background-image: url("{% static 'img/classroom.png' %}");
+  background-size: 1200px 800px; /* Replace with the pixel values that work for you */
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
+}
+
+.confirm-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  }
+
+  .container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 10px;
+  margin: 10vh auto; /* Changed margin to use auto for left and right */
+  max-width: 90vw;
+  max-height: 90vw;
+  text-align: center;
+}
+
+
+h1 {
+	font-size: 36px;
+	margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+    /* Style the select dropdown */
+    .form-select {
+        width: 100%;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    /* Style the label */
+    label {
+        display: block;
+        margin: 0.5rem;
+        font-weight: bold;
+    }
+
+    /* Style the input fields */
+	input[type="text"] {
+		width: 100%;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid #ced4da;
+		border-radius: 0.25rem;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		text-align: center;
+		}
+
+    /* Style the button */
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+@media only screen and (min-width: 768px) {
+	.container {
+		margin: 10vh auto;
+	}
+	
+	h1 {
+		font-size: 48px;
+		margin-bottom: 50px;
+	}
+	
+	form {
+		max-width: 500px;
+		margin: 0 auto;
+	}
+}
+
+.btn-primary {
+      background-color: #ff8c00; /* DarkOrange */
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: #ff4500; /* OrangeRed */
+      border: none;
+    }
+    
+    .btn-primary:focus {
+      box-shadow: none;
+    }
+    
+    .btn-primary:active {
+      background-color: #8b0000; /* DarkRed */
+      border: none;
+    }
+    
+    .modal-header {
+      background-color: #ff8c00; /* DarkOrange */
+      color: white;
+      border-bottom: none;
+    }
+    
+    .modal-footer {
+      border-top: none;
+    }
+
+	.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+ 
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  backdrop-filter: blur(2px);
+  }
+
+  /* Modal Content */
+  .modal-content {
+	background-color: whitesmoke;
+	color: #080101;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #080101;
+  width: auto;
+  }
+
+  .modal-content1 {
+	background-color: whitesmoke;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #080101;
+	width: 70%; /* Could be more or less, depending on screen size */
+  }
+
+
+  .navbar {
+  background-color: #2c3e50;
+  border-bottom: 1px solid #1e2b38;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 20px;
+  text-transform: uppercase;
+}
+
+.nav-link:hover {
+  color: #ddd;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/../icons/bootstrap.svg');
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+
+  .nav-link {
+    display: block;
+    margin: 0;
+  }
+
+  .nav-link:hover {
+    background-color: #1e2b38;
+  }
+}
+</style>
+
+<script>
+	function handleSelectChange(selectElement) {
+		const selectedOption = selectElement.value;
+		const newUserSection = document.getElementById("new-user-section");
+		const existingUserSection = document.getElementById("existing-user-section");
+
+		if (selectedOption === "add-new-user") {
+			newUserSection.style.display = "block";
+			existingUserSection.style.display = "none";
+
+
+		} else {
+			newUserSection.style.display = "none";
+			existingUserSection.style.display = "block";
+
+		}
+	}
+
+	var closeModalBtn = document.getElementById("close-modal");
+		closeModalBtn.addEventListener("click", function() {
+		var modalContainer = document.querySelector(".modal");
+		modalContainer.style.display = "none";
+	});
+	var modal = document.getElementById("myModal");
+	
+	// When the user clicks anywhere outside of the modal, close it
+	function noButton() {
+		modal.style.display = "none";
+		event.preventDefault()
+	}
+
+	const adminKeyInput = document.getElementById('admin_key');
+	adminKeyInput.addEventListener('keydown', function(event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			var myForm = document.querySelector('#admin_key_submit');
+			var formData = new FormData(myForm);
+			fetch('', {
+				method: 'POST',
+				body: formData
+			}).then(response => response.json())
+			.then(data => {
+				var jsResponse = data.adminKeyVerify;
+				checkResponse(jsResponse)
+				});
+		}
+	});
+
+	function SubmitAdminKey() {
+		event.preventDefault();
+		var myForm = document.querySelector('#admin_key_submit');
+		var formData = new FormData(myForm);
+		fetch('', {
+			method: 'POST',
+			body: formData
+		}).then(response => response.json())
+		.then(data => {
+			var jsResponse = data.adminKeyVerify;
+			checkResponse(jsResponse)
+		});
+	}
+	function SubmitAdminName(num) {
+		event.preventDefault();
+		var myForm = document.querySelector('#new_admin_name');
+		var formData = new FormData(myForm);
+		if (num == 2) {
+			formData.append('new_user_hidden', 'new');
+		}
+		fetch('', {
+			method: 'POST',
+			body: formData
+		}).then(function(response) {
+			if (num == 1) {
+				window.location.href = window.location.origin + "/dashboard";
+			} else if (num == 2) {
+				swal({
+					title: "Successfully Registered!",
+					text: "Reload the page to Login",
+					icon: "success",
+					buttons: {
+						login: {
+							text: "Ok",
+							value: "login",
+							className: "btn btn-primary",
+						}
+					}
+				}).then((value) => {
+					if (value === "login") {
+						location.reload()	
+					}
+				});
+			}
+		});
+		}
+
+	function checkResponse(response) {
+		const errorMessage = new Error("Incorrect Admin Key!");
+			// get the error message element
+		const errorMessageElement = document.getElementById("error-message");
+		if (response) {
+			errorMessageElement.innerHTML = "";
+			modal.style.display = "block";
+		}
+		else {
+			const errorMessage = new Error("Incorrect Admin Key!");
+			// get the error message element
+			const errorMessageElement = document.getElementById("error-message");
+
+			// set the content of the error message element
+			errorMessageElement.innerHTML = `<p>${errorMessage.message}</p>`;
+		}
+	}
+
+</script>
