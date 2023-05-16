@@ -577,7 +577,7 @@ button.btn.btn-primary:hover {
         <div id="choices-container">
           <form id="checkAnswer"> 
             {% csrf_token %}
-            {% for choice in choices %}
+            {% for choice in choices1 %}
               <button class="choice-btn" value="{{choice}}">{{choice}}</button>
             {% endfor %}
           </form>

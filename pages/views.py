@@ -435,14 +435,19 @@ class StudentActivity(TemplateView):
             if (len(image_url) == 0):
                 image_url.append("no image")
             choices = []
+            choices1 = []
             for i in range(3):
                 choices.append(fetch_words())
-            choices.append(cleaned_words[questions.answered-1])
+            for i in range(3):
+                choices1.append(fetch_words())
+            choices.append(word_list[random.randint(0, len(word_list)-1)])
+            choices1.append(word_list[random.randint(0, len(word_list)-1)])
             random.shuffle(choices)
+            random.shuffle(choices1)
             result = generate_two_random_numbers()
             
             return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
-                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'answered':'done'})
+                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
@@ -460,13 +465,18 @@ class StudentActivity(TemplateView):
         if (len(image_url) == 0):
             image_url.append("no image")
         choices = []
+        choices1 = []
         for i in range(3):
             choices.append(fetch_words())
-        choices.append(cleaned_words[persistent_variable-1])
+        for i in range(3):
+            choices1.append(fetch_words())
+        choices.append(word_list[random.randint(0, len(word_list)-1)])
+        choices1.append(word_list[random.randint(0, len(word_list)-1)])
         random.shuffle(choices)
+        random.shuffle(choices1)
         result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'word_list':word_list})
+                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'word_list':word_list})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
