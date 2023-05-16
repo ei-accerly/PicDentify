@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.core import serializers
 from django.views.generic import TemplateView
-from .models import AdminUser, AdminKey, Topics, Difficulty
+from .models import AdminUser, AdminKey, Topics, Difficulty, Pictures
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,8 @@ from django.forms.models import model_to_dict
 from bs4 import BeautifulSoup
 import nltk
 from nltk.corpus import wordnet
+from django.conf import settings
+import os
 
 # initialize WordNet
 nltk.download('wordnet')
@@ -125,19 +127,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
                                             points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
                                             points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
                                             points_per_question=30, maxpoints=300, answered=0)
@@ -149,19 +151,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=10,
                                                 points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=12,
                                                 points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=15,
                                                 points_per_question=30, maxpoints=300, answered=0)
@@ -172,19 +174,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
                                             points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
                                             points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
                                             points_per_question=30, maxpoints=300, answered=0)
@@ -195,19 +197,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
                                             points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
                                             points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
                                             points_per_question=30, maxpoints=300, answered=0)
@@ -218,19 +220,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
                                             points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
                                             points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
+                            word_list = "Puppy"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
                                             points_per_question=30, maxpoints=300, answered=0)
@@ -325,6 +327,15 @@ class StudentDashboard(TemplateView):
 class StudentActivity(TemplateView):
 
     def get(self, request):
+        def generate_two_random_numbers():
+            number1 = random.randint(0, 4)  # Generate a random integer between 0 and 4 (inclusive)
+            number2 = random.randint(0, 4)  # Generate another random integer between 0 and 4 (inclusive)
+
+            # Ensure that number2 is different from number1
+            while number2 == number1:
+                number2 = random.randint(0, 4)
+
+            return number1, number2
         def synonyms_antonyms_list(word, category):
             # Get the HTML content of a web page
             url = f"https://www.merriam-webster.com/thesaurus/{word}"
@@ -381,20 +392,21 @@ class StudentActivity(TemplateView):
                 print('Error fetching word')
 
         def fetch_image(query):
-            url = f'https://api.unsplash.com/photos/random/?count=5&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
-            # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
-            response = requests.get(url)
-            image_urls = []
-            if response.status_code == 200:
-                data = response.json()
-                for image_data in data:
-                    image_url = image_data['urls']['regular']
-                    image_urls.append(image_url)
-                return image_urls
-            else:
-                image_urls.append("no image")
-                return image_urls
-        
+            image_urls = Pictures.objects.filter(image_name__contains=query)
+
+            if len(image_urls) == 0:
+                
+                media_root = settings.MEDIA_ROOT
+                media_url = settings.MEDIA_URL
+                matching_images = []
+                print(media_root)
+                for filename in os.listdir(media_root):
+                    if query in filename:
+                        image_path = os.path.join(media_url, filename)  
+                        matching_images.append(image_path)
+                return matching_images
+            return image_urls
+
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
@@ -419,8 +431,7 @@ class StudentActivity(TemplateView):
                 word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
             elif topic_name.topic_name == "Homographs":
                 word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
-            fetch_word = random.randint(0, len(word_list)-1)
-            image_url = fetch_image(word_list[fetch_word])
+            image_url = fetch_image(cleaned_words[persistent_variable-1])
             if (len(image_url) == 0):
                 image_url.append("no image")
             choices = []
@@ -428,13 +439,10 @@ class StudentActivity(TemplateView):
                 choices.append(fetch_words())
             choices.append(cleaned_words[questions.answered-1])
             random.shuffle(choices)
-            try:
-                random_number = random.randint(0, len(image_url)-1)
-            except:
-                random_number = 0
+            result = generate_two_random_numbers()
             
             return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
-                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'answered':'done'})
+                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
@@ -448,8 +456,7 @@ class StudentActivity(TemplateView):
             word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
         elif topic_name.topic_name == "Homographs":
             word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
-        fetch_word = random.randint(0, len(word_list)-1)
-        image_url = fetch_image(word_list[fetch_word])
+        image_url = fetch_image(cleaned_words[persistent_variable-1])
         if (len(image_url) == 0):
             image_url.append("no image")
         choices = []
@@ -457,12 +464,9 @@ class StudentActivity(TemplateView):
             choices.append(fetch_words())
         choices.append(cleaned_words[persistent_variable-1])
         random.shuffle(choices)
-        try:
-            random_number = random.randint(0, len(image_url)-1)
-        except:
-            random_number = 0
+        result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'word_list':word_list})
+                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'word_list':word_list})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')

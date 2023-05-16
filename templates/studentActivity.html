@@ -562,25 +562,33 @@ button.btn.btn-primary:hover {
     <div class="container">
       <div class="column">
         <img id="image" src="{{img_url}}" >
+        <div id="choices-container">
+          <form id="checkAnswer"> 
+            {% csrf_token %}
+            {% for choice in choices %}
+              <button class="choice-btn" value="{{choice}}">{{choice}}</button>
+            {% endfor %}
+          </form>
+          
+          </div>
       </div>
       <div class="column">
-        <img id="image" src="{{img_url}}" >
+        <img id="image" src="{{img_url2}}" >
+        <div id="choices-container">
+          <form id="checkAnswer"> 
+            {% csrf_token %}
+            {% for choice in choices %}
+              <button class="choice-btn" value="{{choice}}">{{choice}}</button>
+            {% endfor %}
+          </form>
+          
+          </div>
       </div>
     </div>
 		{% else %}
 			<img id="image" src="{% static 'img/no_internet.png' %}">
 		{% endif %}
 	  </div>
-	  <div id="choices-container">
-		<form id="checkAnswer"> 
-			{% csrf_token %}
-			{% for choice in choices %}
-				<button class="choice-btn" value="{{choice}}">{{choice}}</button>
-			{% endfor %}
-		</form>
-		
-	  </div>
-	  
 	</div>
   {% endif %}
 

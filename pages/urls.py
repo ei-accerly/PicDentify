@@ -21,3 +21,5 @@ urlpatterns = [
     path('studentlogin', views.StudentLogin.as_view(), name='studentlogin'),
     
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

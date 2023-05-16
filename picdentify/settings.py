@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = ''
 MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 
+
 AUTHENTICATION_BACKENDS = [ 'django.contrib.auth.backends.ModelBackend', 'pages.auth_backends.AdminUserBackend',  ]
 
 # Quick-start development settings - unsuitable for production
