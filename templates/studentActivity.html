@@ -249,6 +249,15 @@ button.btn.btn-primary:hover {
 	  image-rendering: optimizeQuality; /* improve image rendering quality */
 	}
 
+  #image1 {
+	  width: 100%;
+	  max-width: 1000px;
+	  height: auto;
+	  max-height: 450px;
+	  border-radius: 10px;
+	  image-rendering: optimizeQuality; /* improve image rendering quality */
+	}
+
 
 	/* Choices container styles */
 	#choices-container {
@@ -280,6 +289,41 @@ button.btn.btn-primary:hover {
 }
 
 .choice-btn:hover {
+  transform: translateY(-2px);
+  background-color: #8FBC8F;
+  color: #fff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+}
+
+#choices-container1 {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: center;
+		background-color: #fff;
+		padding: 15px;
+		border-radius: 50px;
+		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+		margin-bottom: 1.5rem;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+
+.choice-btn1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4B0082;
+  background-color: #F6E0B5;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+  margin: 0.2rem;
+}
+
+.choice-btn1:hover {
   transform: translateY(-2px);
   background-color: #8FBC8F;
   color: #fff;
@@ -344,6 +388,10 @@ button.btn.btn-primary:hover {
 		}
 
 		#image {
+		max-width: 100%;
+		}
+
+    #image1 {
 		max-width: 100%;
 		}
 
@@ -496,6 +544,27 @@ button.btn.btn-primary:hover {
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
+
+  .checkmark {
+    background-size: cover;
+    display: none;
+  }
+
+  .exmark {
+    background-size: cover;
+    display: none;
+  }
+
+  .checkmark1 {
+    background-size: cover;
+    display: none;
+  }
+
+  .exmark1 {
+    background-size: cover;
+    display: none;
+  }
+
     </style>
   </head>
   <body>
@@ -562,23 +631,35 @@ button.btn.btn-primary:hover {
     <div class="container">
       <div class="column">
         <img id="image" src="{{img_url}}" >
+        <img id="checkmark" class="checkmark" src="{% static 'img/check.png' %}">
+        <img id="exmark" class="exmark" src="{% static 'img/ex.png' %}">
         <div id="choices-container">
           <form id="checkAnswer"> 
             {% csrf_token %}
             {% for choice in choices %}
-              <button class="choice-btn" value="{{choice}}">{{choice}}</button>
+              {% if choice in word_list %}
+                <button class="choice-btn" value="{{words}}">{{choice}}</button>
+              {% else %}
+                <button class="choice-btn" value="{{choice}}">{{choice}}</button>
+              {% endif %} 
             {% endfor %}
           </form>
           
           </div>
       </div>
       <div class="column">
-        <img id="image" src="{{img_url2}}" >
-        <div id="choices-container">
-          <form id="checkAnswer"> 
+        <img id="image1" src="{{img_url2}}" >
+        <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
+        <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+        <div id="choices-container1">
+          <form id="checkAnswer1"> 
             {% csrf_token %}
             {% for choice in choices1 %}
-              <button class="choice-btn" value="{{choice}}">{{choice}}</button>
+              {% if choice in word_list %}
+                <button class="choice-btn1" value="{{words}}">{{choice}}</button>
+              {% else %}
+                <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
+              {% endif %} 
             {% endfor %}
           </form>
           
@@ -593,7 +674,6 @@ button.btn.btn-primary:hover {
   {% endif %}
 
 <script>
-
 // First, create a canvas element to draw the confetti on
 // Helper function to play the sadEmoji sound
 function playSadEmojiSound() {
@@ -743,65 +823,56 @@ for (var i = 0; i < buttons.length; i++) {
                 var resultText = document.createElement('p');
                 if (jsResponse) {
                   answerIsCorrect()
-                  resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
-                  var list_words = "{{word_list}}"
-                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  var wordsString = myArray.join(', ');
-                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+                  var image = document.getElementById('image');
+                  var checkmark = document.getElementById('checkmark');
+                  var imgURL = image.getAttribute('src');
 
-                  // Create a modal footer element
-                  var modalFooter = document.createElement("div");
-                  modalFooter.classList.add("modal-footer");
-
-                  // Create a "Next" button element
-                  var nextButton = document.createElement("button");
-                  nextButton.textContent = "Next";
-                  nextButton.classList.add("btn", "btn-primary");
-                  nextButton.onclick = function() {
-                    nextQuestion("correct")
-                  }
-
-                  // Append the "Next" button to the modal footer
-                  modalFooter.appendChild(nextButton);
-
-                  // Append the modal footer to the modal content
-                  resultText.appendChild(modalFooter);
+                  checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  checkmark.style.display = 'inline-block';
+                  image.style.display = 'none';
                 }
 
                 else {
                   playSadEmojiSound()
-                  resultText.innerHTML = "The correct answer is: "+data.correct_answer;
-                  var list_words = "{{word_list}}"
-                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  var wordsString = myArray.join(', ');
-                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+
+                  var image = document.getElementById('image');
+                  var exmark = document.getElementById('exmark');
+                  var imgURL = image.getAttribute('src');
+
+                  exmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  exmark.style.display = 'inline-block';
+                  image.style.display = 'none';
+                  // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
+                  // var list_words = "{{word_list}}"
+                  // var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  // var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  // var wordsString = myArray.join(', ');
+                  // resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
 
                  
 
-                  // Create a modal footer element
-                  var modalFooter = document.createElement("div");
-                  modalFooter.classList.add("modal-footer");
+                  // // Create a modal footer element
+                  // var modalFooter = document.createElement("div");
+                  // modalFooter.classList.add("modal-footer");
 
-                  // Create a "Next" button element
-                  var nextButton = document.createElement("button");
-                  nextButton.textContent = "Next";
-                  nextButton.classList.add("btn", "btn-primary");
-                  nextButton.onclick = function() {
-                    nextQuestion("wrong")
-                  }
+                  // // Create a "Next" button element
+                  // var nextButton = document.createElement("button");
+                  // nextButton.textContent = "Next";
+                  // nextButton.classList.add("btn", "btn-primary");
+                  // nextButton.onclick = function() {
+                  //   nextQuestion("wrong")
+                  // }
 
-                  // Append the "Next" button to the modal footer
-                  modalFooter.appendChild(nextButton);
+                  // // Append the "Next" button to the modal footer
+                  // modalFooter.appendChild(nextButton);
 
-                  // Append the modal footer to the modal content
-                  resultText.appendChild(modalFooter);
+                  // // Append the modal footer to the modal content
+                  // resultText.appendChild(modalFooter);
                 }
 
-                modalContent.appendChild(resultText);
-                modal.appendChild(modalContent);
-                document.body.appendChild(modal);
+                // modalContent.appendChild(resultText);
+                // modal.appendChild(modalContent);
+                // document.body.appendChild(modal);
             });
     });
 }
@@ -834,6 +905,88 @@ function nextQuestion(isCorrect) {
       window.location.reload();
     }, 2000);
   });
+}
+
+var container1 = document.getElementById('choices-container1');
+
+// Add event listeners to each button in the container
+var buttons1 = container1.querySelectorAll('.choice-btn1');
+for (var i = 0; i < buttons1.length; i++) {
+    buttons1[i].addEventListener('click', function() {
+        event.preventDefault(); 
+        clearTimeout(timeoutID);
+        // Retrieve the value of the clicked button
+        var value = this.value;
+        
+        var myForm = document.querySelector("#checkAnswer1");
+        var formData = new FormData(myForm);
+        formData.append("choice", value),
+        formData.append("topic", topic)
+        fetch('/studentdashboard/studentactivity/', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+            .then(data => {
+                var jsResponse = data.answerVerify;
+                var modal = document.createElement('div');
+                modal.classList.add('modal');
+                var modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
+                var resultText = document.createElement('p');
+                if (jsResponse) {
+                  answerIsCorrect()
+                  var image = document.getElementById('image1');
+                  var checkmark = document.getElementById('checkmark1');
+                  var imgURL = image.getAttribute('src');
+
+                  checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  checkmark.style.display = 'inline-block';
+                  image.style.display = 'none';
+                }
+
+                else {
+                  playSadEmojiSound()
+
+                  var image = document.getElementById('image1');
+                  var exmark = document.getElementById('exmark1');
+                  var imgURL = image.getAttribute('src');
+
+                  exmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  exmark.style.display = 'inline-block';
+                  image.style.display = 'none';
+                  // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
+                  // var list_words = "{{word_list}}"
+                  // var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  // var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  // var wordsString = myArray.join(', ');
+                  // resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+
+                 
+
+                  // // Create a modal footer element
+                  // var modalFooter = document.createElement("div");
+                  // modalFooter.classList.add("modal-footer");
+
+                  // // Create a "Next" button element
+                  // var nextButton = document.createElement("button");
+                  // nextButton.textContent = "Next";
+                  // nextButton.classList.add("btn", "btn-primary");
+                  // nextButton.onclick = function() {
+                  //   nextQuestion("wrong")
+                  // }
+
+                  // // Append the "Next" button to the modal footer
+                  // modalFooter.appendChild(nextButton);
+
+                  // // Append the modal footer to the modal content
+                  // resultText.appendChild(modalFooter);
+                }
+
+                // modalContent.appendChild(resultText);
+                // modal.appendChild(modalContent);
+                // document.body.appendChild(modal);
+            });
+    });
 }
 
 

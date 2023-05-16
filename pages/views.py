@@ -474,6 +474,7 @@ class StudentActivity(TemplateView):
         choices1.append(word_list[random.randint(0, len(word_list)-1)])
         random.shuffle(choices)
         random.shuffle(choices1)
+        print(cleaned_words[persistent_variable-1])
         result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
                                                          'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'word_list':word_list})
