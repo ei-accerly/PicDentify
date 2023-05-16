@@ -64,5 +64,12 @@ class Difficulty(models.Model):
     class Meta:
         db_table = "difficulty"
 
+class Pictures(models.Model):
+    image = models.ImageField(upload_to='images/')
+    image_name = models.CharField(max_length=20, verbose_name='image_name')
+    difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
+    class Meta:
+        db_table = "pictures"
+
 
     
