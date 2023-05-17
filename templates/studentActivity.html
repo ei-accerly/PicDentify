@@ -238,104 +238,103 @@ button.btn.btn-primary:hover {
 	  margin-bottom: 20px;
 	}
 
+#image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: 300px;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  object-fit: cover;
+  object-position: center;
+  image-rendering: optimizeQuality; /* improve image rendering quality */
+}
 
-	#image {
-	  width: 100%;
-	  max-width: 1000px;
-	  height: auto;
-	  max-height: 450px;
-	  border-radius: 10px;
-    display: block;
-    margin: 0 auto;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    object-fit: cover;
-    object-position: center;
-	  image-rendering: optimizeQuality; /* improve image rendering quality */
-	}
-
-  #image1 {
-	  width: 100%;
-	  max-width: 1000px;
-	  height: auto;
-	  max-height: 450px;
-	  border-radius: 10px;
-    display: block;
-    margin: 0 auto;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-    object-fit: cover;
-    object-position: center;
-	  image-rendering: optimizeQuality; /* improve image rendering quality */
-	}
+#image1 {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  max-height: 300px;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  object-fit: cover;
+  object-position: center;
+  image-rendering: optimizeQuality; /* improve image rendering quality */
+}
 
 	/* Choices container styles */
-	#choices-container {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
-		align-items: center;
-		background-color: #fff;
-		padding: 15px;
-		border-radius: 50px;
-		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-		margin-bottom: 1.5rem;
-		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
+  #choices-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F6E0B5;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 2.5rem;
+}
 
 .choice-btn {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
-  color: #4B0082;
-  background-color: #F6E0B5;
-  padding: 12px 32px;
+  color: #FFFFFF;
+  background-color: #4B0082;
+  padding: 10px 20px;
   border: none;
   border-radius: 50px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-transform: uppercase;
-  margin: 0.2rem;
+  margin: 0 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .choice-btn:hover {
   transform: translateY(-2px);
   background-color: #8FBC8F;
-  color: #fff;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 #choices-container1 {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-evenly;
-		align-items: center;
-		background-color: #fff;
-		padding: 15px;
-		border-radius: 50px;
-		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-		margin-bottom: 1.5rem;
-		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F6E0B5;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 2.5rem;
+}
 
 .choice-btn1 {
-  font-size: 24px;
+  font-size: 16px;
   font-weight: bold;
-  color: #4B0082;
-  background-color: #F6E0B5;
-  padding: 12px 32px;
+  color: #FFFFFF;
+  background-color: #4B0082;
+  padding: 10px 20px;
   border: none;
   border-radius: 50px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-transform: uppercase;
-  margin: 0.2rem;
+  margin: 0 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .choice-btn1:hover {
   transform: translateY(-2px);
   background-color: #8FBC8F;
-  color: #fff;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes progress-bar-animation {
@@ -376,6 +375,24 @@ button.btn.btn-primary:hover {
 
 	/* Responsive styles */
 	@media (max-width: 768px) {
+
+  /* Modify container properties for screens up to 768px */
+  .container {
+    flex-direction: column; /* Stack columns vertically */
+    padding: 10px; /* Reduce padding */
+    gap: 10px; /* Reduce gap */
+  }
+
+  .choice-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+  
+  .choice-btn1 {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
 		.quiz-container {
 		padding: 20px;
 		}
@@ -529,15 +546,19 @@ button.btn.btn-primary:hover {
 }
 
 .container {
-    display: flex;
-    background-color: #f2f2f2;
-    padding: 20px;
-    gap: 20px; /* Add gap between columns */
-  }
+  display: flex;
+  flex-wrap: wrap; /* Allow flex items to wrap to a new line */
+  background-color: #f2f2f2;
+  padding: 20px;
+  gap: 20px; /* Add gap between columns */
+  max-width: 1400px; /* Set a maximum width for the container */
+  margin: 0 auto; /* Center the container horizontally */
+}
 
   .column {
     flex: 0.5; /* Adjust the flex value to make the column smaller */
     padding: 10px;
+    height: 450px; /* Set a fixed height for the column */
     text-align: center;
     background-color: #ffffff;
     border: 3px solid #cccccc;
@@ -545,9 +566,9 @@ button.btn.btn-primary:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
 
+
   .column img {
     width: 100%;
-    max-width: 80%; /* Add this line to make the image wider */
     height: auto;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -817,15 +838,20 @@ for (var i = 0; i < buttons.length; i++) {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                  answerIsCorrect()
+                  answerIsCorrect();
                   var image = document.getElementById('image');
                   var checkmark = document.getElementById('checkmark');
                   var imgURL = image.getAttribute('src');
 
                   checkmark.style.backgroundImage = 'url(' + imgURL + ')';
                   checkmark.style.display = 'inline-block';
+                  checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
+                  checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                   image.style.display = 'none';
                 }
+
 
                 else {
                   playSadEmojiSound()
@@ -836,6 +862,10 @@ for (var i = 0; i < buttons.length; i++) {
 
                   exmark.style.backgroundImage = 'url(' + imgURL + ')';
                   exmark.style.display = 'inline-block';
+                  exmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  exmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  exmark.style.width = '100%'; // Adjust the width of the exmark as desired
+                  exmark.style.height = '66%'; // Adjust the height of the exmark as desired
                   image.style.display = 'none';
                   // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
                   // var list_words = "{{word_list}}"
@@ -936,7 +966,12 @@ for (var i = 0; i < buttons1.length; i++) {
 
                   checkmark.style.backgroundImage = 'url(' + imgURL + ')';
                   checkmark.style.display = 'inline-block';
+                  checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
+                  checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                   image.style.display = 'none';
+                  
                 }
 
                 else {
@@ -948,6 +983,10 @@ for (var i = 0; i < buttons1.length; i++) {
 
                   exmark.style.backgroundImage = 'url(' + imgURL + ')';
                   exmark.style.display = 'inline-block';
+                  exmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  exmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  exmark.style.width = '100%'; // Adjust the width of the exmark as desired
+                  exmark.style.height = '66%'; // Adjust the height of the exmark as desired
                   image.style.display = 'none';
                   // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
                   // var list_words = "{{word_list}}"
