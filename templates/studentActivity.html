@@ -126,7 +126,6 @@ button.btn.btn-primary:hover {
 
  /* Main container styles */
 	.quiz-container {
-		max-width: 1200px;
 		margin: 0 auto;
 		padding: 20px;
 		background-color: #1b75be00;
@@ -246,6 +245,11 @@ button.btn.btn-primary:hover {
 	  height: auto;
 	  max-height: 450px;
 	  border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+    object-position: center;
 	  image-rendering: optimizeQuality; /* improve image rendering quality */
 	}
 
@@ -255,9 +259,13 @@ button.btn.btn-primary:hover {
 	  height: auto;
 	  max-height: 450px;
 	  border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+    object-position: center;
 	  image-rendering: optimizeQuality; /* improve image rendering quality */
 	}
-
 
 	/* Choices container styles */
 	#choices-container {
@@ -528,7 +536,7 @@ button.btn.btn-primary:hover {
   }
 
   .column {
-    flex: 1;
+    flex: 0.5; /* Adjust the flex value to make the column smaller */
     padding: 10px;
     text-align: center;
     background-color: #ffffff;
@@ -539,32 +547,19 @@ button.btn.btn-primary:hover {
 
   .column img {
     width: 100%;
-    max-width: 100%; /* Add this line to make the image wider */
+    max-width: 80%; /* Add this line to make the image wider */
     height: auto;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
 
-  .checkmark {
-    background-size: cover;
-    display: none;
-  }
-
-  .exmark {
-    background-size: cover;
-    display: none;
-  }
-
-  .checkmark1 {
-    background-size: cover;
-    display: none;
-  }
-
+  .checkmark,
+  .exmark,
+  .checkmark1,
   .exmark1 {
     background-size: cover;
     display: none;
   }
-
     </style>
   </head>
   <body>
