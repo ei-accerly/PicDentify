@@ -383,8 +383,15 @@ class StudentActivity(TemplateView):
                     
                     # Return list of homographs
                     return list(homographs)
-        def fetch_words():
-            response = requests.get('https://random-word-api.herokuapp.com/word')
+        def fetch_words(difficulty):
+            if difficulty == 'easy':
+                num = random.randint(4, 5)
+            elif difficulty == 'medium':
+                num = random.randint(5, 6)
+            elif difficulty == 'difficult':
+                num = random.randint(6, 7)
+            url = f"https://random-word-api.herokuapp.com/word?length={num}&number=1"
+            response = requests.get(url)
             if response.status_code == 200:
                 word = response.json()[0]
                 return word
@@ -399,7 +406,6 @@ class StudentActivity(TemplateView):
                 media_root = settings.MEDIA_ROOT
                 media_url = settings.MEDIA_URL
                 matching_images = []
-                print(media_root)
                 for filename in os.listdir(media_root):
                     if query in filename:
                         image_path = os.path.join(media_url, filename)  
@@ -437,9 +443,9 @@ class StudentActivity(TemplateView):
             choices = []
             choices1 = []
             for i in range(3):
-                choices.append(fetch_words())
+                choices.append(fetch_words(questions.difficulty_name))
             for i in range(3):
-                choices1.append(fetch_words())
+                choices1.append(fetch_words(questions.difficulty_name))
             choices.append(word_list[random.randint(0, len(word_list)-1)])
             choices1.append(word_list[random.randint(0, len(word_list)-1)])
             random.shuffle(choices)
@@ -467,14 +473,13 @@ class StudentActivity(TemplateView):
         choices = []
         choices1 = []
         for i in range(3):
-            choices.append(fetch_words())
+            choices.append(fetch_words(questions.difficulty_name))
         for i in range(3):
-            choices1.append(fetch_words())
+            choices1.append(fetch_words(questions.difficulty_name))
         choices.append(word_list[random.randint(0, len(word_list)-1)])
         choices1.append(word_list[random.randint(0, len(word_list)-1)])
         random.shuffle(choices)
         random.shuffle(choices1)
-        print(cleaned_words[persistent_variable-1])
         result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
                                                          'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'word_list':word_list})

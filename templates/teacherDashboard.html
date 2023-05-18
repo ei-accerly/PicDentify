@@ -471,8 +471,9 @@ label{
                 <input type="number" class="form-control" id="topicDuration2" placeholder="Enter time duration" name="topicDuration2">
               </div>
               <div class="form-group">
-                <label for="topicWords2">Words (separated by commas)</label>
-                <input type="text" class="form-control" id="topicWords2" placeholder="Enter words" name="topicWords2">
+                <label for="topicWords2">Words</label>
+                <select class="form-control" id="topicWords2" name="topicWords">
+                </select>
               </div>
 
               <div class="image-container">
@@ -525,9 +526,10 @@ label{
               // const altId = document.querySelector('#alt-id-update');
               var points_per_question = document.querySelector('#points_per_question_edit');
               var duration = document.querySelector('#topicDuration2');
-              var words = document.querySelector('#topicWords2');
-        
               var difficulties = data.difficulties;
+
+              var selectWords = document.getElementById('topicWords2');
+              
 
               var select = document.getElementById("topicDifficulty2");
 
@@ -547,7 +549,18 @@ label{
 
               points_per_question.value = difficulties[0].points_per_question;
               duration.value = difficulties[0].time_limit;
-              words.value = difficulties[0].words;
+              var words = difficulties[0].words.split(",");
+                 // Loop through the difficulties array and add an option for each difficulty level
+              selectWords.innerHTML = '';
+              for (var i = 0; i < words.length; i++) {
+                var wordList = words[i]
+                var capitalizedWordList = wordList.charAt(0).toUpperCase() + wordList.slice(1);
+
+                var option = document.createElement('option');
+                option.value = wordList;
+                option.text = capitalizedWordList;
+                selectWords.appendChild(option);
+              }
 
               select.addEventListener("change", function() {
                 var selectedOption = select.options[select.selectedIndex].value;
@@ -556,11 +569,23 @@ label{
                 });
 
                 if (selectedDifficulty) {
+                  selectWords.innerHTML = '';
                   points_per_question.value = selectedDifficulty.points_per_question;
                   duration.value = selectedDifficulty.time_limit;
-                  words.value = selectedDifficulty.words;
+                  words = selectedDifficulty.words.split(",");
+                  for (var i = 0; i < words.length; i++) {
+                    var wordList = words[i]
+                    var capitalizedWordList = wordList.charAt(0).toUpperCase() + wordList.slice(1);
+
+                    var option = document.createElement('option');
+                    option.value = wordList;
+                    option.text = capitalizedWordList;
+                    selectWords.appendChild(option);
+                  }
                 }
               });
+              
+
               previousTitle.value = data.topic
               title.value = data.topic
             })
