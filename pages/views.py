@@ -252,14 +252,28 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         if request.POST.get('topic_to_edit_samp'):
             difficulties = Difficulty.objects.filter(topic_id=request.POST['topic_to_edit_samp'])
             topic = Topics.objects.get(topic_id=request.POST['topic_to_edit_samp'])
+            easy_difficulty = Difficulty.objects.get(topic_id=request.POST['topic_to_edit_samp'], difficulty_name="easy")
+            easy_difficulty_split = easy_difficulty.words.split(",")
+            image_urls = Pictures.objects.filter(image_name__contains=easy_difficulty_split[0])
 
+            if len(image_urls) == 0:
+                
+                media_root = settings.MEDIA_ROOT
+                media_url = settings.MEDIA_URL
+                image_urls = []
+                for filename in os.listdir(media_root):
+                    if easy_difficulty_split[0] in filename:
+                        image_path = os.path.join(media_url, filename)  
+                        image_urls.append(image_path)
+    
             difficulties_data = []
             for difficulty in difficulties:
                 difficulty_dict = model_to_dict(difficulty)
                 difficulties_data.append(difficulty_dict)
 
+
             # Return a JSON response with both the topic and difficulties data
-            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data})
+            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data, 'image':image_urls})
 
 
         elif request.POST.get('addTopic'):

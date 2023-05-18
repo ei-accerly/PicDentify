@@ -475,23 +475,23 @@ label{
                 <select class="form-control" id="topicWords2" name="topicWords">
                 </select>
               </div>
-
-              <div class="image-container">
-                <!-- Image 1 -->
-                <img src="image1.jpg" alt="Image 1">
               
-                <!-- Image 2 -->
-                <img src="image2.jpg" alt="Image 2">
-              
-                <!-- Image 3 -->
-                <img src="image3.jpg" alt="Image 3">
-              
-                <!-- Image 4 -->
-                <img src="image4.jpg" alt="Image 4">
-              
-                <!-- Image 5 -->
-                <img src="image5.jpg" alt="Image 5">
-              </div>
+                <div class="image-container">
+                  <!-- Image 1 -->
+                  <img id="image0" alt="Image 1">
+                
+                  <!-- Image 2 -->
+                  <img id="image1" alt="Image 2">
+                
+                  <!-- Image 3 -->
+                  <img id="image2" alt="Image 3">
+                
+                  <!-- Image 4 -->
+                  <img id="image3" alt="Image 4">
+                
+                  <!-- Image 5 -->
+                  <img id="image4" alt="Image 5">
+                </div>
             </form>
           </div>
           <div style="display: flex; justify-content: center; text-align: center;" class="modal-footer">
@@ -527,12 +527,20 @@ label{
               var points_per_question = document.querySelector('#points_per_question_edit');
               var duration = document.querySelector('#topicDuration2');
               var difficulties = data.difficulties;
+              var image_url = data.image
+
+              for (var i = 0; i < image_url.length; i++) {
+                  var image = document.getElementById('image'+i);
+                  image.src = image_url[i]
+
+              }
 
               var selectWords = document.getElementById('topicWords2');
               
 
               var select = document.getElementById("topicDifficulty2");
-
+  
+              
               // Clear all existing options in the select element
               select.innerHTML = '';
 
