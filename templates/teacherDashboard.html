@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 
     <style>
 
@@ -300,6 +301,9 @@ label{
     flex-wrap: nowrap;
     overflow-x: auto;
     padding-bottom: 20px;
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 
   .image-container img {
@@ -309,6 +313,60 @@ label{
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  .image-wrapper {
+    display: flex;
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+  }
+
+  .view-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px;
+    border-radius: 50%;
+  }
+
+  .view-icon i {
+    display: inline-block;
+    font-size: 16px;
+    color: #333; /* Adjust icon color as desired */
+  }
+
+  .zoomed-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1050; /* Update the z-index value to be higher than the modal backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+  .zoomed-image img {
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 990;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+}
+
+
 </style>
 </head>
 <body>
@@ -440,7 +498,7 @@ label{
       </div>
     </div>
   
-    <div class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1Label" aria-hidden="true">
+    <div style="    position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 1000;" class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1Label" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -476,22 +534,37 @@ label{
                 </select>
               </div>
               
-                <div class="image-container">
-                  <!-- Image 1 -->
-                  <img id="image0" alt="Image 1">
-                
-                  <!-- Image 2 -->
-                  <img id="image1" alt="Image 2">
-                
-                  <!-- Image 3 -->
-                  <img id="image2" alt="Image 3">
-                
-                  <!-- Image 4 -->
-                  <img id="image3" alt="Image 4">
-                
-                  <!-- Image 5 -->
-                  <img id="image4" alt="Image 5">
+              <div class="image-container">
+                <!-- Image 1 -->
+                <div class="image-wrapper" onclick="zoomImage('image0')">
+                  <img id="image0" src="image1.jpg" alt="Image 1">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
+              
+                <!-- Image 2 -->
+                <div class="image-wrapper" onclick="zoomImage('image1')">
+                  <img id="image1" src="image2.jpg" alt="Image 2">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 3 -->
+                <div class="image-wrapper" onclick="zoomImage('image2')">
+                  <img id="image2" src="image3.jpg" alt="Image 3">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 4 -->
+                <div class="image-wrapper" onclick="zoomImage('image3')">
+                  <img id="image3" src="image4.jpg" alt="Image 4">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 5 -->
+                <div class="image-wrapper" onclick="zoomImage('image4')">
+                  <img id="image4" src="image5.jpg" alt="Image 5">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              </div>
             </form>
           </div>
           <div style="display: flex; justify-content: center; text-align: center;" class="modal-footer">
@@ -507,6 +580,26 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+
+function zoomImage(imageId) {
+    var image = document.getElementById(imageId);
+    var imageSource = image.getAttribute('src');
+    var imageAlt = image.getAttribute('alt');
+
+    var zoomedContainer = document.createElement('div');
+    var zoomedImage = document.createElement('img');
+
+    zoomedImage.src = imageSource;
+    zoomedImage.alt = imageAlt;
+
+    zoomedContainer.classList.add('zoomed-image');
+    zoomedContainer.onclick = function () {
+      zoomedContainer.remove();
+    };
+
+    zoomedContainer.appendChild(zoomedImage);
+    document.body.appendChild(zoomedContainer);
+  }
 
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll("[id^='edit-topic']").forEach(function(el) {
