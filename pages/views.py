@@ -127,22 +127,25 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "Puppy"
+                            word_list = "Big, Kids, Quiet, Small, Quick, Happy, Mad, Rich, Cap, Beautiful"
+                            synonyms = "Huge, Children, Silent, Tiny, Fast, Glad, Angry, Wealthy, Hat, Pretty"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10, maxpoints=100, answered=0)
+                                            points_per_question=10, maxpoints=100, answered=0, words1=synonyms)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "Puppy"
+                            word_list = "Stone, Wet, Neat, Thin, Cold, Sick, Alike"
+                            synonyms = "Pebble, Damp, Tidy, Skinny, Freezing, Ill, Similar"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20, maxpoints=200, answered=0)
+                                            points_per_question=20, maxpoints=140, answered=0, words1=synonyms)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "Puppy"
+                            word_list = "Done, Funny, Laugh, Build, Smart"
+                            synonyms = "Finished, Silly, Chuckle, Construct, Clever"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30, maxpoints=300, answered=0)
+                                            points_per_question=30, maxpoints=150, answered=0, words1=synonyms)
                             difficulty_save.save()
 
                 elif topic_name == "Antonyms":
@@ -151,92 +154,95 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "Puppy"
+                            word_list = "Rich, Noisy, Big, Happy, Fast, Walk, Rich, Hot, Wet, Open, Day, Beautiful, Long, Good"
+                            antonyms = "Poor, Quiet, Small, Sad, Slow, Run, Poor, Cold, Dry, Close, Night, Ugly, Short, Bad"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                                points_per_question=10, maxpoints=100, answered=0)
+                                                points_per_question=10, maxpoints=100, answered=0, words1=antonyms)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "Puppy"
+                            word_list = "Start, Top, Strong, Empty, Present, New, Late"
+                            antonyms = "Finish, Bottom, Weak, Full, Absent, Old, Early"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                                points_per_question=20, maxpoints=200, answered=0)
+                                                points_per_question=20, maxpoints=140, answered=0, words1=antonyms)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "Puppy"
+                            word_list = "Adult, Build, Friend, First, Correct"
+                            antonyms = "Child, Destroy, Enemy, Last, Wrong"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                                points_per_question=30, maxpoints=300, answered=0)
+                                                points_per_question=30, maxpoints=150, answered=0, words1=antonyms)
                             difficulty_save.save()
-                elif topic_name == "Homonyms":
-                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                    topic.save()
-                    for i in range(1, 4):
-                        difficulty = Difficulty.objects.all()
-                        if i == 1:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10, maxpoints=100, answered=0)
-                            difficulty_save.save()
-                        elif i == 2:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20, maxpoints=200, answered=0)
-                            difficulty_save.save()
-                        elif i == 3:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30, maxpoints=300, answered=0)
-                            difficulty_save.save()
-                elif topic_name == "Hyponyms":
-                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                    topic.save()
-                    for i in range(1, 4):
-                        difficulty = Difficulty.objects.all()
-                        if i == 1:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10, maxpoints=100, answered=0)
-                            difficulty_save.save()
-                        elif i == 2:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20, maxpoints=200, answered=0)
-                            difficulty_save.save()
-                        elif i == 3:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30, maxpoints=300, answered=0)
-                            difficulty_save.save()
-                elif topic_name == "Homographs":
-                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                    topic.save()
-                    for i in range(1, 4):
-                        difficulty = Difficulty.objects.all()
-                        if i == 1:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10, maxpoints=100, answered=0)
-                            difficulty_save.save()
-                        elif i == 2:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20, maxpoints=200, answered=0)
-                            difficulty_save.save()
-                        elif i == 3:
-                            word_list = "Puppy"
-                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30, maxpoints=300, answered=0)
-                            difficulty_save.save()
+                # elif topic_name == "Homonyms":
+                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                #     topic.save()
+                #     for i in range(1, 4):
+                #         difficulty = Difficulty.objects.all()
+                #         if i == 1:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
+                #                             points_per_question=10, maxpoints=100, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 2:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
+                #                             points_per_question=20, maxpoints=200, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 3:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
+                #                             points_per_question=30, maxpoints=300, answered=0)
+                #             difficulty_save.save()
+                # elif topic_name == "Hyponyms":
+                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                #     topic.save()
+                #     for i in range(1, 4):
+                #         difficulty = Difficulty.objects.all()
+                #         if i == 1:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
+                #                             points_per_question=10, maxpoints=100, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 2:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
+                #                             points_per_question=20, maxpoints=200, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 3:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
+                #                             points_per_question=30, maxpoints=300, answered=0)
+                #             difficulty_save.save()
+                # elif topic_name == "Homographs":
+                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                #     topic.save()
+                #     for i in range(1, 4):
+                #         difficulty = Difficulty.objects.all()
+                #         if i == 1:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
+                #                             points_per_question=10, maxpoints=100, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 2:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
+                #                             points_per_question=20, maxpoints=200, answered=0)
+                #             difficulty_save.save()
+                #         elif i == 3:
+                #             word_list = "Puppy"
+                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
+                #                             points_per_question=30, maxpoints=300, answered=0)
+                #             difficulty_save.save()
             
         create_topics = ["Synonyms", "Antonyms", "Homonyms", "Hyponyms", "Homographs"]
         for topic in create_topics:
@@ -348,62 +354,14 @@ class StudentActivity(TemplateView):
             # Ensure that number2 is different from number1
             while number2 == number1:
                 number2 = random.randint(0, 4)
-
             return number1, number2
-        def synonyms_antonyms_list(word, category):
-            # Get the HTML content of a web page
-            url = f"https://www.merriam-webster.com/thesaurus/{word}"
-            response = requests.get(url)
-            html_content = response.content
-
-            # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(html_content, 'html.parser')
-
-            # Find the element that contains the synonyms and antonyms
-            share_link = soup.find('a', class_='fb share-link')
-
-            # Extract the synonyms and antonyms from the data-share-description attribute
-            if share_link:
-                synonyms_str, antonyms_str = share_link.get('data-share-description', ''), ''
-                if 'Antonyms of' in synonyms_str:
-                    synonyms_str, antonyms_str = synonyms_str.split(';')
-                synonyms_list = [s.strip() for s in synonyms_str.split(':')[1].split(',')]
-                antonyms_list = [s.strip() for s in antonyms_str.split(':')[1].split(',')] if antonyms_str else []
-                if category == 1:
-                    return synonyms_list
-                elif category == 2:
-                    return antonyms_list
-                elif category == 3:
-                    return word
-                elif category == 4:
-                    synsets = wordnet.synsets(word)
-                    hyponyms = []
-                    for synset in synsets:
-                        for hyponym in synset.hyponyms():
-                            hyponyms.append(hyponym.name().split('.')[0])
-                    return hyponyms[:7]
-                else:
-                    synsets = wordnet.synsets(word)
-    
-                    # Keep only synsets that have more than one lemma
-                    synsets = [s for s in synsets if len(s.lemmas()) > 1]
-                    
-                    # Get all lemmas for each synset and extract homographs
-                    homographs = set()
-                    for s in synsets:
-                        for l in s.lemmas():
-                            if l.name() != word:
-                                homographs.add(l.name())
-                    
-                    # Return list of homographs
-                    return list(homographs)
         def fetch_words(difficulty):
             if difficulty == 'easy':
-                num = random.randint(4, 5)
+                num = random.randint(3, 4)
             elif difficulty == 'medium':
-                num = random.randint(5, 6)
+                num = random.randint(4, 5)
             elif difficulty == 'difficult':
-                num = random.randint(6, 7)
+                num = random.randint(5, 6)
             url = f"https://random-word-api.herokuapp.com/word?length={num}&number=1"
             response = requests.get(url)
             if response.status_code == 200:
@@ -431,8 +389,9 @@ class StudentActivity(TemplateView):
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
-
         cleaned_words = [word.strip() for word in words]
+        words1 = questions.words1.split(',')
+        cleaned_words1 = [word.strip() for word in words1]
 
         persistent_variable = cache.get('my_persistent_variable')
         
@@ -441,16 +400,6 @@ class StudentActivity(TemplateView):
             persistent_variable = 0
             cache.set('my_persistent_variable', persistent_variable)
         if len(words) == questions.answered:
-            if topic_name.topic_name == "Synonyms":
-                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
-            elif topic_name.topic_name == "Antonyms":
-                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 2)
-            elif topic_name.topic_name == "Homonyms":
-                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 3)
-            elif topic_name.topic_name == "Hyponyms":
-                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
-            elif topic_name.topic_name == "Homographs":
-                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
             image_url = fetch_image(cleaned_words[persistent_variable-1])
             if (len(image_url) == 0):
                 image_url.append("no image")
@@ -460,27 +409,17 @@ class StudentActivity(TemplateView):
                 choices.append(fetch_words(questions.difficulty_name))
             for i in range(3):
                 choices1.append(fetch_words(questions.difficulty_name))
-            choices.append(word_list[random.randint(0, len(word_list)-1)])
-            choices1.append(word_list[random.randint(0, len(word_list)-1)])
+            choices.append(cleaned_words[questions.answered-1])
+            choices1.append(cleaned_words1[questions.answered-1])
             random.shuffle(choices)
             random.shuffle(choices1)
             result = generate_two_random_numbers()
             
-            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
+            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'words1': cleaned_words1[questions.answered-1], 'start_index':questions.answered,
                                                          'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
-        if topic_name.topic_name == "Synonyms":
-            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
-        elif topic_name.topic_name == "Antonyms":
-            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 2)
-        elif topic_name.topic_name == "Homonyms":
-            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 3)
-        elif topic_name.topic_name == "Hyponyms":
-            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
-        elif topic_name.topic_name == "Homographs":
-            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
         image_url = fetch_image(cleaned_words[persistent_variable-1])
         if (len(image_url) == 0):
             image_url.append("no image")
@@ -490,13 +429,13 @@ class StudentActivity(TemplateView):
             choices.append(fetch_words(questions.difficulty_name))
         for i in range(3):
             choices1.append(fetch_words(questions.difficulty_name))
-        choices.append(word_list[random.randint(0, len(word_list)-1)])
-        choices1.append(word_list[random.randint(0, len(word_list)-1)])
+        choices.append(cleaned_words[persistent_variable-1])
+        choices1.append(cleaned_words1[persistent_variable-1])
         random.shuffle(choices)
         random.shuffle(choices1)
         result = generate_two_random_numbers()
-        return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'word_list':word_list})
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'words1': cleaned_words1[persistent_variable-1], 'start_index':persistent_variable,
+                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
@@ -505,9 +444,13 @@ class StudentActivity(TemplateView):
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
+
+            words1 = questions.words1.split(',')
+
+            cleaned_words1 = [word.strip() for word in words1]
             
 
-            if request.POST.get('choice') not in cleaned_words:
+            if request.POST.get('choice') not in cleaned_words and request.POST.get('choice') not in cleaned_words1:
                 return JsonResponse({'answerVerify': False, 'correct_answer':cleaned_words[persistent_variable-1]})
             else:
                 return JsonResponse({'answerVerify': True, 'points_per_question':questions.points_per_question})

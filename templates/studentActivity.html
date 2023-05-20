@@ -654,11 +654,7 @@ button.btn.btn-primary:hover {
           <form id="checkAnswer"> 
             {% csrf_token %}
             {% for choice in choices %}
-              {% if choice in word_list %}
-                <button class="choice-btn" value="{{words}}">{{choice}}</button>
-              {% else %}
                 <button class="choice-btn" value="{{choice}}">{{choice}}</button>
-              {% endif %} 
             {% endfor %}
           </form>
           
@@ -672,11 +668,7 @@ button.btn.btn-primary:hover {
           <form id="checkAnswer1"> 
             {% csrf_token %}
             {% for choice in choices1 %}
-              {% if choice in word_list %}
-                <button class="choice-btn1" value="{{words}}">{{choice}}</button>
-              {% else %}
                 <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
-              {% endif %} 
             {% endfor %}
           </form>
           
@@ -869,12 +861,6 @@ function checkBothAnswer(answer1, answer2) {
   if (answer1 == "true" && answer2 == "true" && answer1 != "" && answer2 != "" ) {
       answerIsCorrect()
       resultText.innerHTML = "Correct!<br>+" + "{{questions.points_per_question}}";
-      var list_words = "{{word_list}}";
-      var parsed_words_final = list_words.replace(/&#x27;/g, "'");
-      var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-      var wordsString = myArray.join(', ');
-      resultText.innerHTML += "<br>The " + "{{questions.topic.topic_name}}" + " are: " + wordsString;
-
       // Create a modal footer element
       var modalFooter = document.createElement("div");
       modalFooter.classList.add("modal-footer");
@@ -899,34 +885,10 @@ function checkBothAnswer(answer1, answer2) {
   }
   else if (answer1 == "false" || answer2 == "false"){
     if (answer1 != "" && answer2 != "") {
-      var choice1 = "{{choices}}"
-      var choice2 = "{{choices1}}"
-      var parsed_choice1_final = choice1.replace(/&#x27;/g, "'")
-      var myChoice1Array = JSON.parse(parsed_choice1_final.replace(/'/g, "\""));
-      var parsed_choice2_final = choice2.replace(/&#x27;/g, "'")
-      var myChoice2Array = JSON.parse(parsed_choice2_final.replace(/'/g, "\""));
-      var list_words = "{{word_list}}"
-      var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-      var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-      var pic1Answer = ""
-      var pic2Answer = ""
-      for (var i = 0; i < myChoice1Array.length; i++) {
-        if (myArray.includes(myChoice1Array[i])) {
-          pic1Answer = myChoice1Array[i];
-          break;
-        }
-      }
-      for (var i = 0; i < myChoice2Array.length; i++) {
-        if (myArray.includes(myChoice2Array[i])) {
-          pic2Answer = myChoice2Array[i];
-          break;
-        }
-      }
+
       resultText.innerHTML = "The correct answers are: <br>"
-      resultText.innerHTML += "For Picture 1: "+pic1Answer.charAt(0).toUpperCase() + pic1Answer.slice(1)+"<br>";
-      resultText.innerHTML += "For Picture 2: "+pic2Answer.charAt(0).toUpperCase() + pic2Answer.slice(1)+"<br>";
-      var wordsString = myArray.join(', ');
-      resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+      resultText.innerHTML += "For Picture 1: "+"{{words}}".charAt(0).toUpperCase() + "{{words}}".slice(1)+"<br>";
+      resultText.innerHTML += "For Picture 2: "+"{{words1}}".charAt(0).toUpperCase() + "{{words1}}".slice(1)+"<br>";
       playSadEmojiSound()
 
       // Create a modal footer element

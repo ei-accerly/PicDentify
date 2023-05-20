@@ -61,6 +61,7 @@ class Difficulty(models.Model):
     maxpoints = models.IntegerField(blank=False, null=False)
     answered = models.IntegerField(blank=False, null=False)
     score = models.IntegerField(blank=False, null=False, default=0)
+    words1 = models.JSONField()
     class Meta:
         db_table = "difficulty"
 
