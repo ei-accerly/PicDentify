@@ -11,10 +11,9 @@ from django.core.cache import cache
 import random, string, requests, json
 from django.forms.models import model_to_dict
 from bs4 import BeautifulSoup
-import nltk
+import nltk, os, glob
 from nltk.corpus import wordnet
 from django.conf import settings
-import os
 
 # initialize WordNet
 nltk.download('wordnet')
@@ -372,17 +371,14 @@ class StudentActivity(TemplateView):
 
         def fetch_image(query):
             image_urls = Pictures.objects.filter(image_name__contains=query)
-
+            
             if len(image_urls) == 0:
-                
                 media_root = settings.MEDIA_ROOT
                 media_url = settings.MEDIA_URL
-                matching_images = []
-                for filename in os.listdir(media_root):
-                    if query in filename:
-                        image_path = os.path.join(media_url, filename)  
-                        matching_images.append(image_path)
-                return matching_images
+                matching_images = glob.glob(os.path.join(media_root, f"*{query}*"))
+                matching_image_paths = [os.path.join(media_url, image_path[len(media_root):]) for image_path in matching_images]
+                return matching_image_paths
+            
             return image_urls
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
