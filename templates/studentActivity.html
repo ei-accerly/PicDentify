@@ -690,6 +690,9 @@ button.btn.btn-primary:hover {
   {% endif %}
 
 <script>
+
+var answer1 = ""
+var answer2 = ""
 // First, create a canvas element to draw the confetti on
 // Helper function to play the sadEmoji sound
 function playSadEmojiSound() {
@@ -797,11 +800,6 @@ function onTimeLimitReached() {
                   // Append the modal footer to the modal content
                   resultText.appendChild(modalFooter);
                 }
-
-
-                modalContent.appendChild(resultText);
-                modal.appendChild(modalContent);
-                document.body.appendChild(modal);
                 
             });
 } 
@@ -832,17 +830,11 @@ for (var i = 0; i < buttons.length; i++) {
         }).then(response => response.json())
             .then(data => {
                 var jsResponse = data.answerVerify;
-                var modal = document.createElement('div');
-                modal.classList.add('modal');
-                var modalContent = document.createElement('div');
-                modalContent.classList.add('modal-content');
-                var resultText = document.createElement('p');
                 if (jsResponse) {
                   answerIsCorrect();
                   var image = document.getElementById('image');
                   var checkmark = document.getElementById('checkmark');
                   var imgURL = image.getAttribute('src');
-
                   checkmark.style.backgroundImage = 'url(' + imgURL + ')';
                   checkmark.style.display = 'inline-block';
                   checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
@@ -850,6 +842,8 @@ for (var i = 0; i < buttons.length; i++) {
                   checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
                   checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                   image.style.display = 'none';
+                  answer1 = "true"
+                  checkBothAnswer(answer1, answer2)
                 }
 
 
@@ -867,37 +861,9 @@ for (var i = 0; i < buttons.length; i++) {
                   exmark.style.width = '100%'; // Adjust the width of the exmark as desired
                   exmark.style.height = '66%'; // Adjust the height of the exmark as desired
                   image.style.display = 'none';
-                  // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
-                  // var list_words = "{{word_list}}"
-                  // var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  // var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  // var wordsString = myArray.join(', ');
-                  // resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
-
-                 
-
-                  // // Create a modal footer element
-                  // var modalFooter = document.createElement("div");
-                  // modalFooter.classList.add("modal-footer");
-
-                  // // Create a "Next" button element
-                  // var nextButton = document.createElement("button");
-                  // nextButton.textContent = "Next";
-                  // nextButton.classList.add("btn", "btn-primary");
-                  // nextButton.onclick = function() {
-                  //   nextQuestion("wrong")
-                  // }
-
-                  // // Append the "Next" button to the modal footer
-                  // modalFooter.appendChild(nextButton);
-
-                  // // Append the modal footer to the modal content
-                  // resultText.appendChild(modalFooter);
+                  answer1 = "false"
+                  checkBothAnswer(answer1, answer2)
                 }
-
-                // modalContent.appendChild(resultText);
-                // modal.appendChild(modalContent);
-                // document.body.appendChild(modal);
             });
     });
 }
@@ -918,6 +884,102 @@ function navigateTo() {
   window.location.href = window.location.origin + "/studentdashboard";
 
 }
+
+function checkBothAnswer(answer1, answer2) {
+  var modal = document.createElement('div');
+  modal.classList.add('modal');
+  var modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+  var resultText = document.createElement('p');
+  if (answer1 == "true" && answer2 == "true" && answer1 != "" && answer2 != "" ) {
+        resultText.innerHTML = "Correct!<br>+"+"{{questions.points_per_question}}";
+        var list_words = "{{word_list}}"
+        var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+        var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+        var wordsString = myArray.join(', ');
+        resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+
+        // Create a modal footer element
+        var modalFooter = document.createElement("div");
+        modalFooter.classList.add("modal-footer");
+
+        // Create a "Next" button element
+        var nextButton = document.createElement("button");
+        nextButton.textContent = "Next";
+        nextButton.classList.add("btn", "btn-primary");
+        nextButton.onclick = function() {
+          nextQuestion("correct")
+        }
+
+        // Append the "Next" button to the modal footer
+        modalFooter.appendChild(nextButton);
+
+        // Append the modal footer to the modal content
+        resultText.appendChild(modalFooter);
+
+        
+        modalContent.appendChild(resultText);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+  }
+  else if (answer1 == "false" || answer2 == "false"){
+    if (answer1 != "" && answer2 != "") {
+      var choice1 = "{{choices}}"
+      var choice2 = "{{choices1}}"
+      var parsed_choice1_final = choice1.replace(/&#x27;/g, "'")
+      var myChoice1Array = JSON.parse(parsed_choice1_final.replace(/'/g, "\""));
+      var parsed_choice2_final = choice2.replace(/&#x27;/g, "'")
+      var myChoice2Array = JSON.parse(parsed_choice2_final.replace(/'/g, "\""));
+      var list_words = "{{word_list}}"
+      var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+      var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+      var pic1Answer = ""
+      var pic2Answer = ""
+      for (var i = 0; i < myChoice1Array.length; i++) {
+        if (myArray.includes(myChoice1Array[i])) {
+          pic1Answer = myChoice1Array[i];
+          break;
+        }
+      }
+      for (var i = 0; i < myChoice2Array.length; i++) {
+        if (myArray.includes(myChoice2Array[i])) {
+          pic2Answer = myChoice2Array[i];
+          break;
+        }
+      }
+      resultText.innerHTML = "The correct answers are: <br>"
+      resultText.innerHTML += "For Picture 1: "+pic1Answer.charAt(0).toUpperCase() + pic1Answer.slice(1)+"<br>";
+      resultText.innerHTML += "For Picture 2: "+pic2Answer.charAt(0).toUpperCase() + pic2Answer.slice(1)+"<br>";
+      var wordsString = myArray.join(', ');
+      resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+      playSadEmojiSound()
+
+      // Create a modal footer element
+      var modalFooter = document.createElement("div");
+      modalFooter.classList.add("modal-footer");
+
+      // Create a "Next" button element
+      var nextButton = document.createElement("button");
+      nextButton.textContent = "Next";
+      nextButton.classList.add("btn", "btn-primary");
+      nextButton.onclick = function() {
+        nextQuestion("wrong")
+      }
+
+      // Append the "Next" button to the modal footer
+      modalFooter.appendChild(nextButton);
+
+      // Append the modal footer to the modal content
+      resultText.appendChild(modalFooter);
+      modalContent.appendChild(resultText);
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
+    }
+  
+  }
+
+}
+
 function nextQuestion(isCorrect) {
   var myForm = document.querySelector("#checkAnswer");
   var formData = new FormData(myForm);
@@ -971,6 +1033,8 @@ for (var i = 0; i < buttons1.length; i++) {
                   checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
                   checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                   image.style.display = 'none';
+                  answer2 = "true"
+                  checkBothAnswer(answer1, answer2)
                   
                 }
 
@@ -988,37 +1052,9 @@ for (var i = 0; i < buttons1.length; i++) {
                   exmark.style.width = '100%'; // Adjust the width of the exmark as desired
                   exmark.style.height = '66%'; // Adjust the height of the exmark as desired
                   image.style.display = 'none';
-                  // resultText.innerHTML = "The correct answer is: "+data.correct_answer;
-                  // var list_words = "{{word_list}}"
-                  // var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  // var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  // var wordsString = myArray.join(', ');
-                  // resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
-
-                 
-
-                  // // Create a modal footer element
-                  // var modalFooter = document.createElement("div");
-                  // modalFooter.classList.add("modal-footer");
-
-                  // // Create a "Next" button element
-                  // var nextButton = document.createElement("button");
-                  // nextButton.textContent = "Next";
-                  // nextButton.classList.add("btn", "btn-primary");
-                  // nextButton.onclick = function() {
-                  //   nextQuestion("wrong")
-                  // }
-
-                  // // Append the "Next" button to the modal footer
-                  // modalFooter.appendChild(nextButton);
-
-                  // // Append the modal footer to the modal content
-                  // resultText.appendChild(modalFooter);
+                  answer2 = "false"
+                  checkBothAnswer(answer1, answer2)
                 }
-
-                // modalContent.appendChild(resultText);
-                // modal.appendChild(modalContent);
-                // document.body.appendChild(modal);
             });
     });
 }
