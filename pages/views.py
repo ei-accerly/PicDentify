@@ -16,8 +16,9 @@ from nltk.corpus import wordnet
 from django.conf import settings
 
 # initialize WordNet
-nltk.download('wordnet')
-
+# nltk.download('wordnet')
+media_root = settings.MEDIA_ROOT
+media_url = settings.MEDIA_URL
 
 @login_required
 def protected_view(request):
@@ -263,8 +264,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
             if len(image_urls) == 0:
                 
-                media_root = settings.MEDIA_ROOT
-                media_url = settings.MEDIA_URL
                 image_urls = []
                 for filename in os.listdir(media_root):
                     if easy_difficulty_split[0] in filename:
@@ -347,12 +346,12 @@ class StudentActivity(TemplateView):
 
     def get(self, request):
         def generate_two_random_numbers():
-            number1 = random.randint(0, 4)  # Generate a random integer between 0 and 4 (inclusive)
-            number2 = random.randint(0, 4)  # Generate another random integer between 0 and 4 (inclusive)
+            number1 = random.randint(1, 5)  # Generate a random integer between 0 and 4 (inclusive)
+            number2 = random.randint(1, 5)  # Generate another random integer between 0 and 4 (inclusive)
 
             # Ensure that number2 is different from number1
             while number2 == number1:
-                number2 = random.randint(0, 4)
+                number2 = random.randint(1, 5)
             return number1, number2
         def fetch_words(difficulty):
             if difficulty == 'easy':
@@ -371,13 +370,19 @@ class StudentActivity(TemplateView):
 
         def fetch_image(query):
             image_urls = Pictures.objects.filter(image_name__contains=query)
-            
+            print(query)
             if len(image_urls) == 0:
-                media_root = settings.MEDIA_ROOT
-                media_url = settings.MEDIA_URL
-                matching_images = glob.glob(os.path.join(media_root, f"*{query}*"))
-                matching_image_paths = [os.path.join(media_url, image_path[len(media_root):]) for image_path in matching_images]
-                return matching_image_paths
+                filename = query + ".png"
+                if os.path.isfile(os.path.join(media_root, filename)):
+                    image_url = os.path.join(media_url, filename)
+                else:
+                    filename = query + ".jpg"
+                    if os.path.isfile(os.path.join(media_root, filename)):
+                        image_url = os.path.join(media_url, filename)
+                    else:
+                        image_url = "/avatar.svg"
+                
+                return image_url
             
             return image_urls
 
@@ -396,7 +401,9 @@ class StudentActivity(TemplateView):
             persistent_variable = 0
             cache.set('my_persistent_variable', persistent_variable)
         if len(words) == questions.answered:
-            image_url = fetch_image(cleaned_words[persistent_variable-1])
+            result = generate_two_random_numbers()
+            image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
+            image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
             if (len(image_url) == 0):
                 image_url.append("no image")
             choices = []
@@ -409,14 +416,15 @@ class StudentActivity(TemplateView):
             choices1.append(cleaned_words1[questions.answered-1])
             random.shuffle(choices)
             random.shuffle(choices1)
-            result = generate_two_random_numbers()
             
             return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'words1': cleaned_words1[questions.answered-1], 'start_index':questions.answered,
-                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
+                                                         'img_url':image_url, 'img_url2': image_url1, 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
-        image_url = fetch_image(cleaned_words[persistent_variable-1])
+        result = generate_two_random_numbers()
+        image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
+        image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
         if (len(image_url) == 0):
             image_url.append("no image")
         choices = []
@@ -431,7 +439,7 @@ class StudentActivity(TemplateView):
         random.shuffle(choices1)
         result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'words1': cleaned_words1[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url[result[0]], 'img_url2': image_url[result[1]], 'length':len(words), 'choices':choices, 'choices1':choices1})
+                                                         'img_url':image_url, 'img_url2': image_url1, 'length':len(words), 'choices':choices, 'choices1':choices1})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
