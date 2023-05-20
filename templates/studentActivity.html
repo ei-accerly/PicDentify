@@ -7,6 +7,7 @@
     <title>Grade 3 Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src=//cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js> </script>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JK"
@@ -681,6 +682,7 @@ button.btn.btn-primary:hover {
           
           </div>
       </div>
+      <button id="hiddenButton" style="display: none;">Hidden Button</button>
     </div>
 		{% else %}
 			<img id="image" src="{% static 'img/no_internet.png' %}">
@@ -704,9 +706,10 @@ var questions = {{ questions.time_limit }};
 
 var topic = "{{ questions.topic.topic_name }}";
 
+const confettiSound1 = new Audio("{% static 'applause.mp3' %}");
 const confettiSound = new Audio("{% static 'Confetti.mp3' %}");
 function answerIsCorrect() {
-  confettiSound.play()
+  confettiSound1.play()
   var duration = 15 * 1000;
   var animationEnd = Date.now() + duration;
   var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -729,79 +732,51 @@ function answerIsCorrect() {
   }, 250);
 }
 
+function confettiAnswer(num) {
+  confettiSound.play()
+  var end = Date.now() + (15 * 1000);
+
+// go Buckeyes!
+  var colors = ['#bb0000', '#ffffff'];
+  if (num == 1) {
+    (function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: colors
+      });
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  }
+  else {
+    (function frame() {
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: colors
+      });
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  }
+}
+
 function onTimeLimitReached() {
-  var myForm = document.querySelector("#checkAnswer");
-        var formData = new FormData(myForm);
-        formData.append("choice", "1")
-        formData.append("topic", topic)
-        fetch('/studentdashboard/studentactivity/', {
-            method: 'POST',
-            body: formData
-        }).then(response => response.json())
-            .then(data => {
-                var jsResponse = data.answerVerify;
-                var modal = document.createElement('div');
-                modal.classList.add('modal');
-                var modalContent = document.createElement('div');
-                modalContent.classList.add('modal-content');
-                var resultText = document.createElement('p');
-                if (jsResponse) {
-                  resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
-                  var list_words = "{{word_list}}"
-                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  var wordsString = myArray.join(', ');
-                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
-                  answerIsCorrect();
-
-                  // Create a modal footer element
-                  var modalFooter = document.createElement("div");
-                  modalFooter.classList.add("modal-footer");
-
-                  // Create a "Next" button element
-                  var nextButton = document.createElement("button");
-                  nextButton.textContent = "Next";
-                  nextButton.classList.add("btn", "btn-primary");
-                  nextButton.onclick = function() {
-                    nextQuestion("correct");
-                  }
-
-                  // Append the "Next" button to the modal footer
-                  modalFooter.appendChild(nextButton);
-
-                  // Append the modal footer to the modal content
-                  resultText.appendChild(modalFooter);
-                }
-
-                else {
-                  resultText.innerHTML = "The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
-                  var list_words = "{{word_list}}"
-                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-                  var wordsString = myArray.join(', ');
-                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
-                  playSadEmojiSound()
-
-                  // Create a modal footer element
-                  var modalFooter = document.createElement("div");
-                  modalFooter.classList.add("modal-footer");
-
-                  // Create a "Next" button element
-                  var nextButton = document.createElement("button");
-                  nextButton.textContent = "Next";
-                  nextButton.classList.add("btn", "btn-primary");
-                  nextButton.onclick = function() {
-                    nextQuestion("wrong")
-                  }
-
-                  // Append the "Next" button to the modal footer
-                  modalFooter.appendChild(nextButton);
-
-                  // Append the modal footer to the modal content
-                  resultText.appendChild(modalFooter);
-                }
-                
-            });
+  if (answer1 != "" && answer2 != "") {
+      clearTimeout(timeoutID);
+      event.preventDefault(); 
+  }
+  answer1 = "false"
+  answer2 = "false"
+  checkBothAnswer(answer1, answer2)
+  
 } 
 
 
@@ -815,9 +790,8 @@ var container = document.getElementById('choices-container');
 var buttons = container.querySelectorAll('.choice-btn');
 for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function() {
-        event.preventDefault(); 
-        clearTimeout(timeoutID);
         // Retrieve the value of the clicked button
+        event.preventDefault(); 
         var value = this.value;
         
         var myForm = document.querySelector("#checkAnswer");
@@ -831,7 +805,7 @@ for (var i = 0; i < buttons.length; i++) {
             .then(data => {
                 var jsResponse = data.answerVerify;
                 if (jsResponse) {
-                  answerIsCorrect();
+                  confettiAnswer(1);
                   var image = document.getElementById('image');
                   var checkmark = document.getElementById('checkmark');
                   var imgURL = image.getAttribute('src');
@@ -886,41 +860,42 @@ function navigateTo() {
 }
 
 function checkBothAnswer(answer1, answer2) {
+  
   var modal = document.createElement('div');
   modal.classList.add('modal');
   var modalContent = document.createElement('div');
   modalContent.classList.add('modal-content');
   var resultText = document.createElement('p');
   if (answer1 == "true" && answer2 == "true" && answer1 != "" && answer2 != "" ) {
-        resultText.innerHTML = "Correct!<br>+"+"{{questions.points_per_question}}";
-        var list_words = "{{word_list}}"
-        var parsed_words_final = list_words.replace(/&#x27;/g, "'")
-        var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
-        var wordsString = myArray.join(', ');
-        resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
+      answerIsCorrect()
+      resultText.innerHTML = "Correct!<br>+" + "{{questions.points_per_question}}";
+      var list_words = "{{word_list}}";
+      var parsed_words_final = list_words.replace(/&#x27;/g, "'");
+      var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+      var wordsString = myArray.join(', ');
+      resultText.innerHTML += "<br>The " + "{{questions.topic.topic_name}}" + " are: " + wordsString;
 
-        // Create a modal footer element
-        var modalFooter = document.createElement("div");
-        modalFooter.classList.add("modal-footer");
+      // Create a modal footer element
+      var modalFooter = document.createElement("div");
+      modalFooter.classList.add("modal-footer");
 
-        // Create a "Next" button element
-        var nextButton = document.createElement("button");
-        nextButton.textContent = "Next";
-        nextButton.classList.add("btn", "btn-primary");
-        nextButton.onclick = function() {
-          nextQuestion("correct")
-        }
+      // Create a "Next" button element
+      var nextButton = document.createElement("button");
+      nextButton.textContent = "Next";
+      nextButton.classList.add("btn", "btn-primary");
+      nextButton.onclick = function() {
+        nextQuestion("correct");
+      };
 
-        // Append the "Next" button to the modal footer
-        modalFooter.appendChild(nextButton);
+      // Append the "Next" button to the modal footer
+      modalFooter.appendChild(nextButton);
 
-        // Append the modal footer to the modal content
-        resultText.appendChild(modalFooter);
+      // Append the modal footer to the modal content
+      resultText.appendChild(modalFooter);
 
-        
-        modalContent.appendChild(resultText);
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
+      modalContent.appendChild(resultText);
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
   }
   else if (answer1 == "false" || answer2 == "false"){
     if (answer1 != "" && answer2 != "") {
@@ -974,7 +949,7 @@ function checkBothAnswer(answer1, answer2) {
       modalContent.appendChild(resultText);
       modal.appendChild(modalContent);
       document.body.appendChild(modal);
-    }
+   }
   
   }
 
@@ -1001,7 +976,6 @@ var buttons1 = container1.querySelectorAll('.choice-btn1');
 for (var i = 0; i < buttons1.length; i++) {
     buttons1[i].addEventListener('click', function() {
         event.preventDefault(); 
-        clearTimeout(timeoutID);
         // Retrieve the value of the clicked button
         var value = this.value;
         
@@ -1021,7 +995,7 @@ for (var i = 0; i < buttons1.length; i++) {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                  answerIsCorrect()
+                  confettiAnswer(2);
                   var image = document.getElementById('image1');
                   var checkmark = document.getElementById('checkmark1');
                   var imgURL = image.getAttribute('src');
