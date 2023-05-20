@@ -154,8 +154,8 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "Rich, Noisy, Big, Happy, Fast, Walk, Rich, Hot, Wet, Open, Day, Beautiful, Long, Good"
-                            antonyms = "Poor, Quiet, Small, Sad, Slow, Run, Poor, Cold, Dry, Close, Night, Ugly, Short, Bad"
+                            word_list = "Rich, Noisy, Big, Happy, Fast, Walk, Hot, Wet, Open, Day, Beautiful, Long, Good"
+                            antonyms = "Poor, Quiet, Small, Sad, Slow, Run, Cold, Dry, Close, Night, Ugly, Short, Bad"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=10,
                                                 points_per_question=10, maxpoints=100, answered=0, words1=antonyms)
@@ -370,7 +370,7 @@ class StudentActivity(TemplateView):
 
         def fetch_image(query):
             image_urls = Pictures.objects.filter(image_name__contains=query)
-            print(query)
+            
             if len(image_urls) == 0:
                 filename = query + ".png"
                 if os.path.isfile(os.path.join(media_root, filename)):
@@ -442,7 +442,6 @@ class StudentActivity(TemplateView):
 
             cleaned_words1 = [word.strip() for word in words1]
             
-
             if request.POST.get('choice') not in cleaned_words and request.POST.get('choice') not in cleaned_words1:
                 return JsonResponse({'answerVerify': False, 'correct_answer':cleaned_words[persistent_variable-1]})
             else:
