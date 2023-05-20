@@ -211,12 +211,15 @@ body {
 
   /* Modal Content */
   .modal-content {
-	background-color: whitesmoke;
-	margin: 15% auto; /* 15% from the top and centered */
-	padding: 20px;
-	border: 1px solid #080101;
-  width: auto;
-  }
+  background-color: whitesmoke;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #080101;
+  width: 150% !important; /* Adjust the width as per your preference */
+  max-width: 600px; /* Set a maximum width if desired */
+}
+
+
 
   .modal-content1 {
 	background-color: whitesmoke;
@@ -372,7 +375,15 @@ label{
     overflow-x: scroll;
     padding: 10px;
     max-height: 200px;
+    justify-content: flex-start;
   }
+
+
+  .word-field {
+  width: 300px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
 
   .upload-container input[type="file"] {
     display: none;
@@ -388,6 +399,19 @@ label{
     width: 100px;
     height: 100px;
     object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .image-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .uploaded-image {
+    display: inline-block;
+    max-width: 200px;
+    max-height: 200px;
     margin-right: 10px;
   }
 </style>
@@ -507,57 +531,20 @@ label{
                   <option value="difficult">Difficult</option>
                 </select>
               </div>
+
               <div class="form-group">
-                <label for="topicWord">Word</label>
-                <input type="text" class="form-control" id="topicWord" placeholder="Enter a word" name="word" oninput="showImageUpload()">
+                <label for="wordCount">Number of Words</label>
+                <input type="number" class="form-control" id="wordCount" placeholder="Enter the number of words" min="1" oninput="showWordFields()">
               </div>
               
-              <div id="imageUploadContainer" style="display: none;">
+              <div id="wordFieldsContainer" style="display: none; overflow: auto; max-height: 300px;">
                 <div class="upload-container">
-                  
-                  <div style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; margin-right: 10px;">
-                    <div style="text-align: center;">
-                      <label for="imageUpload1" style="cursor: pointer;">Upload Image</label>
-                    </div>
-                    <input type="file" class="form-control-file" id="imageUpload1" name="image1" onchange="showImage(this, 'preview1')" style="display: none;">
-                    <div id="preview1"></div>
-                  </div>
-                  
-                  <div style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; margin-right: 10px;">
-                    <div style="text-align: center;">
-                      <label for="imageUpload2" style="cursor: pointer;">Upload Image</label>
-                    </div>
-                    <input type="file" class="form-control-file" id="imageUpload2" name="image2" onchange="showImage(this, 'preview2')" style="display: none;">
-                    <div id="preview2"></div>
-                  </div>
-                  
-                  <div style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; margin-right: 10px;">
-                    <div style="text-align: center;">
-                      <label for="imageUpload3" style="cursor: pointer;">Upload Image</label>
-                    </div>
-                    <input type="file" class="form-control-file" id="imageUpload3" name="image3" onchange="showImage(this, 'preview3')" style="display: none;">
-                    <div id="preview3"></div>
-                  </div>
-
-                  <div style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; margin-right: 10px;">
-                    <div style="text-align: center;">
-                      <label for="imageUpload4" style="cursor: pointer;">Upload Image</label>
-                    </div>
-                    <input type="file" class="form-control-file" id="imageUpload4" name="image4" onchange="showImage(this, 'preview4')" style="display: none;">
-                    <div id="preview4"></div>
-                  </div>
-
-                  <div style="border: 1px solid #000; padding: 10px; margin-bottom: 10px; margin-right: 10px;">
-                    <div style="text-align: center;">
-                      <label for="imageUpload5" style="cursor: pointer;">Upload Image</label>
-                    </div>
-                    <input type="file" class="form-control-file" id="imageUpload5" name="image5" onchange="showImage(this, 'preview5')" style="display: none;">
-                    <div id="preview5"></div>
-                  </div>
+                  <div id="wordFieldsSection"></div>
                 </div>
-              </div>
+              </div>              
+
           </div>
-          <div class="modal-footer">
+          <div style="display: flex; justify-content: center; text-align: center;" class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" onclick="saveGame()">Create Topic</button>
           </div>
@@ -649,36 +636,131 @@ label{
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
 
-function showImageUpload() {
-    var wordInput = document.getElementById("topicWord");
-    var imageUploadContainer = document.getElementById("imageUploadContainer");
+function showWordFields() {
+    var wordCount = parseInt(document.getElementById("wordCount").value);
+    var wordFieldsSection = document.getElementById("wordFieldsSection");
+    wordFieldsSection.innerHTML = "";
 
-    if (wordInput.value.trim().length > 0) {
-      imageUploadContainer.style.display = "block";
-    } else {
-      imageUploadContainer.style.display = "none";
+    for (var i = 1; i <= wordCount; i++) {
+      var wordDiv = document.createElement("div");
+      wordDiv.className = "form-group";
+
+      var wordLabel = document.createElement("label");
+      wordLabel.setAttribute("for", "topicWord" + i);
+      wordLabel.textContent = "Word " + i;
+
+      var wordInput = document.createElement("input");
+      wordInput.setAttribute("type", "text");
+      wordInput.className = "form-control";
+      wordInput.setAttribute("id", "topicWord" + i);
+      wordInput.setAttribute("placeholder", "Enter word " + i);
+      wordInput.setAttribute("name", "word" + i);
+
+      wordDiv.appendChild(wordLabel);
+      wordDiv.appendChild(wordInput);
+
+      var imageUploadSection = document.createElement("div");
+      imageUploadSection.id = "imageUploadSection" + i;
+      imageUploadSection.className = "image-scroll-container";
+
+      for (var j = 1; j <= 5; j++) {
+        var imageDiv = document.createElement("div");
+        imageDiv.style.border = "1px solid #000";
+        imageDiv.style.padding = "10px";
+        imageDiv.style.marginBottom = "10px";
+        imageDiv.style.marginRight = "10px";
+
+        var labelDiv = document.createElement("div");
+        labelDiv.style.textAlign = "center";
+
+        var label = document.createElement("label");
+        label.setAttribute("for", "imageUpload" + i + "_" + j);
+        label.style.cursor = "pointer";
+        label.textContent = "Upload Image " + j;
+
+        labelDiv.appendChild(label);
+
+        var imageInput = document.createElement("input");
+        imageInput.setAttribute("type", "file");
+        imageInput.setAttribute("class", "form-control-file");
+        imageInput.setAttribute("id", "imageUpload" + i + "_" + j);
+        imageInput.setAttribute("name", "image" + i + "_" + j);
+        imageInput.setAttribute("onchange", "showImage(this, 'preview" + i + "_" + j + "')");
+        imageInput.style.display = "none";
+
+        var previewDiv = document.createElement("div");
+        previewDiv.id = "preview" + i + "_" + j;
+        previewDiv.className = "uploaded-image";
+
+        imageDiv.appendChild(labelDiv);
+        imageDiv.appendChild(imageInput);
+        imageDiv.appendChild(previewDiv);
+
+        imageUploadSection.appendChild(imageDiv);
+      }
+
+      wordFieldsSection.appendChild(wordDiv);
+      wordFieldsSection.appendChild(imageUploadSection);
     }
+
+    document.getElementById("wordFieldsContainer").style.display = "block";
   }
 
   function showImage(input, previewId) {
     var preview = document.getElementById(previewId);
-    preview.innerHTML = "";
+    preview.innerHTML = '';
 
     if (input.files && input.files[0]) {
       var reader = new FileReader();
 
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         var image = document.createElement("img");
-        image.src = e.target.result;
-        image.classList.add("uploaded-image");
+        image.setAttribute("src", e.target.result);
+        image.setAttribute("class", "uploaded-image");
+
         preview.appendChild(image);
-        input.style.display = "none";
-        var chooseFileLabel = input.previousElementSibling;
-        chooseFileLabel.style.display = "none";
       };
 
       reader.readAsDataURL(input.files[0]);
     }
+  }
+
+  function showImageUpload(input) {
+    var wordNumber = input.id.replace("topicWord", "");
+    var imageUploadSection = document.getElementById("imageUploadSection");
+    var previewDiv = document.getElementById("preview" + wordNumber);
+
+    var div = document.createElement("div");
+    div.style.border = "1px solid #000";
+    div.style.padding = "10px";
+    div.style.marginBottom = "10px";
+    div.style.marginRight = "10px";
+
+    var labelDiv = document.createElement("div");
+    labelDiv.style.textAlign = "center";
+
+    var label = document.createElement("label");
+    label.setAttribute("for", "imageUpload" + wordNumber);
+    label.style.cursor = "pointer";
+    label.textContent = "Upload Image";
+
+    labelDiv.appendChild(label);
+
+    var imageInput = document.createElement("input");
+    imageInput.setAttribute("type", "file");
+    imageInput.setAttribute("class", "form-control-file");
+    imageInput.setAttribute("id", "imageUpload" + wordNumber);
+    imageInput.setAttribute("name", "image" + wordNumber);
+    imageInput.setAttribute("onchange", "showImage(this, 'preview" + wordNumber + "')");
+    imageInput.style.display = "none";
+
+    div.appendChild(labelDiv);
+    div.appendChild(imageInput);
+    div.appendChild(previewDiv);
+
+    imageUploadSection.appendChild(div);
+
+    document.getElementById("imageUploadContainer").style.display = "block";
   }
 
 function zoomImage(imageId) {
