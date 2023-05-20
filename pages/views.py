@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.core.cache import cache
-import random, string, requests, json
+import random, string, requests, json, asyncio
 from django.forms.models import model_to_dict
 from bs4 import BeautifulSoup
 import nltk, os, glob
@@ -360,11 +360,11 @@ class StudentActivity(TemplateView):
                 num = random.randint(4, 5)
             elif difficulty == 'difficult':
                 num = random.randint(5, 6)
-            url = f"https://random-word-api.herokuapp.com/word?length={num}&number=1"
+            url = f"https://random-word-api.herokuapp.com/word?length={num}&number=3"
             response = requests.get(url)
             if response.status_code == 200:
-                word = response.json()[0]
-                return word
+                words = response.json()
+                return words
             else:
                 print('Error fetching word')
 
@@ -406,12 +406,8 @@ class StudentActivity(TemplateView):
             image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
             if (len(image_url) == 0):
                 image_url.append("no image")
-            choices = []
-            choices1 = []
-            for i in range(3):
-                choices.append(fetch_words(questions.difficulty_name))
-            for i in range(3):
-                choices1.append(fetch_words(questions.difficulty_name))
+            choices = fetch_words(questions.difficulty_name)
+            choices1 = fetch_words(questions.difficulty_name)
             choices.append(cleaned_words[questions.answered-1])
             choices1.append(cleaned_words1[questions.answered-1])
             random.shuffle(choices)
@@ -425,19 +421,12 @@ class StudentActivity(TemplateView):
         result = generate_two_random_numbers()
         image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
         image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
-        if (len(image_url) == 0):
-            image_url.append("no image")
-        choices = []
-        choices1 = []
-        for i in range(3):
-            choices.append(fetch_words(questions.difficulty_name))
-        for i in range(3):
-            choices1.append(fetch_words(questions.difficulty_name))
+        choices = fetch_words(questions.difficulty_name)
+        choices1 = fetch_words(questions.difficulty_name)
         choices.append(cleaned_words[persistent_variable-1])
         choices1.append(cleaned_words1[persistent_variable-1])
         random.shuffle(choices)
         random.shuffle(choices1)
-        result = generate_two_random_numbers()
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'words1': cleaned_words1[persistent_variable-1], 'start_index':persistent_variable,
                                                          'img_url':image_url, 'img_url2': image_url1, 'length':len(words), 'choices':choices, 'choices1':choices1})
     def post(self, request):
