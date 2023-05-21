@@ -374,19 +374,30 @@ class StudentActivity(TemplateView):
             if len(image_urls) == 0:
                 filename = query + ".png"
                 if os.path.isfile(os.path.join(media_root, filename)):
-                    print("hey")
                     image_url = os.path.join(media_url, filename)
                 else:
-                    print("hay")
                     filename = query + ".jpg"
                     if os.path.isfile(os.path.join(media_root, filename)):
                         image_url = os.path.join(media_url, filename)
                     else:
-                        image_url = "/avatar.svg"
-                
+                        filename = query + ".jpeg"
+                        if os.path.isfile(os.path.join(media_root, filename)):
+                            image_url = os.path.join(media_url, filename)
+                        else:
+                            filename = query + ".bmp"
+                            if os.path.isfile(os.path.join(media_root, filename)):
+                                image_url = os.path.join(media_url, filename)
+                            else:
+                                filename = query + ".tiff"
+                                if os.path.isfile(os.path.join(media_root, filename)):
+                                    image_url = os.path.join(media_url, filename)
+                                else:
+                                    filename = query + ".webp"
+                                    if os.path.isfile(os.path.join(media_root, filename)):
+                                        image_url = os.path.join(media_url, filename)
+                            
                 return image_url
 
-            
             return image_urls
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
