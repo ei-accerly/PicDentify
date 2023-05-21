@@ -374,8 +374,10 @@ class StudentActivity(TemplateView):
             if len(image_urls) == 0:
                 filename = query + ".png"
                 if os.path.isfile(os.path.join(media_root, filename)):
+                    print("hey")
                     image_url = os.path.join(media_url, filename)
                 else:
+                    print("hay")
                     filename = query + ".jpg"
                     if os.path.isfile(os.path.join(media_root, filename)):
                         image_url = os.path.join(media_url, filename)
@@ -383,6 +385,7 @@ class StudentActivity(TemplateView):
                         image_url = "/avatar.svg"
                 
                 return image_url
+
             
             return image_urls
 
@@ -394,6 +397,18 @@ class StudentActivity(TemplateView):
         words1 = questions.words1.split(',')
         cleaned_words1 = [word.strip() for word in words1]
 
+        def checkTopic():
+            result = generate_two_random_numbers()
+            if topic_name.topic_name == "Synonyms":
+                image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
+                image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
+                return image_url, image_url1
+            elif topic_name.topic_name == "Antonyms":
+                image_url = fetch_image(cleaned_words1[persistent_variable-1]+str(result[0]))
+                image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
+                return image_url, image_url1
+
+
         persistent_variable = cache.get('my_persistent_variable')
         
         # If the persistent variable doesn't exist yet, initialize it
@@ -401,11 +416,7 @@ class StudentActivity(TemplateView):
             persistent_variable = 0
             cache.set('my_persistent_variable', persistent_variable)
         if len(words) == questions.answered:
-            result = generate_two_random_numbers()
-            image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
-            image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
-            if (len(image_url) == 0):
-                image_url.append("no image")
+            img_urls = checkTopic()
             choices = fetch_words(questions.difficulty_name)
             choices1 = fetch_words(questions.difficulty_name)
             choices.append(cleaned_words[questions.answered-1])
@@ -414,13 +425,11 @@ class StudentActivity(TemplateView):
             random.shuffle(choices1)
             
             return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'words1': cleaned_words1[questions.answered-1], 'start_index':questions.answered,
-                                                         'img_url':image_url, 'img_url2': image_url1, 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
+                                                         'img_url':img_urls[0], 'img_url2': img_urls[1], 'length':len(words), 'choices':choices, 'choices1':choices1, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
-        result = generate_two_random_numbers()
-        image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
-        image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
+        img_urls = checkTopic()
         choices = fetch_words(questions.difficulty_name)
         choices1 = fetch_words(questions.difficulty_name)
         choices.append(cleaned_words[persistent_variable-1])
@@ -428,7 +437,7 @@ class StudentActivity(TemplateView):
         random.shuffle(choices)
         random.shuffle(choices1)
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'words1': cleaned_words1[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url, 'img_url2': image_url1, 'length':len(words), 'choices':choices, 'choices1':choices1})
+                                                         'img_url':img_urls[0], 'img_url2': img_urls[1], 'length':len(words), 'choices':choices, 'choices1':choices1})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
