@@ -130,22 +130,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                             word_list = "Big, Kids, Quiet, Small, Quick, Happy, Mad, Rich, Cap, Beautiful"
                             synonyms = "Huge, Children, Silent, Tiny, Fast, Glad, Angry, Wealthy, Hat, Pretty"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10, maxpoints=100, answered=0, words1=synonyms)
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1=synonyms)
                             difficulty_save.save()
                         elif i == 2:
                             word_list = "Stone, Wet, Neat, Thin, Cold, Sick, Alike"
                             synonyms = "Pebble, Damp, Tidy, Skinny, Freezing, Ill, Similar"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20, maxpoints=140, answered=0, words1=synonyms)
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1=synonyms)
                             difficulty_save.save()
                         elif i == 3:
                             word_list = "Done, Funny, Laugh, Build, Smart"
                             synonyms = "Finished, Silly, Chuckle, Construct, Clever"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30, maxpoints=150, answered=0, words1=synonyms)
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=synonyms)
                             difficulty_save.save()
 
                 elif topic_name == "Antonyms":
@@ -157,22 +154,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                             word_list = "Rich, Noisy, Big, Happy, Fast, Walk, Hot, Wet, Open, Day, Beautiful, Long, Good"
                             antonyms = "Poor, Quiet, Small, Sad, Slow, Run, Cold, Dry, Close, Night, Ugly, Short, Bad"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                                words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                                points_per_question=10, maxpoints=100, answered=0, words1=antonyms)
+                                                words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1=antonyms)
                             difficulty_save.save()
                         elif i == 2:
                             word_list = "Start, Top, Strong, Empty, Present, New, Late"
                             antonyms = "Finish, Bottom, Weak, Full, Absent, Old, Early"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                                words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                                points_per_question=20, maxpoints=140, answered=0, words1=antonyms)
+                                                words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1=antonyms)
                             difficulty_save.save()
                         elif i == 3:
                             word_list = "Adult, Build, Friend, First, Correct"
                             antonyms = "Child, Destroy, Enemy, Last, Wrong"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                                words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                                points_per_question=30, maxpoints=150, answered=0, words1=antonyms)
+                                                words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=antonyms)
                             difficulty_save.save()
                 # elif topic_name == "Homonyms":
                 #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -182,20 +176,17 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 #         if i == 1:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                #                             points_per_question=10, maxpoints=100, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 2:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                #                             points_per_question=20, maxpoints=200, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 3:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                #                             points_per_question=30, maxpoints=300, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
                 #             difficulty_save.save()
                 # elif topic_name == "Hyponyms":
                 #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -205,20 +196,17 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 #         if i == 1:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                #                             points_per_question=10, maxpoints=100, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 2:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                #                             points_per_question=20, maxpoints=200, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 3:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                #                             points_per_question=30, maxpoints=300, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
                 #             difficulty_save.save()
                 # elif topic_name == "Homographs":
                 #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -228,20 +216,17 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 #         if i == 1:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                #                             points_per_question=10, maxpoints=100, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 2:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                #                             points_per_question=20, maxpoints=200, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
                 #             difficulty_save.save()
                 #         elif i == 3:
                 #             word_list = "Puppy"
                 #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                #                             points_per_question=30, maxpoints=300, answered=0)
+                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
                 #             difficulty_save.save()
             
         create_topics = ["Synonyms", "Antonyms", "Homonyms", "Hyponyms", "Homographs"]
@@ -284,15 +269,13 @@ class Dashboard(LoginRequiredMixin, TemplateView):
             try:
                 isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
                 Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                            words=request.POST['words_list'], topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
-                                            points_per_question=request.POST['points_per_question'])
+                                            words=request.POST['words_list'], topic_id=isTopic.topic_id, points_per_question=request.POST['points_per_question'])
             except:
                 topics = Topics.objects.all()
                 topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
                 topic.save()
                 Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                            words=request.POST['words_list'], topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
-                                            points_per_question=request.POST['points_per_question'])
+                                            words=request.POST['words_list'], topic_id=topic.topic_id, points_per_question=request.POST['points_per_question'])
 
             return render(request, 'teacherDashboard.html')
         
@@ -304,7 +287,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
             difficulty.words = request.POST['topicWords2']
             difficulty.points_per_question = request.POST['points_per_question_edit']
-            difficulty.time_limit = request.POST['topicDuration2']
             difficulty.save()
     
 

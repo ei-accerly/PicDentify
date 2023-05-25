@@ -596,9 +596,9 @@ button.btn.btn-primary:hover {
 		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">Question {{start_index}} of {{length}}</p>
+		<p id="question-counter"> {{questions.topic.topic_name}} </p>
 		<div id="timer-container">
-		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
+		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
 		</div>
 	  </div>
 	  <div id="question-container">
@@ -636,11 +636,10 @@ button.btn.btn-primary:hover {
 		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">Question {{start_index}} of {{length}}</p>
-    <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
+		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
 		<div id="timer-container">
-		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
-		  <div id="time-bar" style="animation:timer-animation {{questions.time_limit}}s linear forwards;"></div>
+		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
+      <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
 		</div>
 	  </div>
 	  <div id="question-container">
@@ -759,21 +758,6 @@ function confettiAnswer(num) {
     }());
   }
 }
-
-function onTimeLimitReached() {
-  if (answer1 != "" && answer2 != "") {
-      clearTimeout(timeoutID);
-      event.preventDefault(); 
-  }
-  answer1 = "false"
-  answer2 = "false"
-  checkBothAnswer(answer1, answer2)
-  
-} 
-
-
-var timeoutID = setTimeout(onTimeLimitReached, questions * 1000);
-
 
 
 var container = document.getElementById('choices-container');
