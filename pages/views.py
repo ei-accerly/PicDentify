@@ -245,15 +245,20 @@ class Dashboard(LoginRequiredMixin, TemplateView):
             topic = Topics.objects.get(topic_id=request.POST['topic_to_edit_samp'])
             easy_difficulty = Difficulty.objects.get(topic_id=request.POST['topic_to_edit_samp'], difficulty_name="easy")
             easy_difficulty_split = easy_difficulty.words.split(",")
-            image_urls = Pictures.objects.filter(image_name__contains=easy_difficulty_split[0])
+            easy1_difficulty_split = easy_difficulty.words1.split(",")
 
-            if len(image_urls) == 0:
-                
-                image_urls = []
-                for filename in os.listdir(media_root):
-                    if easy_difficulty_split[0] in filename:
-                        image_path = os.path.join(media_url, filename)  
-                        image_urls.append(image_path)
+            
+            image_urls = []
+            for filename in os.listdir(media_root):
+                if easy_difficulty_split[0] in filename:
+                    image_path = os.path.join(media_url, filename)  
+                    image_urls.append(image_path)
+            
+            image_urls1 = []
+            for filename in os.listdir(media_root):
+                if easy1_difficulty_split[0] in filename:
+                    image_path1 = os.path.join(media_url, filename)  
+                    image_urls1.append(image_path1)
     
             difficulties_data = []
             for difficulty in difficulties:
@@ -262,7 +267,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
 
             # Return a JSON response with both the topic and difficulties data
-            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data, 'image':image_urls})
+            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data, 'image':image_urls, 'image1':image_urls1})
 
 
         elif request.POST.get('addTopic'):
@@ -291,6 +296,25 @@ class Dashboard(LoginRequiredMixin, TemplateView):
     
 
             return render(request, 'teacherDashboard.html')
+        elif request.POST.get('fetch_picture'):
+            isTopic = Topics.objects.get(topic_name=request.POST['topic_to_get'])
+            difficulty = Difficulty.objects.get(difficulty_name=request.POST['difficulty_to_get'], topic_id=isTopic.topic_id)
+            easy_difficulty_split = difficulty.words.split(",")
+            easy1_difficulty_split = difficulty.words1.split(",")
+
+            
+            image_urls = []
+            for filename in os.listdir(media_root):
+                if request.POST.get('fetch_picture').replace(" ", "") in filename:
+                    image_path = os.path.join(media_url, filename)  
+                    image_urls.append(image_path)
+            
+            image_urls1 = []
+            for filename in os.listdir(media_root):
+                if request.POST.get('fetch_picture1').replace(" ", "") in filename:
+                    image_path1 = os.path.join(media_url, filename)  
+                    image_urls1.append(image_path1)
+            return JsonResponse({'images':image_urls, 'images1':image_urls1})
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
@@ -328,8 +352,8 @@ class StudentActivity(TemplateView):
 
     def get(self, request):
         def generate_two_random_numbers():
-            number1 = random.randint(1, 5)  # Generate a random integer between 0 and 4 (inclusive)
-            number2 = random.randint(1, 5)  # Generate another random integer between 0 and 4 (inclusive)
+            number1 = random.randint(0, 4)  # Generate a random integer between 0 and 4 (inclusive)
+            number2 = random.randint(0, 4)  # Generate another random integer between 0 and 4 (inclusive)
 
             # Ensure that number2 is different from number1
             while number2 == number1:
@@ -351,36 +375,13 @@ class StudentActivity(TemplateView):
                 print('Error fetching word')
 
         def fetch_image(query):
-            image_urls = Pictures.objects.filter(image_name__contains=query)
-            
-            if len(image_urls) == 0:
-                filename = query + ".png"
-                if os.path.isfile(os.path.join(media_root, filename)):
+            image_urls = []
+            for filename in os.listdir(media_root):
+                if query in filename:
                     image_url = os.path.join(media_url, filename)
-                else:
-                    filename = query + ".jpg"
-                    if os.path.isfile(os.path.join(media_root, filename)):
-                        image_url = os.path.join(media_url, filename)
-                    else:
-                        filename = query + ".jpeg"
-                        if os.path.isfile(os.path.join(media_root, filename)):
-                            image_url = os.path.join(media_url, filename)
-                        else:
-                            filename = query + ".bmp"
-                            if os.path.isfile(os.path.join(media_root, filename)):
-                                image_url = os.path.join(media_url, filename)
-                            else:
-                                filename = query + ".tiff"
-                                if os.path.isfile(os.path.join(media_root, filename)):
-                                    image_url = os.path.join(media_url, filename)
-                                else:
-                                    filename = query + ".webp"
-                                    if os.path.isfile(os.path.join(media_root, filename)):
-                                        image_url = os.path.join(media_url, filename)
-                            
-                return image_url
-
+                    image_urls.append(image_url)
             return image_urls
+
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
@@ -393,13 +394,12 @@ class StudentActivity(TemplateView):
         def checkTopic():
             result = generate_two_random_numbers()
             if topic_name.topic_name == "Synonyms":
-                image_url = fetch_image(cleaned_words[persistent_variable-1]+str(result[0]))
-                image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
-                return image_url, image_url1
+                image_url = fetch_image(cleaned_words[persistent_variable-1])
+                return image_url[result[0]], image_url[result[1]]
             elif topic_name.topic_name == "Antonyms":
-                image_url = fetch_image(cleaned_words1[persistent_variable-1]+str(result[0]))
-                image_url1 = fetch_image(cleaned_words[persistent_variable-1]+str(result[1]))
-                return image_url, image_url1
+                image_url = fetch_image(cleaned_words1[persistent_variable-1])
+                image_url1 = fetch_image(cleaned_words[persistent_variable-1])
+                return image_url[result[0]], image_url1[result[1]]
 
 
         persistent_variable = cache.get('my_persistent_variable')

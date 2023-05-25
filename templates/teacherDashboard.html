@@ -488,6 +488,13 @@ label{
                   {% csrf_token %}
                   <input type="text" value="{{item.topic_id}}" name="topic_to_edit_samp" hidden>
                 </form>
+                <form id="change_picture" method="post">
+                  {% csrf_token %}
+                  <input type="text" value="" name="fetch_picture" hidden id="fetch_picture">
+                  <input type="text" value="" name="fetch_picture1" hidden id="fetch_picture1">
+                  <input type="text" value="" name="topic_to_get" hidden id="topic_to_get">
+                  <input type="text" value="" name="difficulty_to_get" hidden id="difficulty_to_get">
+                </form>
               </div>
             </div>
           </div>
@@ -514,10 +521,6 @@ label{
               <div class="form-group">
                 <label for="classNameInput">Topic Name</label>
                 <input type="text" class="form-control" id="classNameInput" placeholder="Enter Topic name" name="addTopic">
-              </div>
-              <div class="form-group">
-                <label for="timeLimitInput">Time Limit (in seconds)</label>
-                <input type="number" class="form-control" id="timeLimitInput" placeholder="Enter time limit" name="time_limit">
               </div>
               <div class="form-group">
                 <label for="timeLimitInput">Points Per Question</label>
@@ -580,43 +583,75 @@ label{
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
               <div class="form-group">
-                <label for="topicDuration2">Time Duration (in seconds)</label>
-                <input type="number" class="form-control" id="topicDuration2" placeholder="Enter time duration" name="topicDuration2">
-              </div>
-              <div class="form-group">
                 <label for="topicWords2">Words</label>
                 <select class="form-control" id="topicWords2" name="topicWords">
                 </select>
               </div>
               
-              <div class="image-container">
+              <div class="image-container" id="pictures">
                 <!-- Image 1 -->
                 <div class="image-wrapper" onclick="zoomImage('image0')">
-                  <img id="image0" src="image1.jpg" alt="Image 1">
+                  <img id="image0" alt="Image 1">
                   <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
               
                 <!-- Image 2 -->
                 <div class="image-wrapper" onclick="zoomImage('image1')">
-                  <img id="image1" src="image2.jpg" alt="Image 2">
+                  <img id="image1" alt="Image 2">
                   <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
               
                 <!-- Image 3 -->
                 <div class="image-wrapper" onclick="zoomImage('image2')">
-                  <img id="image2" src="image3.jpg" alt="Image 3">
+                  <img id="image2" alt="Image 3">
                   <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
               
                 <!-- Image 4 -->
                 <div class="image-wrapper" onclick="zoomImage('image3')">
-                  <img id="image3" src="image4.jpg" alt="Image 4">
+                  <img id="image3" alt="Image 4">
                   <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
               
                 <!-- Image 5 -->
                 <div class="image-wrapper" onclick="zoomImage('image4')">
-                  <img id="image4" src="image5.jpg" alt="Image 5">
+                  <img id="image4" alt="Image 5">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="topicWords3">Words2</label>
+                <select class="form-control" id="topicWords3" name="topicWords1">
+                </select>
+              </div>
+              <div class="image-container" id="pictures1">
+                <!-- Image 1 -->
+                <div class="image-wrapper" onclick="zoomImage('image5')">
+                  <img id="image5" alt="Image 1">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 2 -->
+                <div class="image-wrapper" onclick="zoomImage('image6')">
+                  <img id="image6" alt="Image 2">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 3 -->
+                <div class="image-wrapper" onclick="zoomImage('image7')">
+                  <img id="image7" alt="Image 3">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 4 -->
+                <div class="image-wrapper" onclick="zoomImage('image8')">
+                  <img id="image8" alt="Image 4">
+                  <div class="view-icon"><i class="fas fa-eye"></i></div>
+                </div>
+              
+                <!-- Image 5 -->
+                <div class="image-wrapper" onclick="zoomImage('image9')">
+                  <img id="image9" alt="Image 5">
                   <div class="view-icon"><i class="fas fa-eye"></i></div>
                 </div>
               </div>
@@ -797,19 +832,34 @@ function zoomImage(imageId) {
             }).then(response => response.json())
             .then(data => {
               var title = document.querySelector('#topicTitle2');
+              var pictures = document.getElementById("pictures1");
+              if (data.topic === "Synonyms") {
+                pictures.style.display = "none";
+              }
+              else {
+                pictures.style.display = "flex";
+              }
               var previousTitle = document.querySelector('#topicPreviousName');
               // const altId = document.querySelector('#alt-id-update');
               var points_per_question = document.querySelector('#points_per_question_edit');
-              var duration = document.querySelector('#topicDuration2');
               var difficulties = data.difficulties;
               var image_url = data.image
+              var image_url1 = data.image1
 
               for (var i = 0; i < image_url.length; i++) {
                   var image = document.getElementById('image'+i);
                   image.src = image_url[i]
               }
 
+              for (var i = 0; i < image_url1.length; i++) {
+                  var j = i + 5;
+                  var image1 = document.getElementById('image'+j);
+                  image1.src = image_url1[i]
+              }
+
               var selectWords = document.getElementById('topicWords2');
+
+              var selectWords1 = document.getElementById('topicWords3');
               
 
               var select = document.getElementById("topicDifficulty2");
@@ -830,10 +880,11 @@ function zoomImage(imageId) {
               }
 
               points_per_question.value = difficulties[0].points_per_question;
-              duration.value = difficulties[0].time_limit;
               var words = difficulties[0].words.split(",");
+              var words1 = difficulties[0].words1.split(",");
                  // Loop through the difficulties array and add an option for each difficulty level
               selectWords.innerHTML = '';
+              selectWords1.innerHTML = '';
               for (var i = 0; i < words.length; i++) {
                 var wordList = words[i]
                 var capitalizedWordList = wordList.charAt(0).toUpperCase() + wordList.slice(1);
@@ -842,6 +893,15 @@ function zoomImage(imageId) {
                 option.value = wordList;
                 option.text = capitalizedWordList;
                 selectWords.appendChild(option);
+              }
+              for (var i = 0; i < words1.length; i++) {
+                var wordList = words1[i]
+                var capitalizedWordList = wordList.charAt(0).toUpperCase() + wordList.slice(1);
+
+                var option = document.createElement('option');
+                option.value = wordList;
+                option.text = capitalizedWordList;
+                selectWords1.appendChild(option);
               }
 
               select.addEventListener("change", function() {
@@ -853,7 +913,6 @@ function zoomImage(imageId) {
                 if (selectedDifficulty) {
                   selectWords.innerHTML = '';
                   points_per_question.value = selectedDifficulty.points_per_question;
-                  duration.value = selectedDifficulty.time_limit;
                   words = selectedDifficulty.words.split(",");
                   for (var i = 0; i < words.length; i++) {
                     var wordList = words[i]
@@ -864,8 +923,62 @@ function zoomImage(imageId) {
                     option.text = capitalizedWordList;
                     selectWords.appendChild(option);
                   }
+                  selectWords1.innerHTML = '';
+                  words1 = selectedDifficulty.words1.split(",");
+                  for (var i = 0; i < words1.length; i++) {
+                    var wordList = words1[i]
+                    var capitalizedWordList = wordList.charAt(0).toUpperCase() + wordList.slice(1);
+
+                    var option = document.createElement('option');
+                    option.value = wordList;
+                    option.text = capitalizedWordList;
+                    selectWords1.appendChild(option);
+                  }
                 }
               });
+              selectWords.addEventListener("change", function() {
+                var selectedOption = selectWords.options[selectWords.selectedIndex].value;
+                var words = data.difficulties[select.selectedIndex].words.split(",");
+                var selectedWords = words.includes(selectedOption);
+                if (selectedWords) {
+                  event.preventDefault();
+                  var myForm = document.querySelector('#change_picture')
+                  document.getElementById('fetch_picture').value = selectedOption
+                  document.getElementById('fetch_picture1').value = selectWords1.options[selectWords.selectedIndex].value;
+                  document.getElementById('difficulty_to_get').value = select.options[select.selectedIndex].value
+                  document.getElementById('topic_to_get').value = data.topic
+                  var formData = new FormData(myForm)
+                  fetch('/dashboard/', {
+                    method: 'POST',
+                    body: formData
+                  }).then(response => response.json())
+                  .then(data => {
+                    var images_url = data.images
+                    var images_url1 = data.images1
+                    for (var i = 0; i < images_url.length; i++) {                    
+                        var image = document.getElementById('image'+i);                  
+                        image.src = images_url[i]
+                    }
+
+                    for (var i = 0; i < images_url1.length; i++) {
+                        var j = i + 5;
+                        var image1 = document.getElementById('image'+j);
+                        image1.src = images_url1[i]
+                    }
+                  })
+                  selectWords1.selectedIndex = selectWords.selectedIndex;
+                }
+              });
+
+              selectWords1.addEventListener("change", function() {
+                var selectedOption = selectWords1.options[selectWords1.selectedIndex].value;
+                var words = data.difficulties[select.selectedIndex].words1.split(",");
+                var selectedWords1 = words.includes(selectedOption);
+                if (selectedWords1) {
+                  selectWords.selectedIndex = selectWords1.selectedIndex;
+                }
+              });
+
               previousTitle.value = data.topic
               title.value = data.topic
             })
@@ -905,38 +1018,6 @@ function zoomImage(imageId) {
       copyBtn.disabled = true;
     }
 
-    // const wordsContainer = document.getElementById('words_container');
-    // const numWordsInput = document.getElementById('num_words');
-
-    // numWordsInput.addEventListener('change', () => {
-    //   const numWords = numWordsInput.value;
-
-    //   // Clear the container
-    //   wordsContainer.innerHTML = '';
-    //   // Generate input fields
-    //   for (let i = 1; i <= numWords; i++) {
-    //     const inputId = `word${i}`;
-    //     const label = `Word ${i}:`;
-
-    //     const inputContainer = document.createElement('div');
-    //     inputContainer.className = 'form-group form-group-icon';
-
-    //     const inputLabel = document.createElement('label');
-    //     inputLabel.htmlFor = inputId;
-    //     inputLabel.innerHTML = `<i class="fas fa-pencil-alt icon"></i>${label}`;
-
-    //     const inputField = document.createElement('input');
-    //     inputField.type = 'text';
-    //     inputField.className = 'form-control';
-    //     inputField.id = inputId;
-    //     inputField.name = inputId;
-
-    //     inputContainer.appendChild(inputLabel);
-    //     inputContainer.appendChild(inputField);
-    //     wordsContainer.appendChild(inputContainer);
-    //   }
-    // });
-
   function saveGame() {
     event.preventDefault();
     var myForm = document.querySelector('#save-game');
@@ -948,7 +1029,6 @@ function zoomImage(imageId) {
         location.reload()
       )
   }
-
   function saveChanges() {
     event.preventDefault();
     var myForm = document.querySelector('#editTopic');

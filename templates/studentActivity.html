@@ -693,7 +693,6 @@ function playSadEmojiSound() {
   audio.play();
 }
 
-var questions = {{ questions.time_limit }};
 
 var topic = "{{ questions.topic.topic_name }}";
 
@@ -795,8 +794,6 @@ for (var i = 0; i < buttons.length; i++) {
                   answer1 = "true"
                   checkBothAnswer(answer1, answer2)
                 }
-
-
                 else {
                   playSadEmojiSound()
 
