@@ -585,10 +585,9 @@ label{
               <div class="form-group">
                 <label for="topicWords2">Words </label>
                 <select class="form-control" id="topicWords2" name="topicWords">
-                  <option value="Rich"><i class="fas fa-edit" id="edit0" style="color: black;"></i>Rich</option>
                 </select>
               </div>
-              
+
               <div class="image-container" id="pictures">
                 <!-- Image 1 -->
                 <div class="image-wrapper" onclick="zoomImage('image0')">
@@ -919,17 +918,6 @@ function zoomImage(imageId) {
                 var option = document.createElement('option');
                 option.value = wordList;
                 option.text = capitalizedWordList;
-                var icon = document.createElement('i');
-                // Set the appropriate class or add inline styles to display the desired icon
-                icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
-                
-                // Set the id for the icon
-                icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
-
-                icon.style.color = 'black';
-                
-                // Append the icon to the option element
-                option.prepend(icon);
 
                 selectWords.appendChild(option);
               }
@@ -940,17 +928,6 @@ function zoomImage(imageId) {
                 var option = document.createElement('option');
                 option.value = wordList;
                 option.text = capitalizedWordList;
-                var icon = document.createElement('i');
-                // Set the appropriate class or add inline styles to display the desired icon
-                icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
-
-                icon.style.color = 'black';
-                
-                // Set the id for the icon
-                icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
-                
-                // Append the icon to the option element
-                option.prepend(icon);
                 selectWords1.appendChild(option);
               }
 
@@ -971,17 +948,6 @@ function zoomImage(imageId) {
                     var option = document.createElement('option');
                     option.value = wordList;
                     option.text = capitalizedWordList;
-                    var icon = document.createElement('i');
-                    // Set the appropriate class or add inline styles to display the desired icon
-                    icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
-                    
-                    // Set the id for the icon
-                    icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
-
-                    icon.style.color = 'black';
-                    
-                    // Append the icon to the option element
-                    option.prepend(icon);
                     selectWords.appendChild(option);
                   }
                   selectWords1.innerHTML = '';
@@ -993,17 +959,7 @@ function zoomImage(imageId) {
                     var option = document.createElement('option');
                     option.value = wordList;
                     option.text = capitalizedWordList;
-                    var icon = document.createElement('i');
-                    // Set the appropriate class or add inline styles to display the desired icon
-                    icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
-                    
-                    // Set the id for the icon
-                    icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
-
-                    icon.style.color = 'black';
-                    
-                    // Append the icon to the option element
-                    option.prepend(icon);
+                
                     selectWords1.appendChild(option);
                   }
                 }
