@@ -464,8 +464,8 @@ label{
       <div class="row">
           <div class="col-md-8 float-right">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClassModal">
-                  Create Topic
-              </button>              
+                  Create Topic 
+              </button>               
           </div>
       </div>
     
@@ -512,7 +512,7 @@ label{
           {% csrf_token %}
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="createClassModalLabel">Create Topic</h5>
+            <h5 class="modal-title" id="createClassModalLabel">Create Topic </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -583,8 +583,9 @@ label{
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
               <div class="form-group">
-                <label for="topicWords2">Words</label>
+                <label for="topicWords2">Words </label>
                 <select class="form-control" id="topicWords2" name="topicWords">
+                  <option value="Rich"><i class="fas fa-edit" id="edit0" style="color: black;"></i>Rich</option>
                 </select>
               </div>
               
@@ -798,6 +799,32 @@ function showWordFields() {
     document.getElementById("imageUploadContainer").style.display = "block";
   }
 
+function changePicture(selectedOption, selectWords, select, topic) {
+  var myForm = document.querySelector('#change_picture')
+  document.getElementById('fetch_picture').value = selectedOption
+  document.getElementById('fetch_picture1').value = selectWords
+  document.getElementById('difficulty_to_get').value = select
+  document.getElementById('topic_to_get').value = topic
+  var formData = new FormData(myForm)
+  fetch('/dashboard/', {
+    method: 'POST',
+    body: formData
+  }).then(response => response.json())
+  .then(data => {
+    var images_url = data.images
+    var images_url1 = data.images1
+    for (var i = 0; i < images_url.length; i++) {                    
+        var image = document.getElementById('image'+i);                  
+        image.src = images_url[i]
+    }
+
+    for (var i = 0; i < images_url1.length; i++) {
+        var j = i + 5;
+        var image1 = document.getElementById('image'+j);
+        image1.src = images_url1[i]
+    }
+  })
+}
 function zoomImage(imageId) {
     var image = document.getElementById(imageId);
     var imageSource = image.getAttribute('src');
@@ -892,6 +919,18 @@ function zoomImage(imageId) {
                 var option = document.createElement('option');
                 option.value = wordList;
                 option.text = capitalizedWordList;
+                var icon = document.createElement('i');
+                // Set the appropriate class or add inline styles to display the desired icon
+                icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
+                
+                // Set the id for the icon
+                icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
+
+                icon.style.color = 'black';
+                
+                // Append the icon to the option element
+                option.prepend(icon);
+
                 selectWords.appendChild(option);
               }
               for (var i = 0; i < words1.length; i++) {
@@ -901,6 +940,17 @@ function zoomImage(imageId) {
                 var option = document.createElement('option');
                 option.value = wordList;
                 option.text = capitalizedWordList;
+                var icon = document.createElement('i');
+                // Set the appropriate class or add inline styles to display the desired icon
+                icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
+
+                icon.style.color = 'black';
+                
+                // Set the id for the icon
+                icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
+                
+                // Append the icon to the option element
+                option.prepend(icon);
                 selectWords1.appendChild(option);
               }
 
@@ -921,6 +971,17 @@ function zoomImage(imageId) {
                     var option = document.createElement('option');
                     option.value = wordList;
                     option.text = capitalizedWordList;
+                    var icon = document.createElement('i');
+                    // Set the appropriate class or add inline styles to display the desired icon
+                    icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
+                    
+                    // Set the id for the icon
+                    icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
+
+                    icon.style.color = 'black';
+                    
+                    // Append the icon to the option element
+                    option.prepend(icon);
                     selectWords.appendChild(option);
                   }
                   selectWords1.innerHTML = '';
@@ -932,6 +993,17 @@ function zoomImage(imageId) {
                     var option = document.createElement('option');
                     option.value = wordList;
                     option.text = capitalizedWordList;
+                    var icon = document.createElement('i');
+                    // Set the appropriate class or add inline styles to display the desired icon
+                    icon.className = 'fas fa-edit'; // Replace 'your-icon-class' with the CSS class for your icon
+                    
+                    // Set the id for the icon
+                    icon.id = 'edit'+i; // Replace 'your-icon-id' with the desired id for the icon
+
+                    icon.style.color = 'black';
+                    
+                    // Append the icon to the option element
+                    option.prepend(icon);
                     selectWords1.appendChild(option);
                   }
                 }
@@ -942,30 +1014,7 @@ function zoomImage(imageId) {
                 var selectedWords = words.includes(selectedOption);
                 if (selectedWords) {
                   event.preventDefault();
-                  var myForm = document.querySelector('#change_picture')
-                  document.getElementById('fetch_picture').value = selectedOption
-                  document.getElementById('fetch_picture1').value = selectWords1.options[selectWords.selectedIndex].value;
-                  document.getElementById('difficulty_to_get').value = select.options[select.selectedIndex].value
-                  document.getElementById('topic_to_get').value = data.topic
-                  var formData = new FormData(myForm)
-                  fetch('/dashboard/', {
-                    method: 'POST',
-                    body: formData
-                  }).then(response => response.json())
-                  .then(data => {
-                    var images_url = data.images
-                    var images_url1 = data.images1
-                    for (var i = 0; i < images_url.length; i++) {                    
-                        var image = document.getElementById('image'+i);                  
-                        image.src = images_url[i]
-                    }
-
-                    for (var i = 0; i < images_url1.length; i++) {
-                        var j = i + 5;
-                        var image1 = document.getElementById('image'+j);
-                        image1.src = images_url1[i]
-                    }
-                  })
+                  changePicture(selectedOption, selectWords1.options[selectWords.selectedIndex].value, select.options[select.selectedIndex].value, data.topic);
                   selectWords1.selectedIndex = selectWords.selectedIndex;
                 }
               });
@@ -975,6 +1024,8 @@ function zoomImage(imageId) {
                 var words = data.difficulties[select.selectedIndex].words1.split(",");
                 var selectedWords1 = words.includes(selectedOption);
                 if (selectedWords1) {
+                  event.preventDefault();
+                  changePicture(selectWords.options[selectWords1.selectedIndex].value, selectedOption, select.options[select.selectedIndex].value, data.topic);
                   selectWords.selectedIndex = selectWords1.selectedIndex;
                 }
               });
