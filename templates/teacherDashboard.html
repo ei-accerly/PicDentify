@@ -17,13 +17,11 @@ body {
   background-image: url("{% static 'img/DashboardBG.png' %}");
   background-size: cover; /* Set to cover to make the image full screen */
   background-position: center center;
-  background-repeat: no-repeat;
   font-family: Arial, sans-serif;
   color: #fff;
   margin: 0;
   padding: 0;
 }
-
 
     h1, h2, h3, h4, h5, h6 {
       font-family: 'Luckiest Guy', cursive;
@@ -34,7 +32,7 @@ body {
     }
     
     .card {
-  background-color: #ffefcc; /* PaleGoldenrod */
+  background: linear-gradient(to bottom right, #007bff, #ff6e00); /* Gradient from blue to orange */
   border: 2px solid #009688; /* Teal */
   transition: box-shadow 0.3s ease-in-out;
   margin-bottom: 20px;
@@ -51,7 +49,7 @@ body {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background-color: rgba(0, 150, 136, 0.2); /* Teal with opacity */
+  background: linear-gradient(to bottom right, rgba(0, 150, 136, 0.2), #007bff); /* Gradient from teal with opacity to blue */
   z-index: -1;
   transform: scale(0);
   transition: transform 0.3s ease-in-out;
@@ -80,12 +78,11 @@ body {
 .card-title {
   font-size: 24px;
   font-weight: bold;
-  color: #009688; /* Teal */
 }
 
 .card-body {
   margin-top: 10px;
-  color: black;
+  color: white;
   font-size: 18px;
   transition: transform 0.3s ease-in-out;
 }
@@ -107,6 +104,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
+
 
 
 .btn-primary {
@@ -137,7 +135,7 @@ body {
 }
 
 .modal-header {
-  background-color: #009688; /* Teal */
+  background: linear-gradient(to right, #ff6e00, #007bff); /* Gradient from orange to blue */
   color: white;
   border-bottom: none;
 }
@@ -191,8 +189,11 @@ body {
           color: #fff;
         }
 
-        .navbar {
-          padding: 0;
+      .navbar {
+        background: linear-gradient(to right, #ff6e00, #007bff); /* Gradient from orange to blue */
+        border-bottom: 1px solid #1e2b38;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 0;
       }
 
 .modal {
@@ -206,7 +207,7 @@ body {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
   }
 
   /* Modal Content */
@@ -215,7 +216,6 @@ body {
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #080101;
-  width: 150% !important; /* Adjust the width as per your preference */
   max-width: 600px; /* Set a maximum width if desired */
 }
 
@@ -414,12 +414,22 @@ label{
     max-height: 200px;
     margin-right: 10px;
   }
+
+  .edit-icon {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  color: white; /* Adjust the color as needed */
+  cursor: pointer;
+  z-index: 1;
+}
+
 </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div style="background-color: #333;" class="container-fluid">
+      <div class="container-fluid">
         <a style="color: #fff;" class="navbar-brand" href="#">
           <img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
         </a>
@@ -825,24 +835,51 @@ function changePicture(selectedOption, selectWords, select, topic) {
   })
 }
 function zoomImage(imageId) {
-    var image = document.getElementById(imageId);
-    var imageSource = image.getAttribute('src');
-    var imageAlt = image.getAttribute('alt');
+  var image = document.getElementById(imageId);
+  var imageSource = image.getAttribute('src');
+  var imageAlt = image.getAttribute('alt');
 
-    var zoomedContainer = document.createElement('div');
-    var zoomedImage = document.createElement('img');
+  var zoomedContainer = document.createElement('div');
+  var zoomedImage = document.createElement('img');
 
-    zoomedImage.src = imageSource;
-    zoomedImage.alt = imageAlt;
+  zoomedImage.src = imageSource;
+  zoomedImage.alt = imageAlt;
 
-    zoomedContainer.classList.add('zoomed-image');
-    zoomedContainer.onclick = function () {
-      zoomedContainer.remove();
+  zoomedContainer.classList.add('zoomed-image');
+  zoomedContainer.onclick = function () {
+    zoomedContainer.remove();
+  };
+
+  // Add edit icon
+  var editIcon = document.createElement('div');
+  editIcon.classList.add('edit-icon');
+  var editIconElement = document.createElement('i');
+  editIconElement.classList.add('fas', 'fa-edit', 'fa-3x'); // Adjust the size of the icon by adding 'fa-3x' or other size class
+  editIcon.appendChild(editIconElement);
+  editIcon.onclick = function () {
+    // Handle edit image functionality here
+    // For example, you can open a file input for uploading an image
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = function () {
+      if (fileInput.files && fileInput.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          image.src = e.target.result;
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      }
     };
+    fileInput.click();
+  };
+  zoomedContainer.appendChild(editIcon);
 
-    zoomedContainer.appendChild(zoomedImage);
-    document.body.appendChild(zoomedContainer);
-  }
+  zoomedContainer.appendChild(zoomedImage);
+  document.body.appendChild(zoomedContainer);
+}
+
+
 
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll("[id^='edit-topic']").forEach(function(el) {
