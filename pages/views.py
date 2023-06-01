@@ -168,66 +168,72 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                                 words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=antonyms)
                             difficulty_save.save()
-                # elif topic_name == "Homonyms":
-                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                #     topic.save()
-                #     for i in range(1, 4):
-                #         difficulty = Difficulty.objects.all()
-                #         if i == 1:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 2:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 3:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
-                #             difficulty_save.save()
-                # elif topic_name == "Hyponyms":
-                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                #     topic.save()
-                #     for i in range(1, 4):
-                #         difficulty = Difficulty.objects.all()
-                #         if i == 1:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 2:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 3:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
-                #             difficulty_save.save()
-                # elif topic_name == "Homographs":
-                #     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
-                #     topic.save()
-                #     for i in range(1, 4):
-                #         difficulty = Difficulty.objects.all()
-                #         if i == 1:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 2:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=200, answered=0)
-                #             difficulty_save.save()
-                #         elif i == 3:
-                #             word_list = "Puppy"
-                #             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                #                             words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=300, answered=0)
-                #             difficulty_save.save()
+                elif topic_name == "Homonyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "Write, Sea, Sun, Cat, Cup, Deer, Eye, Pail, Mail, Lip"
+                            homonyms = "Right, See, Son, Cut, Cop, Dear, I, Pale, Male, Leap"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1=homonyms)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "Knight, Flower, Dye, Hi, Whole, Eight, One"
+                            homonyms = "Night, Flour, Die, High, Hole, Ate, Won"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1=homonyms)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "Waist, Peace, Heel, Hair, Sent"
+                            homonyms = "Waste, Piece, Heal, Hare, Cent"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=homonyms)
+                            difficulty_save.save()
+                elif topic_name == "Hyponyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "Fruits, Colors, Numbers, Tree, Vegetables, Subjects, Planets, Animals, Plants, Insects"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1="")
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "Body Parts, Toys, Drinks, Months, Days, Footwear, Desserts"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1="")
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "Gadgets, Emotions, Appliances, Vehicles, Fundamental Operations"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1="")
+                            difficulty_save.save()
+                elif topic_name == "Homographs":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "Bat, Watch, Letter, Fly, Nail, Ring, Ship, Tie, Left, Right"
+                            homographs = "Bat, Watch, Letter, Fly, Nail, Ring, Ship, Tie, Left, Right"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1=homographs)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "Palm, Trunk, Rock, Sink, Park,  Bark, Wave"
+                            homographs = "Palm, Trunk, Rock, Sink, Park,  Bark, Wave"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1=homographs)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "Can, Tear, Bow, Bank, Band"
+                            homographs = "Can, Tear, Bow, Bank, Band"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=homographs)
+                            difficulty_save.save()
             
         create_topics = ["Synonyms", "Antonyms", "Homonyms", "Hyponyms", "Homographs"]
         for topic in create_topics:
@@ -395,7 +401,11 @@ class StudentActivity(TemplateView):
             result = generate_two_random_numbers()
             if topic_name.topic_name == "Synonyms":
                 image_url = fetch_image(cleaned_words[persistent_variable-1])
-                return image_url[result[0]], image_url[result[1]]
+                try:
+                    return image_url[result[0]], image_url[result[1]]
+                except:
+                    image_url = fetch_image(cleaned_words[persistent_variable-1])
+                    return image_url[result[0]], image_url[result[1]]
             elif topic_name.topic_name == "Antonyms":
                 image_url = fetch_image(cleaned_words1[persistent_variable-1])
                 image_url1 = fetch_image(cleaned_words[persistent_variable-1])

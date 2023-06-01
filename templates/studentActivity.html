@@ -604,6 +604,7 @@ button.btn.btn-primary:hover {
 	  <div id="question-container">
 		{% if img_url != "no image" %}
 			<img id="image" src={{img_url}}>
+      <img id="image1" src="{{img_url2}}" >
 		{% else %}
 			<img id="image" src="{% static 'img/no_internet.png' %}">
 		{% endif %}
@@ -613,6 +614,14 @@ button.btn.btn-primary:hover {
         <p>Congratulations!<br>Your score is:<br>{{ questions.score }}/{{ questions.maxpoints }}</p>
         <div class="modal-footer1">
           <button class="btn1" onclick="navigateTo()">Back to Dashboard</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal1" class="modal1">
+      <div class="modal-content1">
+        <button class="btn1" onclick="showModal()">View Score</button>
+        <div class="modal-footer1">
         </div>
       </div>
     </div>
@@ -683,6 +692,25 @@ button.btn.btn-primary:hover {
   {% endif %}
 
 <script>
+
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Page has finished loading, trigger the modal
+    var modal = document.getElementById("myModal1");
+    modal.style.display = "block";
+  });
+
+  function showModal() {
+    var modal1 = document.getElementById("myModal1");
+    modal1.style.display = "none";
+    answerIsCorrect()
+    var modal = document.getElementById("myModal");
+    modal.style.display = "block";
+  }
+
+
+
+  
 
 var answer1 = ""
 var answer2 = ""
