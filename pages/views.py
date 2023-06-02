@@ -20,6 +20,7 @@ from django.conf import settings
 media_root = settings.MEDIA_ROOT
 media_url = settings.MEDIA_URL
 
+
 @login_required
 def protected_view(request):
     # Your protected view logic here
@@ -28,38 +29,7 @@ def protected_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
-# Create your views here.
-class TryView(TemplateView):
-    template_name = 'try.html'
-    def post(self, request):
-        if request.POST.get('search_term'):
-            
-            # Get the search term from the POST request
-            search_term = request.POST.get('search_term', '')
-            
-            url = f"https://www.merriam-webster.com/thesaurus/{search_term}"
-            response = requests.get(url)
-            html_content = response.content
-
-            # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(html_content, 'html.parser')
-
-            # Find the element that contains the synonyms
-            share_link = soup.find('a', class_='fb share-link')
-
-            # Extract the synonyms from the data-share-description attribute
-            if share_link:
-                synonyms_str, antonyms_str = share_link.get('data-share-description', ''), ''
-                if 'Antonyms of' in synonyms_str:
-                    synonyms_str, antonyms_str = synonyms_str.split(';')
-                synonyms_list = [s.strip() for s in synonyms_str.split(':')[1].split(',')]
-                antonyms_list = [s.strip() for s in antonyms_str.split(':')[1].split(',')] if antonyms_str else []
-                print('Synonyms:', synonyms_list)
-                print('Antonyms:', antonyms_list)
-            return render(request, 'try.html', {'results': synonyms_list, 'antonyms':antonyms_list})
-        
-        # Render the search form if the request method is not POST
-       
+# Create your views here.       
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
     def get(self, request):
@@ -393,10 +363,7 @@ class StudentActivity(TemplateView):
 
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-        try:
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
-        except:
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+        questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
         cleaned_words = [word.strip() for word in words]
@@ -462,10 +429,7 @@ class StudentActivity(TemplateView):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-            try:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
-            except:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
@@ -481,19 +445,13 @@ class StudentActivity(TemplateView):
         else:
             if request.POST.get('isCorrect') == "correct":
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                try:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
-                except:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
                 questions.score = questions.score + questions.points_per_question
                 questions.answered = questions.answered + 1
                 questions.save()
             else:
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                try:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
-                except:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
                 questions.answered = questions.answered + 1
                 questions.save()
 
