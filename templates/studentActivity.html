@@ -627,18 +627,9 @@ button.btn.btn-primary:hover {
     </div>
     
     </div>
-	  </div>
-	  <div id="choices-container">
-		<form id="checkAnswer"> 
-			{% csrf_token %}
-			{% for choice in choices %}
-				<button class="choice-btn" value="{{choice}}">{{choice}}</button>
-			{% endfor %}
-		</form>
-		
-	  </div> 
 	</div>
   {% else %}
+  {% if questions.topic.topic_name != "Homographs" and questions.topic.topic_name != "Hyponyms" %}
 	<div class="quiz-container">
 	  <div id="level-container">
 		<label>Level:</label>
@@ -689,6 +680,85 @@ button.btn.btn-primary:hover {
 		{% endif %}
 	  </div>
 	</div>
+  {% elif questions.topic.topic_name == "Homographs" %} 
+  <div class="quiz-container">
+	  <div id="level-container">
+		<label>Level:</label>
+		<span id="level">{{questions.difficulty_name}}</span>
+	  </div>
+	  <div id="question-info-container">
+		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
+		<div id="timer-container">
+		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
+      <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
+		</div>
+	  </div>
+	  <div id="question-container">
+		{% if img_url != "no image" %}
+    <div class="container">
+      <div class="column">
+        <img id="image" src="{{img_url}}" >
+        <img id="checkmark" class="checkmark" src="{% static 'img/check.png' %}">
+        <img id="exmark" class="exmark" src="{% static 'img/ex.png' %}">
+      </div>
+      <div class="column">
+        <img id="image1" src="{{img_url2}}" >
+        <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
+        <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+      </div>
+      <div id="choices-container1">
+        <form id="checkAnswer1"> 
+          {% csrf_token %}
+          {% for choice in choices1 %}
+              <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
+          {% endfor %}
+        </form>
+        
+        </div>
+      <button id="hiddenButton" style="display: none;">Hidden Button</button>
+    </div>
+		{% else %}
+			<img id="image" src="{% static 'img/no_internet.png' %}">
+		{% endif %}
+	  </div>
+	</div>
+  {% elif questions.topic.topic_name == "Hyponyms" %} 
+  <div class="quiz-container">
+	  <div id="level-container">
+		<label>Level:</label>
+		<span id="level">{{questions.difficulty_name}}</span>
+	  </div>
+	  <div id="question-info-container">
+		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
+		<div id="timer-container">
+		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
+      <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
+		</div>
+	  </div>
+	  <div id="question-container">
+		{% if img_url != "no image" %}
+    <div class="container">
+      <div class="column">
+        <img id="image1" src="{{img_url2}}" >
+        <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
+        <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+        <div id="choices-container1">
+          <form id="checkAnswer1"> 
+            {% csrf_token %}
+            {% for choice in choices %}
+                <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
+            {% endfor %}
+          </form>
+          </div>
+      </div>
+      <button id="hiddenButton" style="display: none;">Hidden Button</button>
+    </div>
+		{% else %}
+			<img id="image" src="{% static 'img/no_internet.png' %}">
+		{% endif %}
+	  </div>
+	</div>
+  {% endif %}
   {% endif %}
 
 <script>
@@ -786,6 +856,7 @@ function confettiAnswer(num) {
   }
 }
 
+try {
 
 var container = document.getElementById('choices-container');
 
@@ -841,6 +912,9 @@ for (var i = 0; i < buttons.length; i++) {
                 }
             });
     });
+}
+} catch(e) {
+  console.log(e)
 }
 try {
   var isAnswered = "{{answered}}"
@@ -966,24 +1040,73 @@ for (var i = 0; i < buttons1.length; i++) {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                  confettiAnswer(2);
-                  var image = document.getElementById('image1');
-                  var checkmark = document.getElementById('checkmark1');
-                  var imgURL = image.getAttribute('src');
+                  if (topic != "Homographs" && topic != "Hyponyms") {
+                    confettiAnswer(2);
+                    var image = document.getElementById('image1');
+                    var checkmark = document.getElementById('checkmark1');
+                    var imgURL = image.getAttribute('src');
 
-                  checkmark.style.backgroundImage = 'url(' + imgURL + ')';
-                  checkmark.style.display = 'inline-block';
-                  checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
-                  checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
-                  checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
-                  checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
-                  image.style.display = 'none';
-                  answer2 = "true"
-                  checkBothAnswer(answer1, answer2)
+                    checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                    checkmark.style.display = 'inline-block';
+                    checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                    checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                    checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
+                    checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
+                    image.style.display = 'none';
+                    answer2 = "true"
+                    checkBothAnswer(answer1, answer2)
+                  }
+                  else if (topic == "Homographs") {
+                    answerIsCorrect();
+                    var image = document.getElementById('image');
+                    var checkmark = document.getElementById('checkmark');
+                    var imgURL = image.getAttribute('src');
+                    var image1 = document.getElementById('image1');
+                    var checkmark1 = document.getElementById('checkmark1');
+                    var imgURL1 = image1.getAttribute('src');
+
+                    checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                    checkmark.style.display = 'inline-block';
+                    checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                    checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                    checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
+                    checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
+                    image.style.display = 'none';
+
+                    checkmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                    checkmark1.style.display = 'inline-block';
+                    checkmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                    checkmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                    checkmark1.style.width = '100%'; // Adjust the width of the checkmark as desired
+                    checkmark1.style.height = '66%'; // Adjust the height of the checkmark as desired
+                    image1.style.display = 'none';
+                    answer2 = "true"
+                    answer1 = "true"
+                    checkBothAnswer(answer1, answer2)
+
+                  }
+                  else if (topic == "Hyponyms") {
+                    answerIsCorrect();
+                    var image1 = document.getElementById('image1');
+                    var checkmark1 = document.getElementById('checkmark1');
+                    var imgURL1 = image1.getAttribute('src');
+                    checkmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                    checkmark1.style.display = 'inline-block';
+                    checkmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                    checkmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                    checkmark1.style.width = '100%'; // Adjust the width of the checkmark as desired
+                    checkmark1.style.height = '66%'; // Adjust the height of the checkmark as desired
+                    image1.style.display = 'none';
+                    answer2 = "true"
+                    answer1 = "true"
+                    checkBothAnswer(answer1, answer2)
+
+                  }
                   
                 }
 
                 else {
+                  if (topic != "Homographs" && topic != "Hyponyms") {
                   playSadEmojiSound()
 
                   var image = document.getElementById('image1');
@@ -999,6 +1122,53 @@ for (var i = 0; i < buttons1.length; i++) {
                   image.style.display = 'none';
                   answer2 = "false"
                   checkBothAnswer(answer1, answer2)
+                  }
+                  else if (topic == "Homographs") {
+                  playSadEmojiSound()
+
+                  var image = document.getElementById('image');
+                  var exmark = document.getElementById('exmark');
+                  var imgURL = image.getAttribute('src');
+                  var image1 = document.getElementById('image1');
+                  var exmark1 = document.getElementById('exmark1');
+                  var imgURL1 = image1.getAttribute('src');
+
+                  exmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  exmark.style.display = 'inline-block';
+                  exmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  exmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  exmark.style.width = '100%'; // Adjust the width of the exmark as desired
+                  exmark.style.height = '66%'; // Adjust the height of the exmark as desired
+                  image.style.display = 'none';
+
+                  exmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                  exmark1.style.display = 'inline-block';
+                  exmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  exmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  exmark1.style.width = '100%'; // Adjust the width of the exmark as desired
+                  exmark1.style.height = '66%'; // Adjust the height of the exmark as desired
+                  image1.style.display = 'none';
+                  answer2 = "false"
+                  answer1 = "false"
+                  checkBothAnswer(answer1, answer2)
+                  }
+                  else if (topic == "Hyponyms") {
+                  playSadEmojiSound()
+                  var image1 = document.getElementById('image1');
+                  var exmark1 = document.getElementById('exmark1');
+                  var imgURL1 = image1.getAttribute('src');
+
+                  exmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                  exmark1.style.display = 'inline-block';
+                  exmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
+                  exmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
+                  exmark1.style.width = '100%'; // Adjust the width of the exmark as desired
+                  exmark1.style.height = '66%'; // Adjust the height of the exmark as desired
+                  image1.style.display = 'none';
+                  answer2 = "false"
+                  answer1 = "false"
+                  checkBothAnswer(answer1, answer2)
+                  }
                 }
             });
     });

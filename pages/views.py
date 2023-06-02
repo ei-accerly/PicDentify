@@ -198,18 +198,21 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
                             word_list = "Fruits, Colors, Numbers, Tree, Vegetables, Subjects, Planets, Animals, Plants, Insects"
+                            hyponyms = "Fruits, Colors, Numbers, Tree, Vegetables, Subjects, Planets, Animals, Plants, Insects"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
-                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1="")
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=10, maxpoints=100, answered=0, words1=hyponyms)
                             difficulty_save.save()
                         elif i == 2:
                             word_list = "Body Parts, Toys, Drinks, Months, Days, Footwear, Desserts"
+                            hyponyms = "Body Parts, Toys, Drinks, Months, Days, Footwear, Desserts"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
-                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1="")
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=20, maxpoints=140, answered=0, words1=hyponyms)
                             difficulty_save.save()
                         elif i == 3:
                             word_list = "Gadgets, Emotions, Appliances, Vehicles, Fundamental Operations"
+                            hyponyms = "Gadgets, Emotions, Appliances, Vehicles, Fundamental Operations"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
-                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1="")
+                                            words=word_list, topic_id=topic.topic_id, points_per_question=30, maxpoints=150, answered=0, words1=hyponyms)
                             difficulty_save.save()
                 elif topic_name == "Homographs":
                     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -390,7 +393,10 @@ class StudentActivity(TemplateView):
 
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-        questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+        try:
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
+        except:
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
         cleaned_words = [word.strip() for word in words]
@@ -410,7 +416,18 @@ class StudentActivity(TemplateView):
                 image_url = fetch_image(cleaned_words1[persistent_variable-1])
                 image_url1 = fetch_image(cleaned_words[persistent_variable-1])
                 return image_url[result[0]], image_url1[result[1]]
-
+            elif topic_name.topic_name == "Homonyms":
+                image_url = fetch_image(cleaned_words[persistent_variable-1])
+                image_url1 = fetch_image(cleaned_words1[persistent_variable-1])
+                return image_url[result[0]], image_url1[result[1]]
+            elif topic_name.topic_name == "Homographs":
+                image_url = fetch_image(cleaned_words[persistent_variable-1])
+                image_url1 = fetch_image("HG"+cleaned_words1[persistent_variable-1])
+                return image_url[result[0]], image_url1[result[1]]
+            elif topic_name.topic_name == "Hyponyms":
+                image_url = fetch_image(cleaned_words[persistent_variable-1])
+                image_url1 = fetch_image(cleaned_words[persistent_variable-1])
+                return image_url[result[0]], image_url1[result[1]]
 
         persistent_variable = cache.get('my_persistent_variable')
         
@@ -445,7 +462,10 @@ class StudentActivity(TemplateView):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            try:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            except:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
@@ -461,13 +481,19 @@ class StudentActivity(TemplateView):
         else:
             if request.POST.get('isCorrect') == "correct":
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                except:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
                 questions.score = questions.score + questions.points_per_question
                 questions.answered = questions.answered + 1
                 questions.save()
             else:
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                except:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[2].replace(' ', ''))
                 questions.answered = questions.answered + 1
                 questions.save()
 
