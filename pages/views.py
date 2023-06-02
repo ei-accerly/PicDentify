@@ -232,12 +232,18 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 if easy_difficulty_split[0] in filename:
                     image_path = os.path.join(media_url, filename)  
                     image_urls.append(image_path)
-            
-            image_urls1 = []
-            for filename in os.listdir(media_root):
-                if easy1_difficulty_split[0] in filename:
-                    image_path1 = os.path.join(media_url, filename)  
-                    image_urls1.append(image_path1)
+            if topic.topic_name != "Homographs":
+                image_urls1 = []
+                for filename in os.listdir(media_root):
+                    if easy1_difficulty_split[0] in filename:
+                        image_path1 = os.path.join(media_url, filename)  
+                        image_urls1.append(image_path1)
+            else:
+                image_urls1 = []
+                for filename in os.listdir(media_root):
+                    if "HG"+easy1_difficulty_split[0] in filename:
+                        image_path1 = os.path.join(media_url, filename)  
+                        image_urls1.append(image_path1)
     
             difficulties_data = []
             for difficulty in difficulties:
