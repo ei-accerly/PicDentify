@@ -14,11 +14,9 @@
     <style>
 
 body {
-  background-image: url("{% static 'img/DashboardBG.png' %}");
-  background-size: cover; /* Set to cover to make the image full screen */
-  background-position: center center;
+  background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
   font-family: Arial, sans-serif;
-  color: #fff;
+  color: #080101; /* Dark color for better readability */
   margin: 0;
   padding: 0;
 }
@@ -32,8 +30,8 @@ body {
     }
     
     .card {
-  background: linear-gradient(to bottom right, #007bff, #ff6e00); /* Gradient from blue to orange */
-  border: 2px solid #009688; /* Teal */
+  background: linear-gradient(to bottom right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
+  border: 2px solid #051016; /* Dark navy */
   transition: box-shadow 0.3s ease-in-out;
   margin-bottom: 20px;
   border-radius: 10px;
@@ -49,7 +47,7 @@ body {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background: linear-gradient(to bottom right, rgba(0, 150, 136, 0.2), #007bff); /* Gradient from teal with opacity to blue */
+  background: linear-gradient(to bottom right, rgba(0, 21, 22, 0.2), #AACBBE); /* Gradient from dark navy with opacity to light blue-green */
   z-index: -1;
   transform: scale(0);
   transition: transform 0.3s ease-in-out;
@@ -65,7 +63,7 @@ body {
 }
 
 .card-header {
-  background-color: #009688; /* Teal */
+  background-color: #051016; /* Dark navy */
   color: #fff; /* White */
   font-size: 20px;
   font-weight: bold;
@@ -82,7 +80,7 @@ body {
 
 .card-body {
   margin-top: 10px;
-  color: white;
+  color: #051016; /* Dark navy */
   font-size: 18px;
   transition: transform 0.3s ease-in-out;
 }
@@ -104,8 +102,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
-
-
 
 .btn-primary {
   background-color: #009688; /* Teal */
@@ -190,7 +186,7 @@ body {
         }
 
       .navbar {
-        background: linear-gradient(to right, #ff6e00, #007bff); /* Gradient from orange to blue */
+        background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
         border-bottom: 1px solid #1e2b38;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 0;
@@ -439,13 +435,13 @@ label{
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active" style="border-right: 1px solid white;">
-              <a style="color: #fff;" class="nav-link" href="/dashboard">Home</a>
+              <a style="color: #2c3e50;" class="nav-link" href="/dashboard">Home</a>
             </li>
             <li class="nav-item" style="border-right: 1px solid white;">
-              <a style="color: #fff;" class="nav-link" onclick="showPopUp()">My Teacher's Key</a>
+              <a style="color: #2c3e50;" class="nav-link" onclick="showPopUp()">My Teacher's Key</a>
             </li>
             <li class="nav-item">
-              <a style="color: #fff;" class="nav-link" href="/logout_view">Logout</a>
+              <a style="color: #2c3e50;" class="nav-link" href="/logout_view">Logout</a>
             </li>
           </ul>
         </div>

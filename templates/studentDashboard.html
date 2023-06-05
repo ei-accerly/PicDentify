@@ -28,7 +28,7 @@
     
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-      <a style="color: wheat;" class="navbar-brand" href="#">{{ user.username|title }}'s Class</a>
+      <a style="color: #2c3e50;" class="navbar-brand" href="#">{{ user.username|title }}'s Class</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -72,7 +72,7 @@
               <div class="row">
                 <div class="col-4">
                   <div class="level easy">
-                    <a id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
+                    <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
                     <form id="ez{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="easy" name="easy{{item.topic_id}}">
@@ -81,7 +81,7 @@
                 </div>
                 <div class="col-4">
                   <div class="level medium">
-                    <a id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
+                    <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
                     <form id="med{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="medium" name="medium{{item.topic_id}}">
@@ -90,7 +90,7 @@
                 </div>
                 <div class="col-4">
                   <div class="level hard">
-                    <a id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
+                    <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
                     <form id="dif{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="difficult" name="difficult{{item.topic_id}}">
@@ -154,15 +154,14 @@ html, body {
 }
 
 body {
-  background-image: url("{% static 'img/DashboardBG.png' %}");
-  background-size: cover; /* Set to cover to make the image full screen */
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
   font-family: Arial, sans-serif;
-  color: #fff;
+  color: #080101; /* Dark color for better readability */
   margin: 0;
   padding: 0;
 }
+
+
 
 
 .container {
@@ -220,7 +219,7 @@ ul li a:hover {
 }
 
 .box {
-  background: linear-gradient(to bottom right, #ff7f50, #007bff); /* Gradient from orange to blue */
+  background: linear-gradient(to bottom right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
   border-radius: 20px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
   padding: 30px;
@@ -229,7 +228,7 @@ ul li a:hover {
   font-family: 'Roboto', sans-serif;
   color: #fff; /* White text color for better emphasis */
   font-size: 20px;
-  border: 2px solid #ffa62b; /* Orange */
+  border: 2px solid #051016; /* Dark navy */
   position: relative;
   overflow: hidden;
 }
@@ -241,7 +240,7 @@ ul li a:hover {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(to bottom right, #ff7f50, #007bff); /* Gradient from orange to blue */
+  background: linear-gradient(to bottom right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
   transform: rotate(45deg);
   z-index: -1;
 }
@@ -249,28 +248,24 @@ ul li a:hover {
 .box:hover {
   transform: scale(1.05);
   cursor: pointer;
-  color: whitesmoke; /* Blue */
-  border-color: #ff6b6b; /* Red */
+  color: #ffffff; /* White */
+  border-color: #ffa62b; /* Orange */
 }
 
 .box:hover:before {
   animation: wave 1s ease-out forwards;
 }
 
-
-
-
 @keyframes wave {
-0% {
-transform: translate(-50%, -50%) rotate(45deg) scale(1);
-opacity: 1;
+  0% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(2);
+    opacity: 0;
+  }
 }
-100% {
-transform: translate(-50%, -50%) rotate(45deg) scale(2);
-opacity: 0;
-}
-}
-
 
 h2 {
   font-size: 3rem;
@@ -325,7 +320,6 @@ h2 span:hover::before {
   transform: scale(1.1);
 }
 
-
 .box p {
   margin-bottom: 20px;
 }
@@ -348,7 +342,7 @@ h2 span:hover::before {
 .box a {
   padding: 10px 15px;
   border-radius: 5px;
-  background: linear-gradient(to bottom, #ff7f50, #007bff); /* Gradient from orange to blue */
+  background: linear-gradient(to bottom, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
   color: #fff;
   text-decoration: none;
   transition: background-color 0.3s ease;
@@ -356,30 +350,35 @@ h2 span:hover::before {
 }
 
 .box a:hover {
-  background-color: #007bff; /* Blue */
+  background-color: #E2DAAC; /* Light yellow */
   background-image: none;
 }
 
 .box .easy a {
-  border: 2px solid #32cd32; /* Lime green */
+  border: 2px solid #009688; /* Dark teal */
+  padding: 12px;
 }
 
 .box .medium a {
-  border: 2px solid #ffa500; /* Orange */
-  padding: 10px;
+  border: 2px solid #ff6e00; /* Orange */
+  padding: 12px;
 }
 
 .box .hard a {
   border: 2px solid #dc143c; /* Crimson */
-  padding: 10px;
+  padding: 12px;
 }
 
 
 
+
 .navbar {
-        background: linear-gradient(to right, #ff6e00, #007bff); /* Gradient from orange to blue */
-        padding: 0;
-      }
+  background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
+  color: #080101; /* Dark color for better readability */
+  border-bottom: 1px solid #1e2b38;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 .navbar-brand {
   color: #fff;
