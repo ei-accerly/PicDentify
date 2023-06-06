@@ -369,7 +369,10 @@ class StudentActivity(TemplateView):
 
 
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-        questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+        try:
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+        except:
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
         cleaned_words = [word.strip() for word in words]
@@ -435,7 +438,10 @@ class StudentActivity(TemplateView):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+            try:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+            except:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
@@ -451,13 +457,19 @@ class StudentActivity(TemplateView):
         else:
             if request.POST.get('isCorrect') == "correct":
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+                except:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
                 questions.score = questions.score + questions.points_per_question
                 questions.answered = questions.answered + 1
                 questions.save()
             else:
                 csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ', ''))
+                except:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
                 questions.answered = questions.answered + 1
                 questions.save()
 
