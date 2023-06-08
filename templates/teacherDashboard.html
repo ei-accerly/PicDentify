@@ -589,9 +589,14 @@ label{
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
               <div class="form-group">
-                <label for="topicWords2">Words </label>
-                <select class="form-control" id="topicWords2" name="topicWords">
+                <label for="topicWords2">Words</label>
+                <select class="form-control" id="topicWords2" name="topicWords" onchange="showInputField()">
                 </select>
+              </div>
+              
+              <div id="inputFieldContainer" style="display: none;">
+                <label for="inputField">Edit Word</label>
+                <input type="text" class="form-control" id="inputField" name="inputField">
               </div>
 
               <div class="image-container" id="pictures">
@@ -627,8 +632,13 @@ label{
               </div>
               <div class="form-group">
                 <label for="topicWords3">Words2</label>
-                <select class="form-control" id="topicWords3" name="topicWords1">
+                <select class="form-control" id="topicWords3" name="topicWords1" onchange="showInputField2()">
                 </select>
+              </div>
+              
+              <div id="inputFieldContainer2" style="display: none;">
+                <label for="inputField2">Edit word:</label>
+                <input type="text" class="form-control" id="inputField2" name="inputField2">
               </div>
               <div class="image-container" id="pictures1">
                 <!-- Image 1 -->
@@ -676,6 +686,51 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+var words = ['Word 1', 'Word 2', 'Word 3', 'Word 4']; // Array of words for the first dropdown
+var words2 = ['Option 1', 'Option 2', 'Option 3', 'Option 4']; // Array of words for the second dropdown
+
+var selectWords = document.getElementById('topicWords2');
+var selectWords2 = document.getElementById('topicWords3');
+
+// Populate options for the first dropdown
+for (var i = 0; i < words.length; i++) {
+  var option = document.createElement('option');
+  option.value = words[i];
+  option.textContent = words[i];
+  selectWords.appendChild(option);
+}
+
+// Populate options for the second dropdown
+for (var j = 0; j < words2.length; j++) {
+  var option2 = document.createElement('option');
+  option2.value = words2[j];
+  option2.textContent = words2[j];
+  selectWords2.appendChild(option2);
+}
+
+function showInputField() {
+  var selectElement = document.getElementById("topicWords2");
+  var inputFieldContainer = document.getElementById("inputFieldContainer");
+  var selectedValue = selectElement.value;
+
+  if (selectedValue !== "") {
+    inputFieldContainer.style.display = "block";
+  } else {
+    inputFieldContainer.style.display = "none";
+  }
+}
+
+function showInputField2() {
+  var selectElement2 = document.getElementById("topicWords3");
+  var inputFieldContainer2 = document.getElementById("inputFieldContainer2");
+  var selectedValue2 = selectElement2.value;
+
+  if (selectedValue2 !== "") {
+    inputFieldContainer2.style.display = "block";
+  } else {
+    inputFieldContainer2.style.display = "none";
+  }
+}
 
 function showWordFields() {
     var wordCount = parseInt(document.getElementById("wordCount").value);

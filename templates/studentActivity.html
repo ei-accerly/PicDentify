@@ -233,7 +233,6 @@ button.btn.btn-primary:hover {
 
 
 	#question-container {
-	  display: flex;
 	  justify-content: center;
 	  align-items: center;
 	  margin-bottom: 20px;
@@ -559,7 +558,6 @@ button.btn.btn-primary:hover {
   .column {
     flex: 0.5; /* Adjust the flex value to make the column smaller */
     padding: 10px;
-    height: 450px; /* Set a fixed height for the column */
     text-align: center;
     background-color: #ffffff;
     border: 3px solid #cccccc;
@@ -682,46 +680,53 @@ button.btn.btn-primary:hover {
 	</div>
   {% elif questions.topic.topic_name == "Homographs" %} 
   <div class="quiz-container">
-	  <div id="level-container">
-		<label>Level:</label>
-		<span id="level">{{questions.difficulty_name}}</span>
-	  </div>
-	  <div id="question-info-container">
-		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
-		<div id="timer-container">
-		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
-      <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
-		</div>
-	  </div>
-	  <div id="question-container">
-		{% if img_url != "no image" %}
-    <div class="container">
-      <div class="column">
-        <img id="image" src="{{img_url}}" >
-        <img id="checkmark" class="checkmark" src="{% static 'img/check.png' %}">
-        <img id="exmark" class="exmark" src="{% static 'img/ex.png' %}">
+    <div id="level-container">
+      <label>Level:</label>
+      <span id="level">{{questions.difficulty_name}}</span>
+    </div>
+    <div id="question-info-container">
+      <p id="question-counter">{{questions.topic.topic_name}}</p>
+      <div id="timer-container">
+        <p id="time-remaining">Question {{start_index}} of {{length}}</p>
+        <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
       </div>
-      <div class="column">
-        <img id="image1" src="{{img_url2}}" >
-        <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
-        <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+    </div>
+    <div id="question-container">
+      {% if img_url != "no image" %}
+      <div class="container" style="display: flex; justify-content: center; align-items: center;">
+        <div class="column">
+          <div class="image-container" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+            <img id="image" src="{{img_url}}">
+            <img id="checkmark" class="checkmark" src="{% static 'img/check.png' %}">
+            <img id="exmark" class="exmark" src="{% static 'img/ex.png' %}">
+          </div>
+        </div>
+        <div class="column">
+          <div class="image-container" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+            <img id="image1" src="{{img_url2}}">
+            <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
+            <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+          </div>
+        </div>
       </div>
-      <div id="choices-container1">
-        <form id="checkAnswer1"> 
+      <div id="choices-container1" style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+        <form id="checkAnswer1">
           {% csrf_token %}
           {% for choice in choices1 %}
-              <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
+          <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
           {% endfor %}
         </form>
-        
-        </div>
+      </div>
       <button id="hiddenButton" style="display: none;">Hidden Button</button>
+      {% else %}
+      <div class="no-image-container">
+        <img id="image" src="{% static 'img/no_internet.png' %}">
+      </div>
+      {% endif %}
     </div>
-		{% else %}
-			<img id="image" src="{% static 'img/no_internet.png' %}">
-		{% endif %}
-	  </div>
-	</div>
+    
+  </div>
+  
   {% elif questions.topic.topic_name == "Hyponyms" %} 
   <div class="quiz-container">
 	  <div id="level-container">
@@ -735,28 +740,33 @@ button.btn.btn-primary:hover {
       <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
 		</div>
 	  </div>
-	  <div id="question-container">
-		{% if img_url != "no image" %}
-    <div class="container">
-      <div class="column">
-        <img id="image1" src="{{img_url2}}" >
-        <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
-        <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
-        <div id="choices-container1">
-          <form id="checkAnswer1"> 
-            {% csrf_token %}
-            {% for choice in choices %}
-                <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
-            {% endfor %}
-          </form>
+    <div id="question-container">
+      {% if img_url != "no image" %}
+        <div class="container" style="display: flex; flex-direction: column; align-items: center;">
+          <div class="column" style="display: flex; flex-direction: column; align-items: center;">
+            <div class="image-container" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+              <img id="image1" src="{{img_url2}}" style="width: 600px; height: 500px;">
+              <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
+              <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
+            </div>
+            <div id="choices-container1" style="display: flex; flex-direction: column; align-items: center;">
+              <form id="checkAnswer1"> 
+                {% csrf_token %}
+                {% for choice in choices %}
+                  <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
+                {% endfor %}
+              </form>
+            </div>
           </div>
-      </div>
-      <button id="hiddenButton" style="display: none;">Hidden Button</button>
+          <button id="hiddenButton" style="display: none;">Hidden Button</button>
+        </div>
+      {% else %}
+        <div class="no-image-container" style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+          <img id="image" src="{% static 'img/no_internet.png' %}">
+        </div>
+      {% endif %}
     </div>
-		{% else %}
-			<img id="image" src="{% static 'img/no_internet.png' %}">
-		{% endif %}
-	  </div>
+    
 	</div>
   {% endif %}
   {% endif %}
