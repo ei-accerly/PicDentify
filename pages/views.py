@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 import nltk, os, glob
 from nltk.corpus import wordnet
 from django.conf import settings
+from django.core.files.storage import default_storage
 
 # initialize WordNet
 # nltk.download('wordnet')
@@ -83,6 +84,7 @@ class LoginPage(TemplateView):
             
 class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'teacherDashboard.html'
+    
 
     def get(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
@@ -269,18 +271,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
             return render(request, 'teacherDashboard.html')
         
-        elif request.POST.get('topicPreviousName'):
-            isTopic = Topics.objects.get(topic_name=request.POST['topicPreviousName'])
-            isTopic.topic_name = request.POST['topicTitle2']
-            isTopic.save()
-            difficulty = Difficulty.objects.get(difficulty_name=request.POST['topicChange'], topic_id=isTopic.topic_id)
-
-            difficulty.words = request.POST['topicWords2']
-            difficulty.points_per_question = request.POST['points_per_question_edit']
-            difficulty.save()
-    
-
-            return render(request, 'teacherDashboard.html')
         elif request.POST.get('fetch_picture'):
             isTopic = Topics.objects.get(topic_name=request.POST['topic_to_get'])
             difficulty = Difficulty.objects.get(difficulty_name=request.POST['difficulty_to_get'], topic_id=isTopic.topic_id)
@@ -300,6 +290,36 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     image_path1 = os.path.join(media_url, filename)  
                     image_urls1.append(image_path1)
             return JsonResponse({'images':image_urls, 'images1':image_urls1})
+        elif request.POST.get('word'):
+            word = request.POST['word']
+            file_pattern = os.path.join(settings.MEDIA_ROOT, f"*{word}*")
+            files = glob.glob(file_pattern)
+
+            if files:
+                # Print or process the found files
+                for file_path in files:
+                    os.remove(file_path)
+                    print("File is removed")
+
+            # Assuming you have a file upload field named 'picture' in your form
+            uploaded_file = request.FILES['picture-' + str(int(word[len(word) - 1]) - 1)]
+
+            file_path = default_storage.save(uploaded_file.name, uploaded_file)
+            print(file_path)
+
+            # Generate a new file name or use a different naming logic
+            new_file_name = word + os.path.splitext(file_path)[1]  # Preserve the file extension
+            full_file_path = os.path.join(settings.MEDIA_ROOT, file_path)
+            # Get the full file path of the new file name
+            new_full_file_path = os.path.join(settings.MEDIA_ROOT, new_file_name)
+
+            # Rename the file
+            os.rename(full_file_path, new_full_file_path)
+            print("renamed")
+
+
+            return render(request, 'teacherDashboard.html')
+
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'

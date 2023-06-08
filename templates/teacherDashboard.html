@@ -110,6 +110,27 @@ body {
   transition: background-color 0.3s ease-in-out;
 }
 
+.edit-icon {
+  display: inline-block;
+  position: relative;
+}
+
+.edit-icon i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 20px;
+  padding: 5px;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+}
+
+.edit-icon i:hover {
+  background-color: #e0e0e0;
+}
+
+
 .btn-primary:hover {
   background-color: #00695c; /* Dark Teal */
   border: none;
@@ -577,7 +598,6 @@ label{
               <div class="form-group">
                 <label for="topicTitle2">Title</label>
                 <input type="text" class="form-control" id="topicTitle2" placeholder="Enter title" name="topicTitle2">
-                <input type="text" class="form-control" id="topicPreviousName" placeholder="Enter title" name="topicPreviousName" hidden>
               </div>
               <div class="form-group">
                 <label for="topicDifficulty2">Difficulty Level</label>
@@ -590,86 +610,78 @@ label{
               </div>
               <div class="form-group">
                 <label for="topicWords2">Words</label>
-                <select class="form-control" id="topicWords2" name="topicWords" onchange="showInputField()">
+                <select class="form-control" id="topicWords2" name="topicWords" >
                 </select>
+                <button onclick="showInputField()"> Edit </button>
+              </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" id="selectedWord1" name="selectedWord1" hidden>
               </div>
               
               <div id="inputFieldContainer" style="display: none;">
                 <label for="inputField">Edit Word</label>
                 <input type="text" class="form-control" id="inputField" name="inputField">
               </div>
-
+              <form method="POST" enctype="multipart/form-data" id="image-change">
+                {% csrf_token %}
+              </form>
               <div class="image-container" id="pictures">
-                <!-- Image 1 -->
-                <div class="image-wrapper" onclick="zoomImage('image0')">
-                  <img id="image0" alt="Image 1">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
+                {% for counter in "01234" %}
+                <div class="image-wrapper">
+                    <img id="image{{ counter }}"  alt="Image {{ counter }}">
+                    <div class="view-icon"><i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i></div>
+                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <div>
+                          <label for="profile-picture-{{ counter }}" class="edit-icon">
+                            <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
+                            <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
+                          </label>
+                          <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                {% endfor %}
               
-                <!-- Image 2 -->
-                <div class="image-wrapper" onclick="zoomImage('image1')">
-                  <img id="image1" alt="Image 2">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 3 -->
-                <div class="image-wrapper" onclick="zoomImage('image2')">
-                  <img id="image2" alt="Image 3">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 4 -->
-                <div class="image-wrapper" onclick="zoomImage('image3')">
-                  <img id="image3" alt="Image 4">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 5 -->
-                <div class="image-wrapper" onclick="zoomImage('image4')">
-                  <img id="image4" alt="Image 5">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
               </div>
               <div class="form-group">
                 <label for="topicWords3">Words2</label>
-                <select class="form-control" id="topicWords3" name="topicWords1" onchange="showInputField2()">
+                <select class="form-control" id="topicWords3" name="topicWords1" >
                 </select>
+                <button onclick="showInputField2()"> Edit </button>
               </div>
               
               <div id="inputFieldContainer2" style="display: none;">
                 <label for="inputField2">Edit word:</label>
                 <input type="text" class="form-control" id="inputField2" name="inputField2">
               </div>
+
+              <div class="form-group">
+                <input type="text" class="form-control" id="selectedWord2" name="selectedWord2" hidden>
+              </div>
               <div class="image-container" id="pictures1">
                 <!-- Image 1 -->
-                <div class="image-wrapper" onclick="zoomImage('image5')">
-                  <img id="image5" alt="Image 1">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 2 -->
-                <div class="image-wrapper" onclick="zoomImage('image6')">
-                  <img id="image6" alt="Image 2">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 3 -->
-                <div class="image-wrapper" onclick="zoomImage('image7')">
-                  <img id="image7" alt="Image 3">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 4 -->
-                <div class="image-wrapper" onclick="zoomImage('image8')">
-                  <img id="image8" alt="Image 4">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
-              
-                <!-- Image 5 -->
-                <div class="image-wrapper" onclick="zoomImage('image9')">
-                  <img id="image9" alt="Image 5">
-                  <div class="view-icon"><i class="fas fa-eye"></i></div>
-                </div>
+                {% for counter in "56789" %}
+                <div class="image-wrapper">
+                    <img id="image{{ counter }}"  alt="Image {{ counter }}">
+                    <div class="view-icon"><i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i></div>
+                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                      {% csrf_token %}
+                      <div class="form-group">
+                        <div>
+                          <label for="profile-picture-{{ counter }}" class="edit-icon">
+                            <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
+                            <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
+                          </label>
+                          <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                {% endfor %}
               </div>
             </form>
           </div>
@@ -686,29 +698,47 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-var words = ['Word 1', 'Word 2', 'Word 3', 'Word 4']; // Array of words for the first dropdown
-var words2 = ['Option 1', 'Option 2', 'Option 3', 'Option 4']; // Array of words for the second dropdown
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
+      var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
 
-var selectWords = document.getElementById('topicWords2');
-var selectWords2 = document.getElementById('topicWords3');
+      var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
+      var saveButton = document.getElementById(`save-button-${fileId}`);
 
-// Populate options for the first dropdown
-for (var i = 0; i < words.length; i++) {
-  var option = document.createElement('option');
-  option.value = words[i];
-  option.textContent = words[i];
-  selectWords.appendChild(option);
-}
+      el.addEventListener("click", function(event) {
+        fileInput.click();
+      });
 
-// Populate options for the second dropdown
-for (var j = 0; j < words2.length; j++) {
-  var option2 = document.createElement('option');
-  option2.value = words2[j];
-  option2.textContent = words2[j];
-  selectWords2.appendChild(option2);
-}
+      fileInput.addEventListener("change", function() {
+        if (fileInput.files.length > 0) {
+          saveButton.style.display = 'block';
+        } else {
+          saveButton.style.display = 'none';
+        }
+      });
 
+      saveButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        var myForm = document.querySelector("#image-change"+fileId);
+        var formData = new FormData(myForm);
+        if (fileId <= 4) {
+          var word1Value = document.querySelector('#selectedWord1'); 
+          formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
+        }
+        else {
+          var word2Value = document.querySelector('#selectedWord2'); 
+          formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+        }
+        fetch('/dashboard/', {
+            method: 'POST',
+            body: formData
+        })
+ 
+      });
+    });
+  });
 function showInputField() {
+  event.preventDefault()
   var selectElement = document.getElementById("topicWords2");
   var inputFieldContainer = document.getElementById("inputFieldContainer");
   var selectedValue = selectElement.value;
@@ -900,32 +930,6 @@ function zoomImage(imageId) {
   zoomedContainer.onclick = function () {
     zoomedContainer.remove();
   };
-
-  // Add edit icon
-  var editIcon = document.createElement('div');
-  editIcon.classList.add('edit-icon');
-  var editIconElement = document.createElement('i');
-  editIconElement.classList.add('fas', 'fa-edit', 'fa-3x'); // Adjust the size of the icon by adding 'fa-3x' or other size class
-  editIcon.appendChild(editIconElement);
-  editIcon.onclick = function () {
-    // Handle edit image functionality here
-    // For example, you can open a file input for uploading an image
-    var fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = function () {
-      if (fileInput.files && fileInput.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-          image.src = e.target.result;
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      }
-    };
-    fileInput.click();
-  };
-  zoomedContainer.appendChild(editIcon);
-
   zoomedContainer.appendChild(zoomedImage);
   document.body.appendChild(zoomedContainer);
 }
@@ -953,7 +957,6 @@ function zoomImage(imageId) {
               else {
                 pictures.style.display = "flex";
               }
-              var previousTitle = document.querySelector('#topicPreviousName');
               // const altId = document.querySelector('#alt-id-update');
               var points_per_question = document.querySelector('#points_per_question_edit');
               var difficulties = data.difficulties;
@@ -972,6 +975,8 @@ function zoomImage(imageId) {
               }
 
               var selectWords = document.getElementById('topicWords2');
+              var word1Value = document.querySelector('#selectedWord1'); 
+              var word2Value = document.querySelector('#selectedWord2'); 
 
               var selectWords1 = document.getElementById('topicWords3');
               
@@ -996,6 +1001,9 @@ function zoomImage(imageId) {
               points_per_question.value = difficulties[0].points_per_question;
               var words = difficulties[0].words.split(",");
               var words1 = difficulties[0].words1.split(",");
+
+              word1Value.value = words[0].charAt(0).toUpperCase() + words[0].slice(1)
+              word2Value.value = words1[0].charAt(0).toUpperCase() + words1[0].slice(1)
                  // Loop through the difficulties array and add an option for each difficulty level
               selectWords.innerHTML = '';
               selectWords1.innerHTML = '';
@@ -1058,8 +1066,10 @@ function zoomImage(imageId) {
                 var selectedWords = words.includes(selectedOption);
                 if (selectedWords) {
                   event.preventDefault();
+                  word1Value.value = selectedOption
                   changePicture(selectedOption, selectWords1.options[selectWords.selectedIndex].value, select.options[select.selectedIndex].value, data.topic);
                   selectWords1.selectedIndex = selectWords.selectedIndex;
+                  word2Value.value = selectWords1.options[selectWords1.selectedIndex].value
                 }
               });
 
@@ -1069,19 +1079,18 @@ function zoomImage(imageId) {
                 var selectedWords1 = words.includes(selectedOption);
                 if (selectedWords1) {
                   event.preventDefault();
+                  word2Value.value = selectedOption
                   changePicture(selectWords.options[selectWords1.selectedIndex].value, selectedOption, select.options[select.selectedIndex].value, data.topic);
                   selectWords.selectedIndex = selectWords1.selectedIndex;
+                  word1Value.value = selectWords.options[selectWords.selectedIndex].value
                 }
               });
-
-              previousTitle.value = data.topic
               title.value = data.topic
             })
           });
       });
     });
     var modal = document.getElementById("myTeacherKeyModal");
-    console.log(modal)
 
     function closeModal() {
       var modal = document.querySelector('.modal');
