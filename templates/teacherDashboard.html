@@ -707,45 +707,55 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
-      var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
+    document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
+        var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
+        var image = document.querySelector('#image' + fileId);
 
-      var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
-      var saveButton = document.getElementById(`save-button-${fileId}`);
+        var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
+        var saveButton = document.getElementById(`save-button-${fileId}`);
 
-      el.addEventListener("click", function(event) {
-        fileInput.click();
-      });
+        el.addEventListener("click", function(event) {
+          fileInput.click();
+        });
 
-      fileInput.addEventListener("change", function() {
-        if (fileInput.files.length > 0) {
-          saveButton.style.display = 'block';
-        } else {
-          saveButton.style.display = 'none';
-        }
-      });
+        fileInput.addEventListener("change", function() {
+          if (fileInput.files.length > 0) {
+            saveButton.style.display = 'block';
 
-      saveButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        var myForm = document.querySelector("#image-change"+fileId);
-        var formData = new FormData(myForm);
-        if (fileId <= 4) {
-          var word1Value = document.querySelector('#selectedWord1'); 
-          formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
-        }
-        else {
-          var word2Value = document.querySelector('#selectedWord2'); 
-          formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
-        }
-        fetch('/dashboard/', {
-            method: 'POST',
-            body: formData
-        })
- 
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              image.src = e.target.result;
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+          } else {
+            saveButton.style.display = 'none';
+          }
+        });
+
+        saveButton.addEventListener("click", function(event) {
+          event.preventDefault();
+          var myForm = document.querySelector("#image-change"+fileId);
+          var formData = new FormData(myForm);
+          if (fileId <= 4) {
+            var word1Value = document.querySelector('#selectedWord1'); 
+            formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
+          }
+          else {
+            var word2Value = document.querySelector('#selectedWord2'); 
+            formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+          }
+          fetch('/dashboard/', {
+              method: 'POST',
+              body: formData
+          }).then(function() {
+            saveButton.style.display = 'none';
+          });
+        });
       });
     });
-  });
+
 function showInputField() {
   event.preventDefault()
   var selectElement = document.getElementById("topicWords2");

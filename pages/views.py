@@ -299,7 +299,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 # Print or process the found files
                 for file_path in files:
                     os.remove(file_path)
-                    print("File is removed")
 
             # Assuming you have a file upload field named 'picture' in your form
             uploaded_file = request.FILES['picture-' + str(int(word[len(word) - 1]) - 1)]
@@ -315,8 +314,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
             # Rename the file
             os.rename(full_file_path, new_full_file_path)
-            print("renamed")
-
 
             return render(request, 'teacherDashboard.html')
 
