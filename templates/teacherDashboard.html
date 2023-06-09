@@ -335,11 +335,16 @@ label{
   }
 
   .image-wrapper {
-    display: flex;
     position: relative;
     margin: 10px;
     cursor: pointer;
   }
+
+  .button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
 
   .view-icon {
     position: absolute;
@@ -639,7 +644,9 @@ label{
                             <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                             <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                           </label>
-                          <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                          <div class="button-container">
+                            <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                          </div>
                         </div>
                       </div>
                     </form>
@@ -676,7 +683,9 @@ label{
                             <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                             <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                           </label>
-                          <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                          <div class="button-container">
+                            <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                          </div>
                         </div>
                       </div>
                     </form>
