@@ -111,23 +111,16 @@ body {
 }
 
 .edit-icon {
-  display: inline-block;
   position: relative;
 }
 
 .edit-icon i {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 20px;
-  padding: 5px;
-  background-color: #f0f0f0;
+  font-size: 15px;
+  padding: 5px 0 5px 5px; /* Modified padding values */
   color: #333;
   cursor: pointer;
-}
-
-.edit-icon i:hover {
-  background-color: #e0e0e0;
+  position: absolute;
+  right: 80;
 }
 
 
@@ -348,11 +341,10 @@ label{
 
   .view-icon {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 6px;
+    right: 14px;
     z-index: 1;
     background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px;
     border-radius: 50%;
   }
 
@@ -615,10 +607,11 @@ label{
               </div>
               <div class="form-group">
                 <label for="topicWords2">Words</label>
-                <select class="form-control" id="topicWords2" name="topicWords" >
-                </select>
-                <button onclick="showInputField()"> Edit </button>
-              </div>
+                <div class="input-group">
+                  <select class="form-control" id="topicWords2" name="topicWords"></select>
+                  <button class="btn btn-primary" onclick="showInputField()">Edit</button>
+                </div>
+              </div>              
 
               <div class="form-group">
                 <input type="text" class="form-control" id="selectedWord1" name="selectedWord1" hidden>
@@ -639,7 +632,6 @@ label{
                     <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
                       {% csrf_token %}
                       <div class="form-group">
-                        <div>
                           <label for="profile-picture-{{ counter }}" class="edit-icon">
                             <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                             <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
@@ -647,7 +639,6 @@ label{
                           <div class="button-container">
                             <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
                           </div>
-                        </div>
                       </div>
                     </form>
                   </div>
@@ -656,10 +647,12 @@ label{
               </div>
               <div class="form-group">
                 <label for="topicWords3">Words2</label>
-                <select class="form-control" id="topicWords3" name="topicWords1" >
-                </select>
-                <button onclick="showInputField2()"> Edit </button>
+                <div class="input-group">
+                  <select class="form-control" id="topicWords3" name="topicWords1"></select>
+                  <button class="btn btn-primary" onclick="showInputField2()">Edit</button>
+                </div>
               </div>
+              
               
               <div id="inputFieldContainer2" style="display: none;">
                 <label for="inputField2">Edit word:</label>
@@ -707,55 +700,45 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
-        var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
-        var image = document.querySelector('#image' + fileId);
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
+      var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
 
-        var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
-        var saveButton = document.getElementById(`save-button-${fileId}`);
+      var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
+      var saveButton = document.getElementById(`save-button-${fileId}`);
 
-        el.addEventListener("click", function(event) {
-          fileInput.click();
-        });
+      el.addEventListener("click", function(event) {
+        fileInput.click();
+      });
 
-        fileInput.addEventListener("change", function() {
-          if (fileInput.files.length > 0) {
-            saveButton.style.display = 'block';
+      fileInput.addEventListener("change", function() {
+        if (fileInput.files.length > 0) {
+          saveButton.style.display = 'block';
+        } else {
+          saveButton.style.display = 'none';
+        }
+      });
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              image.src = e.target.result;
-            };
-
-            reader.readAsDataURL(fileInput.files[0]);
-          } else {
-            saveButton.style.display = 'none';
-          }
-        });
-
-        saveButton.addEventListener("click", function(event) {
-          event.preventDefault();
-          var myForm = document.querySelector("#image-change"+fileId);
-          var formData = new FormData(myForm);
-          if (fileId <= 4) {
-            var word1Value = document.querySelector('#selectedWord1'); 
-            formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
-          }
-          else {
-            var word2Value = document.querySelector('#selectedWord2'); 
-            formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
-          }
-          fetch('/dashboard/', {
-              method: 'POST',
-              body: formData
-          }).then(function() {
-            saveButton.style.display = 'none';
-          });
-        });
+      saveButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        var myForm = document.querySelector("#image-change"+fileId);
+        var formData = new FormData(myForm);
+        if (fileId <= 4) {
+          var word1Value = document.querySelector('#selectedWord1'); 
+          formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
+        }
+        else {
+          var word2Value = document.querySelector('#selectedWord2'); 
+          formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+        }
+        fetch('/dashboard/', {
+            method: 'POST',
+            body: formData
+        })
+ 
       });
     });
-
+  });
 function showInputField() {
   event.preventDefault()
   var selectElement = document.getElementById("topicWords2");
