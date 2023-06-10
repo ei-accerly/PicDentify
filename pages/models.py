@@ -64,6 +64,14 @@ class Difficulty(models.Model):
     class Meta:
         db_table = "difficulty"
 
+class Choices(models.Model):
+    choices_id = models.AutoField(primary_key=True, unique=True)
+    choices_name = models.CharField(max_length=20, verbose_name='difficulty')
+    word_choices = models.JSONField()
+    difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE)
+    class Meta:
+        db_table = "choices"
+
 class Pictures(models.Model):
     image = models.ImageField(upload_to='images/')
     image_name = models.CharField(max_length=20, verbose_name='image_name')

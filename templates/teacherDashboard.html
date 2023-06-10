@@ -110,19 +110,6 @@ body {
   transition: background-color 0.3s ease-in-out;
 }
 
-.edit-icon {
-  position: relative;
-}
-
-.edit-icon i {
-  font-size: 15px;
-  padding: 5px 0 5px 5px; /* Modified padding values */
-  color: #333;
-  cursor: pointer;
-  position: absolute;
-  right: 80;
-}
-
 
 .btn-primary:hover {
   background-color: #00695c; /* Dark Teal */
@@ -152,6 +139,14 @@ body {
 
 .modal-footer {
   border-top: none;
+}
+
+.input-group-append {
+  margin-left: -1px;
+}
+
+.btn i {
+  margin-right: 0.5rem;
 }
 
     
@@ -344,7 +339,6 @@ label{
     top: 6px;
     right: 14px;
     z-index: 1;
-    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
   }
 
@@ -352,7 +346,10 @@ label{
     display: inline-block;
     font-size: 16px;
     color: #333; /* Adjust icon color as desired */
+    background-color: rgba(255, 255, 255, 0.7);
   }
+
+
 
   .zoomed-image {
   position: fixed;
@@ -428,15 +425,6 @@ label{
     max-height: 200px;
     margin-right: 10px;
   }
-
-  .edit-icon {
-  position: absolute;
-  top: 3px;
-  right: 5px;
-  color: white; /* Adjust the color as needed */
-  cursor: pointer;
-  z-index: 1;
-}
 
 </style>
 </head>
@@ -547,7 +535,7 @@ label{
                 <input type="text" class="form-control" id="classNameInput" placeholder="Enter Topic name" name="addTopic">
               </div>
               <div class="form-group">
-                <label for="timeLimitInput">Points Per Question</label>
+                <label for="points_per_question">Points Per Question</label>
                 <input type="number" class="form-control" id="points_per_question" placeholder="Enter time points per question" name="points_per_question">
               </div>
               <div class="form-group">
@@ -619,7 +607,17 @@ label{
               
               <div id="inputFieldContainer" style="display: none;">
                 <label for="inputField">Edit Word</label>
-                <input type="text" class="form-control" id="inputField" name="inputField">
+                <div class="input-group">
+                  <input type="text" class="form-control" id="inputField" name="inputField">
+                  <div class="input-group-append">
+                    <button class="btn btn-success" type="button" onclick="saveInput()">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-danger" type="button" onclick="cancelInput()">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
               <form method="POST" enctype="multipart/form-data" id="image-change">
                 {% csrf_token %}
@@ -628,19 +626,19 @@ label{
                 {% for counter in "01234" %}
                 <div class="image-wrapper">
                     <img id="image{{ counter }}"  alt="Image {{ counter }}">
-                    <div class="view-icon"><i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i></div>
-                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
-                      {% csrf_token %}
-                      <div class="form-group">
-                          <label for="profile-picture-{{ counter }}" class="edit-icon">
+                    <div class="view-icon">
+                        <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
+                        <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                          {% csrf_token %}
+                          <label for="profile-picture-{{ counter }}" >
                             <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                             <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                           </label>
-                          <div class="button-container">
-                            <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
-                          </div>
-                      </div>
-                    </form>
+                        </form>
+                    </div>
+                    <div class="button-container">
+                      <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                    </div>
                   </div>
                 {% endfor %}
               
@@ -653,12 +651,20 @@ label{
                 </div>
               </div>
               
-              
               <div id="inputFieldContainer2" style="display: none;">
-                <label for="inputField2">Edit word:</label>
-                <input type="text" class="form-control" id="inputField2" name="inputField2">
+                <label for="inputField2">Edit Word:</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="inputField2" name="inputField2">
+                  <div class="input-group-append">
+                    <button class="btn btn-success" type="button" onclick="saveInput2()">
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button class="btn btn-danger" type="button" onclick="cancelInput2()">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
-
               <div class="form-group">
                 <input type="text" class="form-control" id="selectedWord2" name="selectedWord2" hidden>
               </div>
@@ -667,23 +673,28 @@ label{
                 {% for counter in "56789" %}
                 <div class="image-wrapper">
                     <img id="image{{ counter }}"  alt="Image {{ counter }}">
-                    <div class="view-icon"><i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i></div>
-                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
-                      {% csrf_token %}
-                      <div class="form-group">
-                        <div>
-                          <label for="profile-picture-{{ counter }}" class="edit-icon">
-                            <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
-                            <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
-                          </label>
-                          <div class="button-container">
-                            <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
+                    <div class="view-icon">
+                      <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
+                      <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                        {% csrf_token %}
+                            <label for="profile-picture-{{ counter }}">
+                              <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
+                              <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
+                            </label>
+                      </form>
+                    </div>
+                    <div class="button-container">
+                      <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
+                    </div>
+                    
                   </div>
                 {% endfor %}
+              </div>
+              <div class="form-group">
+                <label for="choice1_edit">Choices</label>
+                <input type="text" class="form-control" id="choice1_edit" placeholder="Choice 1" name="choice1">
+                <input type="text" class="form-control" id="choice2_edit" placeholder="Choice 2" name="choice2">
+                <input type="text" class="form-control" id="choice3_edit" placeholder="Choice 3" name="choice3">
               </div>
             </form>
           </div>
@@ -700,158 +711,169 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
-      var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
+    
+   
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
+          var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
 
-      var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
-      var saveButton = document.getElementById(`save-button-${fileId}`);
+          var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
+          var saveButton = document.getElementById(`save-button-${fileId}`);
+          el.addEventListener("click", function(event) {
+            fileInput.click();
+          });
 
-      el.addEventListener("click", function(event) {
-        fileInput.click();
+          fileInput.addEventListener("change", function() {
+            if (fileInput.files.length > 0) {
+              saveButton.style.display = 'block';
+            } else {
+              saveButton.style.display = 'none';
+            }
+          });
+
+          saveButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            var myForm = document.querySelector("#image-change"+fileId);
+            var formData = new FormData(myForm);
+            if (fileId <= 4) {
+              var word1Value = document.querySelector('#selectedWord1'); 
+              formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
+            }
+            else {
+              var word2Value = document.querySelector('#selectedWord2'); 
+              formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+            }
+            fetch('/dashboard/', {
+                method: 'POST',
+                body: formData
+            })
+    
+          });
+        });
       });
+    function showInputField() {
+      event.preventDefault()
+      var selectElement = document.getElementById("topicWords2");
+      var inputFieldContainer = document.getElementById("inputFieldContainer");
+      var selectedValue = selectElement.value;
 
-      fileInput.addEventListener("change", function() {
-        if (fileInput.files.length > 0) {
-          saveButton.style.display = 'block';
-        } else {
-          saveButton.style.display = 'none';
+      if (selectedValue !== "") {
+        inputFieldContainer.style.display = "block";
+      } else {
+        inputFieldContainer.style.display = "none";
+      }
+    }
+    function cancelInput() {
+      event.preventDefault()
+      var inputFieldContainer = document.getElementById("inputFieldContainer");
+      inputFieldContainer.style.display = "none";
+    }
+    function showInputField2() {
+      var selectElement2 = document.getElementById("topicWords3");
+      var inputFieldContainer2 = document.getElementById("inputFieldContainer2");
+      var selectedValue2 = selectElement2.value;
+
+      if (selectedValue2 !== "") {
+        inputFieldContainer2.style.display = "block";
+      } else {
+        inputFieldContainer2.style.display = "none";
+      }
+    }
+    function cancelInput2() {
+      event.preventDefault()
+      var inputFieldContainer = document.getElementById("inputFieldContainer2");
+      inputFieldContainer.style.display = "none";
+    }
+    
+
+  function showWordFields() {
+      var wordCount = parseInt(document.getElementById("wordCount").value);
+      var wordFieldsSection = document.getElementById("wordFieldsSection");
+      wordFieldsSection.innerHTML = "";
+
+      for (var i = 1; i <= wordCount; i++) {
+        var wordDiv = document.createElement("div");
+        wordDiv.className = "form-group";
+
+        var wordLabel = document.createElement("label");
+        wordLabel.setAttribute("for", "topicWord" + i);
+        wordLabel.textContent = "Word " + i;
+
+        var wordInput = document.createElement("input");
+        wordInput.setAttribute("type", "text");
+        wordInput.className = "form-control";
+        wordInput.setAttribute("id", "topicWord" + i);
+        wordInput.setAttribute("placeholder", "Enter word " + i);
+        wordInput.setAttribute("name", "word" + i);
+
+        wordDiv.appendChild(wordLabel);
+        wordDiv.appendChild(wordInput);
+
+        var imageUploadSection = document.createElement("div");
+        imageUploadSection.id = "imageUploadSection" + i;
+        imageUploadSection.className = "image-scroll-container";
+
+        for (var j = 1; j <= 5; j++) {
+          var imageDiv = document.createElement("div");
+          imageDiv.style.border = "1px solid #000";
+          imageDiv.style.padding = "10px";
+          imageDiv.style.marginBottom = "10px";
+          imageDiv.style.marginRight = "10px";
+
+          var labelDiv = document.createElement("div");
+          labelDiv.style.textAlign = "center";
+
+          var label = document.createElement("label");
+          label.setAttribute("for", "imageUpload" + i + "_" + j);
+          label.style.cursor = "pointer";
+          label.textContent = "Upload Image " + j;
+
+          labelDiv.appendChild(label);
+
+          var imageInput = document.createElement("input");
+          imageInput.setAttribute("type", "file");
+          imageInput.setAttribute("class", "form-control-file");
+          imageInput.setAttribute("id", "imageUpload" + i + "_" + j);
+          imageInput.setAttribute("name", "image" + i + "_" + j);
+          imageInput.setAttribute("onchange", "showImage(this, 'preview" + i + "_" + j + "')");
+          imageInput.style.display = "none";
+
+          var previewDiv = document.createElement("div");
+          previewDiv.id = "preview" + i + "_" + j;
+          previewDiv.className = "uploaded-image";
+
+          imageDiv.appendChild(labelDiv);
+          imageDiv.appendChild(imageInput);
+          imageDiv.appendChild(previewDiv);
+
+          imageUploadSection.appendChild(imageDiv);
         }
-      });
 
-      saveButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        var myForm = document.querySelector("#image-change"+fileId);
-        var formData = new FormData(myForm);
-        if (fileId <= 4) {
-          var word1Value = document.querySelector('#selectedWord1'); 
-          formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
-        }
-        else {
-          var word2Value = document.querySelector('#selectedWord2'); 
-          formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
-        }
-        fetch('/dashboard/', {
-            method: 'POST',
-            body: formData
-        })
- 
-      });
-    });
-  });
-function showInputField() {
-  event.preventDefault()
-  var selectElement = document.getElementById("topicWords2");
-  var inputFieldContainer = document.getElementById("inputFieldContainer");
-  var selectedValue = selectElement.value;
-
-  if (selectedValue !== "") {
-    inputFieldContainer.style.display = "block";
-  } else {
-    inputFieldContainer.style.display = "none";
-  }
-}
-
-function showInputField2() {
-  var selectElement2 = document.getElementById("topicWords3");
-  var inputFieldContainer2 = document.getElementById("inputFieldContainer2");
-  var selectedValue2 = selectElement2.value;
-
-  if (selectedValue2 !== "") {
-    inputFieldContainer2.style.display = "block";
-  } else {
-    inputFieldContainer2.style.display = "none";
-  }
-}
-
-function showWordFields() {
-    var wordCount = parseInt(document.getElementById("wordCount").value);
-    var wordFieldsSection = document.getElementById("wordFieldsSection");
-    wordFieldsSection.innerHTML = "";
-
-    for (var i = 1; i <= wordCount; i++) {
-      var wordDiv = document.createElement("div");
-      wordDiv.className = "form-group";
-
-      var wordLabel = document.createElement("label");
-      wordLabel.setAttribute("for", "topicWord" + i);
-      wordLabel.textContent = "Word " + i;
-
-      var wordInput = document.createElement("input");
-      wordInput.setAttribute("type", "text");
-      wordInput.className = "form-control";
-      wordInput.setAttribute("id", "topicWord" + i);
-      wordInput.setAttribute("placeholder", "Enter word " + i);
-      wordInput.setAttribute("name", "word" + i);
-
-      wordDiv.appendChild(wordLabel);
-      wordDiv.appendChild(wordInput);
-
-      var imageUploadSection = document.createElement("div");
-      imageUploadSection.id = "imageUploadSection" + i;
-      imageUploadSection.className = "image-scroll-container";
-
-      for (var j = 1; j <= 5; j++) {
-        var imageDiv = document.createElement("div");
-        imageDiv.style.border = "1px solid #000";
-        imageDiv.style.padding = "10px";
-        imageDiv.style.marginBottom = "10px";
-        imageDiv.style.marginRight = "10px";
-
-        var labelDiv = document.createElement("div");
-        labelDiv.style.textAlign = "center";
-
-        var label = document.createElement("label");
-        label.setAttribute("for", "imageUpload" + i + "_" + j);
-        label.style.cursor = "pointer";
-        label.textContent = "Upload Image " + j;
-
-        labelDiv.appendChild(label);
-
-        var imageInput = document.createElement("input");
-        imageInput.setAttribute("type", "file");
-        imageInput.setAttribute("class", "form-control-file");
-        imageInput.setAttribute("id", "imageUpload" + i + "_" + j);
-        imageInput.setAttribute("name", "image" + i + "_" + j);
-        imageInput.setAttribute("onchange", "showImage(this, 'preview" + i + "_" + j + "')");
-        imageInput.style.display = "none";
-
-        var previewDiv = document.createElement("div");
-        previewDiv.id = "preview" + i + "_" + j;
-        previewDiv.className = "uploaded-image";
-
-        imageDiv.appendChild(labelDiv);
-        imageDiv.appendChild(imageInput);
-        imageDiv.appendChild(previewDiv);
-
-        imageUploadSection.appendChild(imageDiv);
+        wordFieldsSection.appendChild(wordDiv);
+        wordFieldsSection.appendChild(imageUploadSection);
       }
 
-      wordFieldsSection.appendChild(wordDiv);
-      wordFieldsSection.appendChild(imageUploadSection);
+      document.getElementById("wordFieldsContainer").style.display = "block";
     }
 
-    document.getElementById("wordFieldsContainer").style.display = "block";
-  }
+    function showImage(input, previewId) {
+      var preview = document.getElementById(previewId);
+      preview.innerHTML = '';
 
-  function showImage(input, previewId) {
-    var preview = document.getElementById(previewId);
-    preview.innerHTML = '';
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
+        reader.onload = function (e) {
+          var image = document.createElement("img");
+          image.setAttribute("src", e.target.result);
+          image.setAttribute("class", "uploaded-image");
 
-      reader.onload = function (e) {
-        var image = document.createElement("img");
-        image.setAttribute("src", e.target.result);
-        image.setAttribute("class", "uploaded-image");
+          preview.appendChild(image);
+        };
 
-        preview.appendChild(image);
-      };
-
-      reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(input.files[0]);
+      }
     }
-  }
 
   function showImageUpload(input) {
     var wordNumber = input.id.replace("topicWord", "");
