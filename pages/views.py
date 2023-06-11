@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.core import serializers
 from django.views.generic import TemplateView
-from .models import AdminUser, AdminKey, Topics, Difficulty, Pictures
+from .models import AdminUser, AdminKey, Topics, Difficulty, Pictures, Choices
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -221,7 +221,28 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         user = AdminUser.objects.get(username=request.session.get('username'))
         difficulty = Difficulty.objects.all()
 
-        if request.POST.get('topic_to_edit_samp'):
+        if request.POST.get('save_changes'):
+            difficulties = Difficulty.objects.get(difficulty_id=request.POST['topicId'])
+            difficulty_words = difficulties.words.split(",")
+            difficulty_words_length = len(difficulty_words)
+            difficulties.points_per_question = request.POST['points_per_question_edit']
+            difficulties.maxpoints = int(request.POST['points_per_question_edit']) * int(difficulty_words_length)
+            difficulties.save()
+            try:
+                choices = Choices.objects.get(difficulty_id=request.POST['topicId'], choices_name=request.POST['topicWords'])
+                choices_input = ','.join([request.POST['choice1'], request.POST['choice2'], request.POST['choice3']])
+                choices.word_choices = choices_input
+                choices.save()
+            except:
+                choices = Choices.objects.all()
+                choices_input = ','.join([request.POST['choice1'], request.POST['choice2'], request.POST['choice3']])
+                choices_save = Choices.objects.create(choices_id=len(choices)+1, choices_name=request.POST['topicWords'], word_choices=choices_input, difficulty_id=request.POST['topicId'])
+                choices_save.save()
+
+            return JsonResponse({'doneSave': True})
+
+        elif request.POST.get('topic_to_edit_samp'):
+            
             difficulties = Difficulty.objects.filter(topic_id=request.POST['topic_to_edit_samp'])
             topic = Topics.objects.get(topic_id=request.POST['topic_to_edit_samp'])
             easy_difficulty = Difficulty.objects.get(topic_id=request.POST['topic_to_edit_samp'], difficulty_name="easy")
@@ -246,15 +267,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     if "HG"+easy1_difficulty_split[0] in filename:
                         image_path1 = os.path.join(media_url, filename)  
                         image_urls1.append(image_path1)
-    
+
             difficulties_data = []
             for difficulty in difficulties:
                 difficulty_dict = model_to_dict(difficulty)
                 difficulties_data.append(difficulty_dict)
-
-
+            try:
+                choices = Choices.objects.get(difficulty_id=easy_difficulty.difficulty_id, choices_name=easy_difficulty_split[0])
+                choices_split = choices.word_choices.split(",")
+                
+            except:
+                choices_split = ""
             # Return a JSON response with both the topic and difficulties data
-            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data, 'image':image_urls, 'image1':image_urls1})
+            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data, 'image':image_urls, 'image1':image_urls1, 'choices':choices_split})
 
 
         elif request.POST.get('addTopic'):
@@ -289,7 +314,16 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 if request.POST.get('fetch_picture1').replace(" ", "") in filename:
                     image_path1 = os.path.join(media_url, filename)  
                     image_urls1.append(image_path1)
-            return JsonResponse({'images':image_urls, 'images1':image_urls1})
+
+            try:
+                choices = Choices.objects.get(difficulty_id=difficulties.difficulty_id, choices_name=easy_difficulty_split[0])
+                choices_split = choices.word_choices.split(",")
+                
+            except:
+                choices_split = ""
+
+            return JsonResponse({'images':image_urls, 'images1':image_urls1, 'choices':choices_split})
+        
         elif request.POST.get('word'):
             word = request.POST['word']
             file_pattern = os.path.join(settings.MEDIA_ROOT, f"*{word}*")
@@ -304,7 +338,7 @@ class Dashboard(LoginRequiredMixin, TemplateView):
             uploaded_file = request.FILES['picture-' + str(int(word[len(word) - 1]) - 1)]
 
             file_path = default_storage.save(uploaded_file.name, uploaded_file)
-            print(file_path)
+    
 
             # Generate a new file name or use a different naming logic
             new_file_name = word + os.path.splitext(file_path)[1]  # Preserve the file extension
