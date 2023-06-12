@@ -433,16 +433,18 @@ class StudentActivity(TemplateView):
             return number1,number2
         def fetch_words(difficulty):
             if difficulty == 'easy':
-                num = random.randint(3,4)
+                num = random.randint(3, 4)
             elif difficulty == 'medium':
-                num = random.randint(4,5)
+                num = random.randint(4, 5)
             elif difficulty == 'difficult':
-                num = random.randint(5,6)
-            url = f"https://random-word-api.herokuapp.com/word?length={num}&number=3"
+                num = random.randint(5, 6)
+
+            url = f"https://random-word-api.herokuapp.com/word?length={num}"
             response = requests.get(url)
+
             if response.status_code == 200:
                 words = response.json()
-                return words
+                return words[0]
             else:
                 print('Error fetching word')
 
@@ -500,8 +502,30 @@ class StudentActivity(TemplateView):
             cache.set('my_persistent_variable',persistent_variable)
         if len(words) == questions.answered:
             img_urls = checkTopic()
-            choices = fetch_words(questions.difficulty_name)
-            choices1 = fetch_words(questions.difficulty_name)
+            choices = []
+            choices1 = []
+            try:
+                get_choices = Choices.objects.get(difficulty_id=questions.difficulty_id, choices_name=cleaned_words[persistent_variable-1])
+                choices1_split = get_choices.word_choices.split(',')
+                for word in choices1_split:
+                    if word == "":
+                        choices.append(fetch_words(questions.difficulty_name))
+                    else:
+                        choices.append(word)
+            except:
+                for i in range(3):
+                    choices.append(fetch_words(questions.difficulty_name))
+            try:
+                get_choices1 = Choices.objects.get(difficulty_id=questions.difficulty_id, choices_name=cleaned_words1[persistent_variable-1])
+                choices2_split = get_choices1.word_choices.split(',')
+                for word in choices2_split:
+                    if word == "":
+                        choices1.append(fetch_words(questions.difficulty_name))
+                    else:
+                        choices1.append(word)
+            except:
+                for i in range(3):
+                    choices1.append(fetch_words(questions.difficulty_name))
             choices.append(cleaned_words[questions.answered-1])
             choices1.append(cleaned_words1[questions.answered-1])
             random.shuffle(choices)
@@ -513,8 +537,31 @@ class StudentActivity(TemplateView):
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable',persistent_variable)
         img_urls = checkTopic()
-        choices = fetch_words(questions.difficulty_name)
-        choices1 = fetch_words(questions.difficulty_name)
+        choices = []
+        choices1 = []
+        try:
+            get_choices = Choices.objects.get(difficulty_id=questions.difficulty_id, choices_name=cleaned_words[persistent_variable-1])
+            choices1_split = get_choices.word_choices.split(',')
+            for word in choices1_split:
+                if word == "":
+                    choices.append(fetch_words(questions.difficulty_name))
+                else:
+                    choices.append(word)
+        except:
+            for i in range(3):
+                choices.append(fetch_words(questions.difficulty_name))
+        try:
+            get_choices1 = Choices.objects.get(difficulty_id=questions.difficulty_id, choices_name=cleaned_words1[persistent_variable-1])
+            choices2_split = get_choices1.word_choices.split(',')
+            for word in choices2_split:
+                if word == "":
+                    choices1.append(fetch_words(questions.difficulty_name))
+                else:
+                    choices1.append(word)
+        except:
+            for i in range(3):
+                choices1.append(fetch_words(questions.difficulty_name))
+    
         choices.append(cleaned_words[persistent_variable-1])
         choices1.append(cleaned_words1[persistent_variable-1])
         random.shuffle(choices)
