@@ -350,6 +350,19 @@ class Dashboard(LoginRequiredMixin, TemplateView):
             os.rename(full_file_path, new_full_file_path)
 
             return render(request, 'teacherDashboard.html')
+        
+        elif request.POST.get('addAWord'):
+            difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
+            difficulty.words = difficulty.words + ", " +request.POST['add_word1']
+            difficulty.words1 = difficulty.words1 + ", " +request.POST['add_word2']
+            difficulty.save()
+            difficulty_nextquery = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
+            difficulty_words = difficulty_nextquery.words.split(",")
+            difficulty_words_length = len(difficulty_words)
+            difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
+            difficulty_nextquery.save()
+
+            return render(request, 'teacherDashboard.html')
 
 
 class StudentDashboard(TemplateView):
