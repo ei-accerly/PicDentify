@@ -639,13 +639,6 @@ label{
                 <input type="text" class="form-control" id="choice_edit2" placeholder="Choice 2" name="choice2" onkeyup="setRequired(this)">
                 <input type="text" class="form-control" id="choice_edit3" placeholder="Choice 3" name="choice3" onkeyup="setRequired(this)">
               </div>
-
-              <div class="form-group">
-                <input type="text" class="form-control" id="secondchoice_edit1" placeholder="Choice 1" name="secondchoice1" hidden>
-                <input type="text" class="form-control" id="secondchoice_edit2" placeholder="Choice 2" name="secondchoice2" hidden>
-                <input type="text" class="form-control" id="secondchoice_edit3" placeholder="Choice 3" name="secondchoice3" hidden>
-              </div>
-              
               <form method="POST" enctype="multipart/form-data" id="image-change">
                 {% csrf_token %}
               </form>
@@ -694,9 +687,9 @@ label{
               </div>
               <div class="form-group">
                 <label for="choice_edit">Choices</label>
-                <input type="text" class="form-control" id="secondchoice1_edit1" placeholder="Choice 1" name="1secondchoice1">
-                <input type="text" class="form-control" id="secondchoice1_edit2" placeholder="Choice 2" name="1secondchoice2">
-                <input type="text" class="form-control" id="secondchoice1_edit3" placeholder="Choice 3" name="1secondchoice3">
+                <input type="text" class="form-control" id="secondchoice_edit1" placeholder="Choice 1" name="secondchoice1">
+                <input type="text" class="form-control" id="secondchoice_edit2" placeholder="Choice 2" name="secondchoice2">
+                <input type="text" class="form-control" id="secondchoice_edit3" placeholder="Choice 3" name="secondchoice3">
               </div>
               <div class="form-group">
                 <input type="text" class="form-control" id="selectedWord2" name="selectedWord2" hidden>
@@ -853,7 +846,6 @@ addButton.addEventListener("click", function(event) {
 
     function setRequired(inputElement) {
         var value = inputElement.value.trim();
-        
         if (value.length > 0) {
           // Set the other two input fields as required
           if (inputElement.id === 'choice_edit1') {
@@ -875,12 +867,14 @@ addButton.addEventListener("click", function(event) {
       }
     
    
-    document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
           var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
 
           var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
           var saveButton = document.getElementById(`save-button-${fileId}`);
+          var previewImage = document.getElementById(`image${fileId}`);
+
           el.addEventListener("click", function(event) {
             fileInput.click();
           });
@@ -888,8 +882,16 @@ addButton.addEventListener("click", function(event) {
           fileInput.addEventListener("change", function() {
             if (fileInput.files.length > 0) {
               saveButton.style.display = 'block';
+
+              // Display the selected image in the preview
+              var reader = new FileReader();
+              reader.onload = function(event) {
+                previewImage.src = event.target.result;
+              };
+              reader.readAsDataURL(fileInput.files[0]);
             } else {
               saveButton.style.display = 'none';
+              previewImage.src = ""; // Clear the preview image
             }
           });
 
@@ -900,19 +902,18 @@ addButton.addEventListener("click", function(event) {
             if (fileId <= 4) {
               var word1Value = document.querySelector('#selectedWord1'); 
               formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
-            }
-            else {
+            } else {
               var word2Value = document.querySelector('#selectedWord2'); 
               formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
             }
             fetch('/dashboard/', {
                 method: 'POST',
                 body: formData
-            })
-    
+            });
           });
         });
       });
+
     function showInputField() {
       event.preventDefault()
       var selectElement = document.getElementById("topicWords2");
@@ -1076,6 +1077,14 @@ addButton.addEventListener("click", function(event) {
   }
 
 function changePicture(selectedOption, selectWords, select, topic) {
+  for (var i = 1; i < 4; i++) {
+        var choice = document.querySelector('#choice_edit'+i)
+        choice.value = ""
+  }  
+  for (var i = 1; i < 4; i++) {
+        var choice = document.querySelector('#secondchoice_edit'+i)
+        choice.value = ""
+  }
   var myForm = document.querySelector('#change_picture')
   document.getElementById('fetch_picture').value = selectedOption
   document.getElementById('fetch_picture1').value = selectWords
@@ -1088,36 +1097,44 @@ function changePicture(selectedOption, selectWords, select, topic) {
   }).then(response => response.json())
   .then(data => {
     var images_url = data.images
-    if (images_url.length === 0) {
-      images_url = [];
-
-      for (var i = 0; i < 5; i++) {
-        images_url.push("/PicDentify.png");
-      }
-    }
+    
     var images_url1 = data.images1
-    if (images_url1.length === 0) {
-      images_url1 = [];
+    for (var i = 0; i < 5; i++) {                    
+        var image = document.getElementById('image'+i);     
+        if (images_url[i] != undefined) {
 
-      for (var i = 0; i < 5; i++) {
-        images_url1.push("/PicDentify.png");
-      }
-    }
-    for (var i = 0; i < images_url.length; i++) {                    
-        var image = document.getElementById('image'+i);                  
-        image.src = images_url[i]
+          image.src = images_url[i]
+        
+        }   
+        else {
+          image.src = "/PicDentify.png"
+        }        
+        
     }
 
     for (var i = 0; i < images_url1.length; i++) {
         var j = i + 5;
         var image1 = document.getElementById('image'+j);
-        image1.src = images_url1[i]
+        if (images_url1[i] != undefined) {
+          image1.src = images_url1[i]
+        }    
+        else {
+          image1.src = "/PicDentify.png"
+        } 
+       
     }
-    choices_rendered = data.choices
+    var choices_rendered = data.choices
+    var choices_rendered1 = data.choices1
     if (choices_rendered != "") {
       for (var i = 1; i < 4; i++) {
         var choice = document.querySelector('#choice_edit'+i)
         choice.value = choices_rendered[i-1]
+      }   
+    }
+    if (choices_rendered1 != "") {
+      for (var i = 1; i < 4; i++) {
+        var choice = document.querySelector('#secondchoice_edit'+i)
+        choice.value = choices_rendered1[i-1]
       }   
     }
   })
@@ -1200,7 +1217,13 @@ function zoomImage(imageId) {
   function saveChanges() {
     event.preventDefault();
     var myForm = document.querySelector('#editTopic');
+    var concatenatedChoices = [document.getElementById("choice_edit1").value, document.getElementById("choice_edit2").value, document.getElementById("choice_edit3").value].join(",");
+    var concatenatedChoices1 = [document.getElementById("secondchoice_edit1").value, document.getElementById("secondchoice_edit2").value, document.getElementById("secondchoice_edit3").value].join(",");
     var formData = new FormData(myForm);
+    formData.append("word_choices1", concatenatedChoices)
+    formData.append("word_choices2", concatenatedChoices1)
+    formData.append("difficultyWord2", document.getElementById("topicWords3").value)
+    formData.append("difficultyWord1", document.getElementById("topicWords2").value)
     formData.append("save_changes", "Yes")
 			fetch('/dashboard/', {
 				method: 'POST',
@@ -1209,7 +1232,7 @@ function zoomImage(imageId) {
             .then(data => {
               var jsResponse = data.doneSave;
               if (jsResponse) {
-                location.reload()
+                fetchTopicDetails(topicIdFetch)
               }
             })
       }
@@ -1224,11 +1247,18 @@ function zoomImage(imageId) {
       .then(data => {
         var title = document.querySelector('#topicTitle2');
         var title_id = document.querySelector('#topicId');
-        choices_rendered = data.choices
+        var choices_rendered = data.choices
+        var choices_rendered1 = data.choices1
         if (choices_rendered != "") {
           for (var i = 1; i < 4; i++) {
             var choice = document.querySelector('#choice_edit'+i)
             choice.value = choices_rendered[i-1]
+          }   
+        }
+        if (choices_rendered1 != "") {
+          for (var i = 1; i < 4; i++) {
+            var choice = document.querySelector('#secondchoice_edit'+i)
+            choice.value = choices_rendered1[i-1]
           }   
         }
         var pictures = document.getElementById("pictures1");
