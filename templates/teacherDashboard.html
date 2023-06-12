@@ -596,6 +596,12 @@ label{
                 <label for="timeLimitInput">Points Per Question</label>
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
+
+              <div class="form-group">
+                <button class="btn btn-primary" id="addWordButton">Add Word</button>
+                <div id="wordInputs"></div>
+              </div>
+
               <div class="form-group">
                 <label for="topicWords2">Words</label>
                 <div class="input-group">
@@ -727,6 +733,37 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+
+  var addButton = document.getElementById("addWordButton");
+  var wordInputsContainer = document.getElementById("wordInputs");
+
+  addButton.addEventListener("click", function() {
+    var wordInputContainer = document.createElement("div");
+    wordInputContainer.classList.add("form-group");
+
+    var wordInputGroup = document.createElement("div");
+    wordInputGroup.classList.add("input-group");
+    wordInputContainer.appendChild(wordInputGroup);
+
+    var wordInput1 = document.createElement("input");
+    wordInput1.setAttribute("type", "text");
+    wordInput1.setAttribute("class", "form-control");
+    wordInput1.setAttribute("placeholder", "Word 1");
+    wordInputGroup.appendChild(wordInput1);
+
+    var separator = document.createElement("div");
+    separator.classList.add("input-group-text");
+    separator.textContent = ":";
+    wordInputGroup.appendChild(separator);
+
+    var wordInput2 = document.createElement("input");
+    wordInput2.setAttribute("type", "text");
+    wordInput2.setAttribute("class", "form-control");
+    wordInput2.setAttribute("placeholder", "Word 2");
+    wordInputGroup.appendChild(wordInput2);
+
+    wordInputsContainer.appendChild(wordInputContainer);
+  });
 
     function setRequired(inputElement) {
         var value = inputElement.value.trim();
