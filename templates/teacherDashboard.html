@@ -621,7 +621,6 @@ label{
               <div id="inputFieldContainer" style="display: none;">
                 <label for="inputField">Edit Word</label>
                 <div class="input-group">
-                
                   <input type="text" class="form-control" id="inputField" name="inputField">
                   <div class="input-group-append">
                     <button class="btn btn-success" type="button" onclick="saveInput()">
@@ -630,9 +629,13 @@ label{
                     <button class="btn btn-danger" type="button" onclick="cancelInput()">
                       <i class="fas fa-times"></i>
                     </button>
+                    <button class="btn btn-dark" type="button" onclick="deleteInput()">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </div>
                 </div>
               </div>
+              
               <div class="form-group">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="choice_edit1" placeholder="Choice 1" name="choice1" onkeyup="setRequired(this)">
@@ -682,9 +685,13 @@ label{
                     <button class="btn btn-danger" type="button" onclick="cancelInput2()">
                       <i class="fas fa-times"></i>
                     </button>
+                    <button class="btn btn-dark" type="button" onclick="deleteInput2()">
+                      <i class="fas fa-trash"></i>
+                    </button>
                   </div>
                 </div>
               </div>
+              
               <div class="form-group">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="secondchoice_edit1" placeholder="Choice 1" name="secondchoice1">
