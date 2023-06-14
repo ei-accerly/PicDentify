@@ -11,7 +11,7 @@ from django.core.cache import cache
 import random,string,requests,json,asyncio
 from django.forms.models import model_to_dict
 from bs4 import BeautifulSoup
-import nltk,os,glob
+import nltk,os,glob,shutil
 from nltk.corpus import wordnet
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -362,7 +362,6 @@ class Dashboard(LoginRequiredMixin,TemplateView):
 
             file_path = default_storage.save(uploaded_file.name,uploaded_file)
     
-
             # Generate a new file name or use a different naming logic
             new_file_name = word + os.path.splitext(file_path)[1]  # Preserve the file extension
             full_file_path = os.path.join(settings.MEDIA_ROOT,file_path)
@@ -384,6 +383,30 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             difficulty_words_length = len(difficulty_words)
             difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
             difficulty_nextquery.save()
+
+            return render(request,'teacherDashboard.html')
+        
+        elif request.POST.get("wordToEdit"):
+            difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Edit'])
+            difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
+            difficulty.save()
+
+            difficulty_check_all = Difficulty.objects.all()
+            for difficulty_check in difficulty_check_all:
+                words = difficulty_check.words.split(",")
+                for word in words:
+                    if request.POST['wordToEdit'] == word:
+                        for filename in os.listdir(media_root):
+                            if request.POST['wordToEdit'] in filename:
+                                new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
+                                new_filepath = os.path.join(media_root, new_filename)
+                                image_path = os.path.join(media_root,filename)  
+                                try:
+                                    shutil.copy(image_path, new_filepath)
+                                except (IOError, OSError) as e:
+                                    print(f"Error copying file: {e}")
+                        break
+                
 
             return render(request,'teacherDashboard.html')
 
