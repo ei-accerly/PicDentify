@@ -682,7 +682,10 @@ label{
               <div id="inputFieldContainer2" style="display: none;">
                 <label for="inputField2">Edit Word:</label>
                 <div class="input-group">
-                  <input type="text" class="form-control" id="inputField2" name="inputField2">
+                  <form method="post" id="editWord2">
+                    {% csrf_token %}
+                    <input type="text" class="form-control" id="inputField2" name="inputField2">
+                  </form>
                   <div class="input-group-append">
                     <button class="btn btn-success" type="button" onclick="saveInput2()">
                       <i class="fas fa-check"></i>
@@ -765,6 +768,23 @@ label{
         document.getElementById("inputField").value = ""
       });
     }
+
+  function saveInput2() {
+    var myForm = document.querySelector("#editWord2");
+      var formData = new FormData(myForm);
+      formData.append("wordToEdit1", document.getElementById("selectedWord2").value);
+      var title_id = document.querySelector('#topicId');
+      formData.append("topicIdWord2Edit", title_id.value);
+      fetch('/dashboard/', {
+        method: 'POST',
+        body: formData
+      }).then(function() {
+        fetchTopicDetails(topicIdFetch);
+        var inputFieldContainer = document.getElementById("inputFieldContainer2");
+        inputFieldContainer.style.display = "none";
+        document.getElementById("inputField2").value = ""
+      });
+  }
 
   function deleteInput() {
       var myForm = document.querySelector("#editWord1");

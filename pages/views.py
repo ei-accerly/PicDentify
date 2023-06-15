@@ -432,6 +432,50 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                         file_path = os.path.join(settings.MEDIA_ROOT,filename)
                         os.remove(file_path)
             return render(request,'teacherDashboard.html')
+    
+        # elif request.POST.get("wordToEdit1"):
+        #     wordToEdit = False
+        #     difficulty_check_all = Difficulty.objects.all()
+        #     for difficulty_check in difficulty_check_all:
+        #         words = difficulty_check.words.split(",")
+        #         words1 = difficulty_check.words1.split(",")
+        #         if request.POST['inputField'] in words or request.POST['inputField'] in words1:
+        #             wordToEdit = True
+        #             break
+        #     difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Edit'])
+        #     difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
+        #     difficulty.save()
+
+        #     if wordToEdit == False:
+        #         difficulty_check_all = Difficulty.objects.all()
+        #         for difficulty_check in difficulty_check_all:
+        #             words = difficulty_check.words.split(",")
+        #             words1 = difficulty_check.words1.split(",")
+        #             if request.POST['wordToEdit'] in words or request.POST['wordToEdit'] in words1:
+        #                 for filename in os.listdir(media_root):
+        #                     if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+        #                         new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
+        #                         new_filepath = os.path.join(media_root, new_filename)
+        #                         image_path = os.path.join(media_root,filename)  
+        #                         try:
+        #                             shutil.copy(image_path, new_filepath)
+        #                         except (IOError, OSError) as e:
+        #                             print(f"Error copying file: {e}")
+        #                 break
+        #     pictureIsDelete = False
+        #     difficulty_check_all = Difficulty.objects.all()
+        #     for difficulty_check in difficulty_check_all:
+        #         words = difficulty_check.words.split(",")
+        #         words1 = difficulty_check.words1.split(",")
+        #         if request.POST['wordToEdit'] in words or request.POST['wordToEdit'] in words1:
+        #             pictureIsDelete = True
+        #             break
+        #     if pictureIsDelete == False:
+        #         for filename in os.listdir(media_root):
+        #             if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+        #                 file_path = os.path.join(settings.MEDIA_ROOT,filename)
+        #                 os.remove(file_path)
+        #     return render(request,'teacherDashboard.html')
         
         elif request.POST.get("wordToDelete"):
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Delete'])
