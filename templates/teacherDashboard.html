@@ -762,10 +762,28 @@ label{
         fetchTopicDetails(topicIdFetch);
         var inputFieldContainer = document.getElementById("inputFieldContainer");
         inputFieldContainer.style.display = "none";
+        document.getElementById("inputField").value = ""
       });
     }
 
+  function deleteInput() {
+      var myForm = document.querySelector("#editWord1");
+      var formData = new FormData(myForm);
+      formData.append("wordToDelete", document.getElementById("selectedWord1").value);
+      var title_id = document.querySelector('#topicId');
+      formData.append("topicIdWord1Delete", title_id.value);
+      
+      fetch('/dashboard/', {
+        method: 'POST',
+        body: formData
+      }).then(function() {
+        fetchTopicDetails(topicIdFetch);
+        var inputFieldContainer = document.getElementById("inputFieldContainer");
+        inputFieldContainer.style.display = "none";
+        document.getElementById("inputField").value = ""
+      });
 
+  }
   // Function to retrieve the value of a cookie
 function getCookie(name) {
   var cookieValue = null;
@@ -950,6 +968,7 @@ addButton.addEventListener("click", function(event) {
 
       if (selectedValue !== "") {
         inputFieldContainer.style.display = "block";
+        document.getElementById("inputField").value = document.getElementById("selectedWord1").value
       } else {
         inputFieldContainer.style.display = "none";
       }
@@ -958,6 +977,7 @@ addButton.addEventListener("click", function(event) {
       event.preventDefault()
       var inputFieldContainer = document.getElementById("inputFieldContainer");
       inputFieldContainer.style.display = "none";
+      document.getElementById("inputField").value = "";
     }
     function showInputField2() {
       var selectElement2 = document.getElementById("topicWords3");

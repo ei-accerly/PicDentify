@@ -265,19 +265,19 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             
             image_urls = []
             for filename in os.listdir(media_root):
-                if easy_difficulty_split[0] in filename:
+                if easy_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
                     image_path = os.path.join(media_url,filename)  
                     image_urls.append(image_path)
             if topic.topic_name != "Homographs":
                 image_urls1 = []
                 for filename in os.listdir(media_root):
-                    if easy1_difficulty_split[0] in filename:
+                    if easy1_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
                         image_path1 = os.path.join(media_url,filename)  
                         image_urls1.append(image_path1)
             else:
                 image_urls1 = []
                 for filename in os.listdir(media_root):
-                    if "HG"+easy1_difficulty_split[0] in filename:
+                    if "HG"+easy1_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
                         image_path1 = os.path.join(media_url,filename)  
                         image_urls1.append(image_path1)
 
@@ -322,13 +322,13 @@ class Dashboard(LoginRequiredMixin,TemplateView):
          
             image_urls = []
             for filename in os.listdir(media_root):
-                if request.POST.get('fetch_picture').replace(" ","") in filename:
+                if request.POST.get('fetch_picture').replace(" ","") == os.path.splitext(filename)[0][:-1]:
                     image_path = os.path.join(media_url,filename)  
                     image_urls.append(image_path)
             
             image_urls1 = []
             for filename in os.listdir(media_root):
-                if request.POST.get('fetch_picture1').replace(" ","") in filename:
+                if request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
                     image_path1 = os.path.join(media_url,filename)  
                     image_urls1.append(image_path1)
             try:
@@ -387,17 +387,29 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             return render(request,'teacherDashboard.html')
         
         elif request.POST.get("wordToEdit"):
+            wordToEdit = False
+            difficulty_check_all = Difficulty.objects.all()
+            for difficulty_check in difficulty_check_all:
+                words = difficulty_check.words.split(",")
+                words1 = difficulty_check.words1.split(",")
+
+                if request.POST['inputField'] in words or request.POST['inputField'] in words1:
+                    wordToEdit = True
+                    break
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Edit'])
             difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
             difficulty.save()
 
-            difficulty_check_all = Difficulty.objects.all()
-            for difficulty_check in difficulty_check_all:
-                words = difficulty_check.words.split(",")
-                for word in words:
-                    if request.POST['wordToEdit'] == word:
+            if wordToEdit == False:
+                difficulty_check_all = Difficulty.objects.all()
+                for difficulty_check in difficulty_check_all:
+                    print(difficulty_check.words)
+                    print(difficulty_check.words1)
+                    words = difficulty_check.words.split(",")
+                    words1 = difficulty_check.words1.split(",")
+                    if request.POST['wordToEdit'] in words or request.POST['wordToEdit'] in words1:
                         for filename in os.listdir(media_root):
-                            if request.POST['wordToEdit'] in filename:
+                            if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                 new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
                                 new_filepath = os.path.join(media_root, new_filename)
                                 image_path = os.path.join(media_root,filename)  
@@ -406,6 +418,48 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                 except (IOError, OSError) as e:
                                     print(f"Error copying file: {e}")
                         break
+            pictureIsDelete = False
+            difficulty_check_all = Difficulty.objects.all()
+            for difficulty_check in difficulty_check_all:
+                words = difficulty_check.words.split(",")
+                words1 = difficulty_check.words1.split(",")
+                if request.POST['wordToEdit'] in words or request.POST['wordToEdit'] in words1:
+                    pictureIsDelete = True
+                    break
+            if pictureIsDelete == False:
+                for filename in os.listdir(media_root):
+                    if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                        file_path = os.path.join(settings.MEDIA_ROOT,filename)
+                        os.remove(file_path)
+            return render(request,'teacherDashboard.html')
+        
+        elif request.POST.get("wordToDelete"):
+            difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Delete'])
+            
+            if request.POST["wordToDelete"] + "," in difficulty.words:
+                difficulty.words = difficulty.words.replace(request.POST["wordToDelete"]+",", "")
+            elif request.POST["wordToDelete"] in difficulty.words:
+                difficulty.words = difficulty.words.replace(request.POST["wordToDelete"], "")
+
+            if difficulty.words.endswith(","):
+                difficulty.words = difficulty.words[:-1]
+            difficulty.save()
+
+            # difficulty_check_all = Difficulty.objects.all()
+            # for difficulty_check in difficulty_check_all:
+            #     words = difficulty_check.words.split(",")
+            #     for word in words:
+            #         if request.POST['wordToDelete'] == word:
+            #             for filename in os.listdir(media_root):
+            #                 if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+            #                     new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
+            #                     new_filepath = os.path.join(media_root, new_filename)
+            #                     image_path = os.path.join(media_root,filename)  
+            #                     try:
+            #                         shutil.copy(image_path, new_filepath)
+            #                     except (IOError, OSError) as e:
+            #                         print(f"Error copying file: {e}")
+            #             break
                 
 
             return render(request,'teacherDashboard.html')
@@ -474,7 +528,7 @@ class StudentActivity(TemplateView):
         def fetch_image(query):
             image_urls = []
             for filename in os.listdir(media_root):
-                if query in filename:
+                if query == os.path.splitext(filename)[0][:-1]:
                     image_url = os.path.join(media_url,filename)
                     image_urls.append(image_url)
             return image_urls
