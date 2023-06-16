@@ -750,6 +750,7 @@ label{
     var wordInputsContainer = document.getElementById("wordInputs");
     var wordInputContainerMain = "";
     var topicIdFetch = "";
+    var topicTitleGlobalVar = "";
     function saveInput() {
       var myForm = document.querySelector("#editWord1");
       var formData = new FormData(myForm);
@@ -822,7 +823,6 @@ function getCookie(name) {
 
 addButton.addEventListener("click", function(event) {
   event.preventDefault();
-
   var form = document.createElement("form");
   form.setAttribute("method", "post");
   form.setAttribute("id", "addWordsAtTopic");
@@ -851,17 +851,21 @@ addButton.addEventListener("click", function(event) {
   wordInput1.setAttribute("name", "add_word1");
   wordInputGroup.appendChild(wordInput1);
 
-  var separator = document.createElement("div");
-  separator.classList.add("input-group-text");
-  separator.textContent = ":";
-  wordInputGroup.appendChild(separator);
+  if (topicTitleGlobalVar != "Homographs" && topicTitleGlobalVar != "Hyponyms") {
+    var separator = document.createElement("div");
+    separator.classList.add("input-group-text");
+    separator.textContent = ":";
+    wordInputGroup.appendChild(separator);
 
-  var wordInput2 = document.createElement("input");
-  wordInput2.setAttribute("type", "text");
-  wordInput2.setAttribute("class", "form-control");
-  wordInput2.setAttribute("placeholder", "Word 2");
-  wordInput2.setAttribute("name", "add_word2");
-  wordInputGroup.appendChild(wordInput2);
+    var wordInput2 = document.createElement("input");
+    wordInput2.setAttribute("type", "text");
+    wordInput2.setAttribute("class", "form-control");
+    wordInput2.setAttribute("placeholder", "Word 2");
+    wordInput2.setAttribute("name", "add_word2");
+    wordInputGroup.appendChild(wordInput2);
+
+  }
+  
 
   var checkButton = document.createElement("button");
   checkButton.classList.add("btn", "btn-success");
@@ -1350,10 +1354,7 @@ function zoomImage(imageId) {
         var points_per_question = document.querySelector('#points_per_question_edit');
         var difficulties = data.difficulties;
         var image_url = data.image
-        var image_url1 = data.image1
-        console.log(image_url)
-        console.log(image_url1)
-        
+        var image_url1 = data.image1  
         for (var i = 0; i < image_url.length; i++) {
             var image = document.getElementById('image'+i);
             image.src = image_url[i]
@@ -1479,6 +1480,7 @@ function zoomImage(imageId) {
           }
         });
         title.value = data.topic
+        topicTitleGlobalVar = data.topic
       })
     }
     </script>
