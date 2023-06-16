@@ -401,10 +401,16 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                     if request.POST['inputField'] in words or request.POST['inputField'] in words1:
                         wordToEdit = True
                         break
+            
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Edit'])
-            difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
-            difficulty.save()
-
+            if difficulty.topic.topic_name == "Homographs" or difficulty.topic.topic_name == "Hyponyms":
+                difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
+                difficulty.words1 = difficulty.words1.replace(request.POST["wordToEdit"], request.POST["inputField"])
+                difficulty.save()
+            else:
+                difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
+                difficulty.save()
+            
             if wordToEdit == False:
                 difficulty_check_all = Difficulty.objects.all()
                 for difficulty_check in difficulty_check_all:
@@ -420,6 +426,15 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                         shutil.copy(image_path, new_filepath)
                                     except (IOError, OSError) as e:
                                         print(f"Error copying file: {e}")
+                                if difficulty.topic.topic_name == "Homographs":
+                                    if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                                        new_filename = filename.replace("HG"+request.POST["wordToEdit"], "HG"+request.POST["inputField"])
+                                        new_filepath = os.path.join(media_root, new_filename)
+                                        image_path = os.path.join(media_root,filename)  
+                                        try:
+                                            shutil.copy(image_path, new_filepath)
+                                        except (IOError, OSError) as e:
+                                            print(f"Error copying file: {e}")
                             break
                     else:
                         words = difficulty_check.words.split(",")
@@ -434,6 +449,15 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                         shutil.copy(image_path, new_filepath)
                                     except (IOError, OSError) as e:
                                         print(f"Error copying file: {e}")
+                                if difficulty.topic.topic_name == "Homographs":
+                                    if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                                        new_filename = filename.replace("HG"+request.POST["wordToEdit"], "HG"+request.POST["inputField"])
+                                        new_filepath = os.path.join(media_root, new_filename)
+                                        image_path = os.path.join(media_root,filename)  
+                                        try:
+                                            shutil.copy(image_path, new_filepath)
+                                        except (IOError, OSError) as e:
+                                            print(f"Error copying file: {e}")
                             break
             pictureIsDelete = False
             difficulty_check_all = Difficulty.objects.all()
@@ -454,6 +478,10 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                     if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                         file_path = os.path.join(settings.MEDIA_ROOT,filename)
                         os.remove(file_path)
+                    if difficulty.topic.topic_name == "Homographs":
+                        if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                            file_path = os.path.join(settings.MEDIA_ROOT,filename)
+                            os.remove(file_path)
             return render(request,'teacherDashboard.html')
     
         elif request.POST.get("wordToEdit1"):
@@ -477,9 +505,13 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                         if request.POST['inputField2'] in words or request.POST['inputField2'] in words1:
                             wordToEdit = True
                             break
-                
-                difficulty.words1 = difficulty.words1.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
-                difficulty.save()
+                if difficulty.topic.topic_name == "Homographs" or difficulty.topic.topic_name == "Hyponyms":
+                    difficulty.words = difficulty.words.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
+                    difficulty.words1 = difficulty.words1.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
+                    difficulty.save()
+                else:
+                    difficulty.words1 = difficulty.words1.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
+                    difficulty.save()
 
                 if wordToEdit == False:
                     difficulty_check_all = Difficulty.objects.all()
@@ -496,6 +528,15 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
                                             print(f"Error copying file: {e}")
+                                    if difficulty.topic.topic_name == "Homographs":
+                                        if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                                            new_filename = filename.replace("HG"+request.POST["wordToEdit1"], "HG"+request.POST["inputField2"])
+                                            new_filepath = os.path.join(media_root, new_filename)
+                                            image_path = os.path.join(media_root,filename)  
+                                            try:
+                                                shutil.copy(image_path, new_filepath)
+                                            except (IOError, OSError) as e:
+                                                print(f"Error copying file: {e}")
                                 break
                         else:
                             words = difficulty_check.words.split(",")
@@ -510,6 +551,15 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
                                             print(f"Error copying file: {e}")
+                                    if difficulty.topic.topic_name == "Homographs":
+                                        if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
+                                            new_filename = filename.replace("HG"+request.POST["wordToEdit1"], "HG"+request.POST["inputField2"])
+                                            new_filepath = os.path.join(media_root, new_filename)
+                                            image_path = os.path.join(media_root,filename)  
+                                            try:
+                                                shutil.copy(image_path, new_filepath)
+                                            except (IOError, OSError) as e:
+                                                print(f"Error copying file: {e}")
                                 break
                 pictureIsDelete = False
                 difficulty_check_all = Difficulty.objects.all()
@@ -530,6 +580,10 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                         if request.POST['wordToEdit1'] == os.path.splitext(filename)[0][:-1]:
                             file_path = os.path.join(settings.MEDIA_ROOT,filename)
                             os.remove(file_path)
+                        if difficulty.topic.topic_name == "Homographs":
+                                if "HG"+request.POST['wordToEdit1'] == os.path.splitext(filename)[0][:-1]:
+                                    file_path = os.path.join(settings.MEDIA_ROOT,filename)
+                                    os.remove(file_path)
             return render(request,'teacherDashboard.html')
         
         elif request.POST.get("wordToDelete"):
