@@ -671,13 +671,13 @@ label{
                 {% endfor %}
               
               </div>
-              <div class="form-group">
+              <div class="form-group" id="wordNumber2">
                 <label for="topicWords3">Words2</label>
                 <div class="input-group">
                   <select class="form-control" id="topicWords3" name="topicWords1"></select>
                   <button class="btn btn-primary" onclick="showInputField2()">Edit</button>
                 </div>
-              </div>
+              </div>  
               
               <div id="inputFieldContainer2" style="display: none;">
                 <label for="inputField2">Edit Word:</label>
@@ -699,8 +699,8 @@ label{
                   </div>
                 </div>
               </div>
-              
-              <div class="form-group">
+                
+              <div class="form-group" id="choiceNumber2">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="secondchoice_edit1" placeholder="Choice 1" name="secondchoice1">
                 <input type="text" class="form-control" id="secondchoice_edit2" placeholder="Choice 2" name="secondchoice2">
@@ -1330,17 +1330,29 @@ function zoomImage(imageId) {
           }   
         }
         var pictures = document.getElementById("pictures1");
+        var wordNumber2 = document.getElementById("wordNumber2")
+        var choiceNumber2 = document.getElementById("choiceNumber2")
         if (data.topic === "Synonyms") {
           pictures.style.display = "none";
         }
-        else {
-          pictures.style.display = "flex";
+        else if (data.topic === "Hyponyms") {
+          pictures.style.display = "none";
+          wordNumber2.style.display = "none";
+          choiceNumber2.style.display = "none";
         }
+        else{
+          pictures.style.display = "flex";
+          wordNumber2.style.display = "block";
+          choiceNumber2.style.display = "block";
+        }
+
         // const altId = document.querySelector('#alt-id-update');
         var points_per_question = document.querySelector('#points_per_question_edit');
         var difficulties = data.difficulties;
         var image_url = data.image
         var image_url1 = data.image1
+        console.log(image_url)
+        console.log(image_url1)
         
         for (var i = 0; i < image_url.length; i++) {
             var image = document.getElementById('image'+i);
