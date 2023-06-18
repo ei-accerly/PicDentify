@@ -634,6 +634,39 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                         image_path = os.path.join(media_root,filename)  
                         os.remove(image_path)
             return render(request,'teacherDashboard.html')
+        
+        elif request.POST.get("wordToDelete1"):
+
+            wordToDelete = False
+            difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord2Delete'])
+            
+            wordArray = difficulty.words.split(",")
+            wordArray1 = difficulty.words1.split(",")
+            index = wordArray1.index(request.POST["wordToDelete1"])
+            wordArray1.remove(request.POST["wordToDelete1"])
+            wordArray.pop(index)
+            difficulty.words = ",".join(wordArray)
+            difficulty.words1 = ",".join(wordArray1)
+            difficulty.save()
+            difficulty_check_all = Difficulty.objects.all()
+            for difficulty_check in difficulty_check_all:
+                if difficulty_check.topic.topic_name == "Synonyms":
+                    words = difficulty_check.words.split(",")
+                    if request.POST["wordToDelete1"] in words:
+                        wordToDelete = True
+                        break
+                else:
+                    words = difficulty_check.words.split(",")
+                    words1 = difficulty_check.words1.split(",")
+                    if request.POST["wordToDelete1"] in words or request.POST["wordToDelete1"] in words1:
+                        wordToDelete = True
+                        break
+            if wordToDelete == False:
+                for filename in os.listdir(media_root):
+                    if request.POST['wordToDelete1'] == os.path.splitext(filename)[0][:-1] or "HG"+request.POST['wordToDelete1'] == os.path.splitext(filename)[0][:-1]:
+                        image_path = os.path.join(media_root,filename)  
+                        os.remove(image_path)
+            return render(request,'teacherDashboard.html')
 
 
 class StudentDashboard(TemplateView):
