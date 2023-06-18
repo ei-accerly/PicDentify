@@ -805,6 +805,25 @@ label{
       });
 
   }
+
+  function deleteInput2() {
+      var myForm = document.querySelector("#editWord2");
+      var formData = new FormData(myForm);
+      formData.append("wordToDelete1", document.getElementById("selectedWord2").value);
+      var title_id = document.querySelector('#topicId');
+      formData.append("topicIdWord2Delete", title_id.value);
+      
+      fetch('/dashboard/', {
+        method: 'POST',
+        body: formData
+      }).then(function() {
+        fetchTopicDetails(topicIdFetch);
+        var inputFieldContainer = document.getElementById("inputFieldContainer2");
+        inputFieldContainer.style.display = "none";
+        document.getElementById("inputField2").value = ""
+      });
+
+  }
   // Function to retrieve the value of a cookie
 function getCookie(name) {
   var cookieValue = null;
