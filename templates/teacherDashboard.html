@@ -865,8 +865,6 @@ addButton.addEventListener("click", function(event) {
     wordInputGroup.appendChild(wordInput2);
 
   }
-  
-
   var checkButton = document.createElement("button");
   checkButton.classList.add("btn", "btn-success");
   checkButton.innerHTML = '<i class="fas fa-check"></i>';
@@ -940,7 +938,6 @@ addButton.addEventListener("click", function(event) {
       document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
           var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
-
           var fileInput = document.querySelector(`input[name="picture-${fileId}"]`);
           var saveButton = document.getElementById(`save-button-${fileId}`);
           var previewImage = document.getElementById(`image${fileId}`);
@@ -974,8 +971,15 @@ addButton.addEventListener("click", function(event) {
               formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
             } else {
               var word2Value = document.querySelector('#selectedWord2'); 
-              formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+              if (topicTitleGlobalVar == "Homographs") {
+                formData.append("word", "HG"+word2Value.value + (parseInt(fileId) - 4).toString())
+              }
+              else {
+                formData.append("word", word2Value.value + (parseInt(fileId) - 4).toString())
+              }
+
             }
+            formData.append("imagePos", fileId);
             fetch('/dashboard/', {
                 method: 'POST',
                 body: formData
@@ -1171,7 +1175,7 @@ function changePicture(selectedOption, selectWords, select, topic) {
     var images_url = data.images
     
     var images_url1 = data.images1
-    for (var i = 0; i < 5; i++) {                    
+    for (var i = 0; i < 5; i++) {             
         var image = document.getElementById('image'+i);     
         if (images_url[i] != undefined) {
 
@@ -1180,11 +1184,10 @@ function changePicture(selectedOption, selectWords, select, topic) {
         }   
         else {
           image.src = "/PicDentify.png"
-        }        
-        
+        }            
     }
-
-    for (var i = 0; i < images_url1.length; i++) {
+  
+    for (var i = 0; i < 5; i++) {
         var j = i + 5;
         var image1 = document.getElementById('image'+j);
         if (images_url1[i] != undefined) {
@@ -1195,6 +1198,8 @@ function changePicture(selectedOption, selectWords, select, topic) {
         } 
        
     }
+
+ 
     var choices_rendered = data.choices
     var choices_rendered1 = data.choices1
     if (choices_rendered != "") {

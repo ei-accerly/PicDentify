@@ -325,12 +325,20 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                 if request.POST.get('fetch_picture').replace(" ","") == os.path.splitext(filename)[0][:-1]:
                     image_path = os.path.join(media_url,filename)  
                     image_urls.append(image_path)
+
+            if difficulty.topic.topic_name != "Homographs":
+                image_urls1 = []
+                for filename in os.listdir(media_root):
+                    if request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
+                        image_path1 = os.path.join(media_url,filename)  
+                        image_urls1.append(image_path1)
+            else:
+                image_urls1 = []
+                for filename in os.listdir(media_root):
+                    if "HG"+request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
+                        image_path1 = os.path.join(media_url,filename)  
+                        image_urls1.append(image_path1)
             
-            image_urls1 = []
-            for filename in os.listdir(media_root):
-                if request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
-                    image_path1 = os.path.join(media_url,filename)  
-                    image_urls1.append(image_path1)
             try:
                 choices = Choices.objects.get(difficulty_id=difficulty.difficulty_id,choices_name=request.POST.get('fetch_picture'))
                 choices_split = choices.word_choices.split(",")
@@ -348,22 +356,21 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             return JsonResponse({'images':image_urls,'images1':image_urls1,'choices':choices_split, 'choices1':choices_split1})
         
         elif request.POST.get('word'):
-            word = request.POST['word']
-            file_pattern = os.path.join(settings.MEDIA_ROOT,f"*{word}*")
-            files = glob.glob(file_pattern)
-
-            if files:
-                # Print or process the found files
-                for file_path in files:
+            print(request.POST['imagePos'])
+            for filename in os.listdir(media_root):
+                if request.POST['word'] == os.path.splitext(filename)[0]:
+                    file_path = os.path.join(settings.MEDIA_ROOT,filename)
                     os.remove(file_path)
-
+                    break
+          
             # Assuming you have a file upload field named 'picture' in your form
-            uploaded_file = request.FILES['picture-' + str(int(word[len(word) - 1]) - 1)]
+            uploaded_file = request.FILES['picture-' + request.POST['imagePos']]
 
             file_path = default_storage.save(uploaded_file.name,uploaded_file)
     
             # Generate a new file name or use a different naming logic
-            new_file_name = word + os.path.splitext(file_path)[1]  # Preserve the file extension
+         
+            new_file_name = request.POST['word'] + os.path.splitext(file_path)[1]  # Preserve the file extension
             full_file_path = os.path.join(settings.MEDIA_ROOT,file_path)
             # Get the full file path of the new file name
             new_full_file_path = os.path.join(settings.MEDIA_ROOT,new_file_name)
@@ -375,15 +382,24 @@ class Dashboard(LoginRequiredMixin,TemplateView):
         
         elif request.POST.get('addAWord'):
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
-            difficulty.words = difficulty.words + "," +request.POST['add_word1']
-            difficulty.words1 = difficulty.words1 + "," +request.POST['add_word2']
-            difficulty.save()
-            difficulty_nextquery = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
-            difficulty_words = difficulty_nextquery.words.split(",")
-            difficulty_words_length = len(difficulty_words)
-            difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
-            difficulty_nextquery.save()
-
+            if difficulty.topic.topic_name != "Homographs" and difficulty.topic.topic_name != "Hyponyms":
+                difficulty.words = difficulty.words + "," +request.POST['add_word1']
+                difficulty.words1 = difficulty.words1 + "," +request.POST['add_word2']
+                difficulty.save()
+                difficulty_nextquery = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
+                difficulty_words = difficulty_nextquery.words.split(",")
+                difficulty_words_length = len(difficulty_words)
+                difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
+                difficulty_nextquery.save()
+            else:
+                difficulty.words = difficulty.words + "," +request.POST['add_word1']
+                difficulty.words1 = difficulty.words1 + "," +request.POST['add_word1']
+                difficulty.save()
+                difficulty_nextquery = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
+                difficulty_words = difficulty_nextquery.words.split(",")
+                difficulty_words_length = len(difficulty_words)
+                difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
+                difficulty_nextquery.save()
             return render(request,'teacherDashboard.html')
         
         elif request.POST.get("wordToEdit"):
