@@ -158,49 +158,56 @@ body {
 
         /* Add your custom styles here */
         .navbar-brand {
-          font-size: 2rem;
-        }
-        .logo-img {
-          max-height: 50px;
-        }
-        .nav-link {
-          text-transform: uppercase;
-          letter-spacing: 1px;
-          color: #fff;
-          font-weight: bold;
-        }
-        .nav-link:hover {
-          color: #007bff;
-        }
-        .dropdown-menu {
-          border: none;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-          border-radius: 0.5rem;
-        }
-        .dropdown-item {
-          font-size: 1rem;
-          letter-spacing: 1px;
-          color: #212529;
-        }
-        .dropdown-item:hover {
-          background-color: #f8f9fa;
-        }
+  font-size: 2rem;
+}
 
-        .navbar-nav .nav-link {
-          transition: background-color 0.3s ease, color 0.3s ease;
-        }
+.logo-img {
+  max-height: 50px;
+}
 
-          .navbar-nav .nav-link:hover {
-          background-color: #5442a1;
-          color: #fff;
-        }
+.nav-link {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  font-weight: bold;
+}
 
-      .navbar {
-        background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
-        border-bottom: 1px solid #1e2b38;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 0;
-      }
+.nav-link:hover {
+  color: #007bff;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0.5rem;
+}
+
+.dropdown-item {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: #212529;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.navbar-nav .nav-link {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #5442a1;
+  color: #fff;
+}
+
+.navbar {
+  background: linear-gradient(to right, #AACBBE, #E2DAAC);
+  border-bottom: 1px solid #1e2b38;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+}
+
 
 .modal {
   display: none; /* Hidden by default */
@@ -598,7 +605,7 @@ label{
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
               <div class="form-group">
-                <button class="btn btn-primary" id="addWordButton">Add Word</button>           
+                <button class="btn btn-primary mb-1" id="addWordButton">Add Word</button>           
                 <form method="post" id="addWordsAtTopic">
                   {% csrf_token %}
                   <div id="wordInputs"></div>
@@ -653,21 +660,23 @@ label{
               <div class="image-container" id="pictures">
                 {% for counter in "01234" %}
                 <div class="image-wrapper">
-                    <img id="image{{ counter }}"  alt="Image {{ counter }}">
-                    <div class="view-icon">
-                        <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
-                        <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
-                          {% csrf_token %}
-                          <label for="profile-picture-{{ counter }}" >
-                            <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
-                            <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
-                          </label>
-                        </form>
-                    </div>
-                    <div class="button-container">
-                      <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
-                    </div>
+                  <img id="image{{ counter }}" alt="Image {{ counter }}">
+                  <div class="view-icon">
+                    <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
+                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                      {% csrf_token %}
+                      <label for="profile-picture-{{ counter }}">
+                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" onchange="showSaveButton('save-button-{{ counter }}')" />
+                        <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
+                      </label>
+                    </form>
                   </div>
+                  <div class="button-container">
+                    <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;" onclick="toggleSaveButton('save-button-{{ counter }}', 'icon-check-{{ counter }}')">Save</button>
+                    <i id="icon-check-{{ counter }}" class="fas fa-check" style="display: none; color: green;"></i>
+                  </div>
+                </div>
+                
                 {% endfor %}
               
               </div>
@@ -713,22 +722,23 @@ label{
                 <!-- Image 1 -->
                 {% for counter in "56789" %}
                 <div class="image-wrapper">
-                    <img id="image{{ counter }}"  alt="Image {{ counter }}">
-                    <div class="view-icon">
-                      <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
-                      <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
-                        {% csrf_token %}
-                            <label for="profile-picture-{{ counter }}">
-                              <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
-                              <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
-                            </label>
-                      </form>
-                    </div>
-                    <div class="button-container">
-                      <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
-                    </div>
-                    
+                  <img id="image{{ counter }}" alt="Image {{ counter }}">
+                  <div class="view-icon">
+                    <i class="fas fa-eye" onclick="zoomImage('image{{ counter }}')"></i>
+                    <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
+                      {% csrf_token %}
+                      <label for="profile-picture-{{ counter }}">
+                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" onchange="showSaveButton('save-button-{{ counter }}')" />
+                        <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
+                      </label>
+                    </form>
                   </div>
+                  <div class="button-container">
+                    <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;" onclick="toggleSaveButton('save-button-{{ counter }}', 'icon-check-{{ counter }}')">Save</button>
+                    <i id="icon-check-{{ counter }}" class="fas fa-check" style="display: none; color: green;"></i>
+                  </div>
+                </div>
+                
                 {% endfor %}
               </div>
             </form>
@@ -746,6 +756,15 @@ label{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+
+  function toggleSaveButton(buttonId, iconId) {
+    const button = document.getElementById(buttonId);
+    const icon = document.getElementById(iconId);
+    
+    button.style.display = 'none';
+    icon.style.display = 'inline';
+  }
+
     var addButton = document.getElementById("addWordButton");
     var wordInputsContainer = document.getElementById("wordInputs");
     var wordInputContainerMain = "";
