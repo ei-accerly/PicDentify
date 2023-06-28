@@ -426,7 +426,12 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             else:
                 difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
                 difficulty.save()
-            
+
+            for filename in os.listdir(media_root):
+                if request.POST["inputField"] == os.path.splitext(filename)[0][:-1]:
+                    wordToEdit == True
+                    break
+
             if wordToEdit == False:
                 difficulty_check_all = Difficulty.objects.all()
                 for difficulty_check in difficulty_check_all:
@@ -676,7 +681,27 @@ class StudentDashboard(TemplateView):
         try:
             user = AdminUser.objects.get(username=request.session['username'])
             topics = Topics.objects.filter(owner_id=user.admin_id)
-            return render(request,'studentDashboard.html',{'topics':topics,'user':user})
+            topic_list = []
+            for topic in topics:
+                easyQuery = Difficulty.objects.get(topic_id = topic.topic_id, difficulty_name='easy')
+                easyWordCount = easyQuery.words.split(',')
+                mediumQuery = Difficulty.objects.get(topic_id = topic.topic_id, difficulty_name='medium')
+                mediumWordCount = mediumQuery.words.split(',')
+                difficultQuery = Difficulty.objects.get(topic_id = topic.topic_id, difficulty_name='difficult')
+                difficultWordCount = difficultQuery.words.split(',')
+                topic_dict = {
+                    'topic_name': topic.topic_name,
+                    'topic_id': topic.topic_id,
+                    'question_answered_easy': easyQuery.answered,
+                    'question_answered_medium':  mediumQuery.answered,
+                    'question_answered_difficult': difficultQuery.answered, 
+                    'easy_word_count': len(easyWordCount),
+                    'medium_word_count': len(mediumWordCount),
+                    'difficult_word_count': len(difficultWordCount),
+                    # Add more attributes as needed
+                }
+                topic_list.append(topic_dict)
+            return render(request,'studentDashboard.html',{'topics':topic_list,'user':user})
         except:
 
             return redirect('/studentlogin/')
@@ -694,10 +719,37 @@ class StudentDashboard(TemplateView):
                 return JsonResponse({'questions': questions.difficulty_id})
             except: 
                 return redirect('/studentdashboard/')
-        else:
+        elif request.POST.get('difficulty') == 'difficult':
             try:
                 questions = Difficulty.objects.get(difficulty_name='difficult',topic_id=request.POST.get('topic_id'))
                 return JsonResponse({'questions': questions.difficulty_id})
+            except: 
+                return redirect('/studentdashboard/')
+        elif request.POST.get('resetdifficulty') == 'easy':
+            try:
+                questions = Difficulty.objects.get(difficulty_name='easy',topic_id=request.POST.get('topic_id_reset'))
+                questions.answered = 0
+                questions.score = 0
+                questions.save()
+                return JsonResponse({'isReset': True})
+            except: 
+                return redirect('/studentdashboard/')
+        elif request.POST.get('resetdifficulty') == 'medium':
+            try:
+                questions = Difficulty.objects.get(difficulty_name='medium',topic_id=request.POST.get('topic_id_reset'))
+                questions.answered = 0
+                questions.score = 0
+                questions.save()
+                return JsonResponse({'isReset': True})
+            except: 
+                return redirect('/studentdashboard/')
+        elif request.POST.get('resetdifficulty') == 'difficult':
+            try:
+                questions = Difficulty.objects.get(difficulty_name='difficult',topic_id=request.POST.get('topic_id_reset'))
+                questions.answered = 0
+                questions.score = 0
+                questions.save()
+                return JsonResponse({'isReset': True})
             except: 
                 return redirect('/studentdashboard/')
 
@@ -748,6 +800,15 @@ class StudentActivity(TemplateView):
         cleaned_words = [word.strip() for word in words]
         words1 = questions.words1.split(',')
         cleaned_words1 = [word.strip() for word in words1]
+
+        if len(words) < questions.answered:
+            questions.answered = len(words)
+            questions.maxpoints = questions.maxpoints - questions.points_per_question
+            questions.save()
+        
+        if questions.score > questions.maxpoints:
+            questions.score = questions.maxpoints
+            questions.save()
 
         def checkTopic():
             result = generate_two_random_numbers()

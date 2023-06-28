@@ -666,7 +666,7 @@ label{
                     <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
                       {% csrf_token %}
                       <label for="profile-picture-{{ counter }}">
-                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" onchange="showSaveButton('save-button-{{ counter }}')" />
+                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                         <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                       </label>
                     </form>
@@ -728,7 +728,7 @@ label{
                     <form method="POST" enctype="multipart/form-data" id="image-change{{ counter }}">
                       {% csrf_token %}
                       <label for="profile-picture-{{ counter }}">
-                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" onchange="showSaveButton('save-button-{{ counter }}')" />
+                        <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                         <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                       </label>
                     </form>

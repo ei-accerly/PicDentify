@@ -8,7 +8,7 @@
 	<!-- Bootstrap CSS -->
 	<!-- CSS files -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<!-- JavaScript files -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNS3vx" crossorigin="anonymous"></script>
@@ -72,28 +72,55 @@
               <div class="row">
                 <div class="col-4">
                   <div class="level easy">
-                    <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
+                    {% if item.question_answered_easy >= item.easy_word_count %}
+                      <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Show Score</a>
+                    {% else %}
+                      <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
+                    {% endif %}
+                    <a style="color: #2c3e50;" id="easyreset{{item.topic_id}}" class="level-button" onclick="showResetModal('easyreset{{item.topic_id}}')">Reset</a>
                     <form id="ez{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="easy" name="easy{{item.topic_id}}">
+                    </form>
+                    <form id="ezreset{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="easyreset" name="easyreset{{item.topic_id}}">
                     </form>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="level medium">
-                    <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
+                    {% if item.question_answered_medium >= item.medium_word_count %}
+                      <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Show Score</a>
+                    {% else %}
+                      <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
+                    {% endif %}
+                    <a style="color: #2c3e50;" id="mediumreset{{item.topic_id}}" class="level-button" onclick="showResetModal('mediumreset{{item.topic_id}}')">Reset</a>
                     <form id="med{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="medium" name="medium{{item.topic_id}}">
+                    </form>
+                    <form id="medreset{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="mediumreset" name="mediumreset{{item.topic_id}}">
                     </form>
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="level hard">
-                    <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
+                    {% if item.question_answered_difficult >= item.difficult_word_count %}
+                      <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Show Score</a>
+                    {% else %}
+                      <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
+                    {% endif %}
+                    <a style="color: #2c3e50;" id="difficultreset{{item.topic_id}}" class="level-button" onclick="showResetModal('difficultreset{{item.topic_id}}')">Reset</a>
                     <form id="dif{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="difficult" name="difficult{{item.topic_id}}">
+                    </form>
+                    <form id="difreset{{item.topic_id}}"> 
+                      {% csrf_token %}
+                      <input hidden value="difficultreset" name="difficultreset{{item.topic_id}}">
                     </form>
                   </div>
                 </div>
@@ -119,7 +146,27 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="confirmButton" onclick="navigateTo()">Confirm</button>
+            <button type="button" class="btn btn-primary" id="confirmButton">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resetModalLabel">Reset Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div style="color:black;" class="modal-body">
+            Are you sure you want to reset this difficulty?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-primary" id="resetButton">Reset</button>
           </div>
         </div>
       </div>
@@ -481,6 +528,11 @@ function showConfirmationModal(levelId) {
   $('#confirmationModal').modal('show');
 }
 
+function showResetModal(levelId) {
+  $('#resetButton').data('level-id', levelId);
+  $('#resetModal').modal('show');
+}
+
 
 function navigateTo(form_id, topic_id, difficulty) {
   var myForm = document.querySelector(form_id);
@@ -503,7 +555,38 @@ function navigateTo(form_id, topic_id, difficulty) {
     console.error(error)
   })
 }
-
+function resetDifficulty(form_id, topic_id, difficulty) {
+  var myForm = document.querySelector(form_id);
+  var formData = new FormData(myForm);
+  formData.append('resetdifficulty', difficulty);
+  formData.append('topic_id_reset', topic_id);
+  
+  fetch('/studentdashboard/', {
+    method: 'POST',
+    body: formData
+  }).then(function(response) {
+    // Show success message using SweetAlert
+    swal({
+      title: "Successfully Reset!",
+      text: "Reload the page to synch with the data",
+      icon: "success",
+      buttons: {
+        login: {
+          text: "Ok",
+          value: "login",
+          className: "btn btn-primary",
+        }
+      }
+    }).then((value) => {
+      if (value === "login") {
+        // Reload the page
+        location.reload();
+      }
+    });
+  }).catch(function(error) {
+    console.error('Error:', error);
+  });
+}
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -550,6 +633,58 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 navigateTo("#dif"+stringReplace, stringReplace, "difficult")
+              });  
+              
+          });
+        })
+    })
+
+
+    
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll("[id^='easyreset']").forEach(function(el) {
+      // Add an event listener to each element
+      el.addEventListener("click", function(event) {
+        stringReplace = el.id.replace("easyreset", "")
+        event.preventDefault();
+        // Add event listener to confirm button
+        const resetButton = document.getElementById("resetButton");
+        resetButton.addEventListener("click", function(event) {
+          event.preventDefault();
+          // Call navigateTo function here
+          resetDifficulty("#ezreset"+stringReplace, stringReplace, "easy")
+        });
+        
+      });
+    })
+  })
+  document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id^='mediumreset']").forEach(function(el) {
+            // Add an event listener to each element
+            el.addEventListener("click", function(event) {
+              stringReplace = el.id.replace("mediumreset", "")
+              event.preventDefault();
+              const resetButton = document.getElementById("resetButton");
+              resetButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                // Call navigateTo function here
+                resetDifficulty("#medreset"+stringReplace, stringReplace, "medium")
+              });  
+          });
+        })
+    })
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id^='difficultreset']").forEach(function(el) {
+            // Add an event listener to each element
+            el.addEventListener("click", function(event) {
+              stringReplace = el.id.replace("difficultreset", "")
+              event.preventDefault();
+              const resetButton = document.getElementById("resetButton");
+              resetButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                // Call navigateTo function here
+                resetDifficulty("#difreset"+stringReplace, stringReplace, "difficult")
               });  
               
           });
