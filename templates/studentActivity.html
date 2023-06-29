@@ -875,7 +875,7 @@ for (var i = 0; i < buttons.length; i++) {
         // Retrieve the value of the clicked button
         event.preventDefault(); 
         var value = this.value;
-        
+        console.log("hey")
         var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
         formData.append("choice", value),
