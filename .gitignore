@@ -1,2 +1,5 @@
 **/migrations/
 venv
+/picdentify/settings.py
+/pages/urls.py
+/picdentify/urls.py
