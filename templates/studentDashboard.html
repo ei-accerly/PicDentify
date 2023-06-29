@@ -73,11 +73,13 @@
                 <div class="col-4">
                   <div class="level easy">
                     {% if item.question_answered_easy >= item.easy_word_count %}
-                      <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Show Score</a>
+                    <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">View Score</button>
+
                     {% else %}
                       <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
                     {% endif %}
-                    <a style="color: #2c3e50;" id="easyreset{{item.topic_id}}" class="level-button" onclick="showResetModal('easyreset{{item.topic_id}}')">Reset</a>
+                    <button style="background-color: #2c3e50; color: #ffffff; margin-top: 0.5rem; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="easyreset{{item.topic_id}}" class="level-button" onclick="showResetModal('easyreset{{item.topic_id}}')">Reset</button>
+
                     <form id="ez{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="easy" name="easy{{item.topic_id}}">
@@ -91,11 +93,12 @@
                 <div class="col-4">
                   <div class="level medium">
                     {% if item.question_answered_medium >= item.medium_word_count %}
-                      <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Show Score</a>
+                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
                     {% endif %}
-                    <a style="color: #2c3e50;" id="mediumreset{{item.topic_id}}" class="level-button" onclick="showResetModal('mediumreset{{item.topic_id}}')">Reset</a>
+                    <button style="background-color: #2c3e50; margin-top: 0.5rem; color: #ffffff; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="mediumreset{{item.topic_id}}" class="level-button" onclick="showResetModal('mediumreset{{item.topic_id}}')">Reset</button>
+
                     <form id="med{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="medium" name="medium{{item.topic_id}}">
@@ -109,11 +112,12 @@
                 <div class="col-4">
                   <div class="level hard">
                     {% if item.question_answered_difficult >= item.difficult_word_count %}
-                      <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Show Score</a>
+                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
                     {% endif %}
-                    <a style="color: #2c3e50;" id="difficultreset{{item.topic_id}}" class="level-button" onclick="showResetModal('difficultreset{{item.topic_id}}')">Reset</a>
+                    <button style="background-color: #2c3e50; margin-top: 0.5rem; color: #ffffff; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="difficultreset{{item.topic_id}}" class="level-button" onclick="showResetModal('difficultreset{{item.topic_id}}')">Reset</button>
+
                     <form id="dif{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="difficult" name="difficult{{item.topic_id}}">
