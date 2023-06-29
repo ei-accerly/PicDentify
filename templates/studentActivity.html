@@ -625,6 +625,9 @@ button.btn.btn-primary:hover {
     </div>
 	</div>
   {% else %}
+  <form method="post" id="nextQuestion">
+    {% csrf_token %}
+  </form>
   {% if questions.topic.topic_name != "Homographs" and questions.topic.topic_name != "Hyponyms" %}
 	<div class="quiz-container">
 	  <div id="level-container">
@@ -710,7 +713,7 @@ button.btn.btn-primary:hover {
       <div id="choices-container1" style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
         <form id="checkAnswer1">
           {% csrf_token %}
-          {% for choice in choices1 %}
+          {% for choice in choices %}
           <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
           {% endfor %}
         </form>
@@ -875,7 +878,6 @@ for (var i = 0; i < buttons.length; i++) {
         // Retrieve the value of the clicked button
         event.preventDefault(); 
         var value = this.value;
-        console.log("hey")
         var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
         formData.append("choice", value),
@@ -1009,7 +1011,7 @@ function checkBothAnswer(answer1, answer2) {
 }
 
 function nextQuestion(isCorrect) {
-  var myForm = document.querySelector("#checkAnswer");
+  var myForm = document.querySelector("#nextQuestion");
   var formData = new FormData(myForm);
   formData.append("isCorrect", isCorrect),
   fetch('/studentdashboard/studentactivity/', {
@@ -1021,6 +1023,8 @@ function nextQuestion(isCorrect) {
     }, 2000);
   });
 }
+
+
 
 var container1 = document.getElementById('choices-container1');
 
@@ -1034,7 +1038,7 @@ for (var i = 0; i < buttons1.length; i++) {
         
         var myForm = document.querySelector("#checkAnswer1");
         var formData = new FormData(myForm);
-        formData.append("choice", value),
+        formData.append("choice1", value),
         formData.append("topic", topic)
         fetch('/studentdashboard/studentactivity/', {
             method: 'POST',

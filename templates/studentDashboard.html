@@ -73,7 +73,7 @@
                 <div class="col-4">
                   <div class="level easy">
                     {% if item.question_answered_easy >= item.easy_word_count %}
-                    <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">View Score</button>
+                    <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="easy{{item.topic_id}}" class="level-button" onclick="showScore('easy{{item.topic_id}}', 'easy')">View Score</button>
 
                     {% else %}
                       <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
@@ -93,7 +93,7 @@
                 <div class="col-4">
                   <div class="level medium">
                     {% if item.question_answered_medium >= item.medium_word_count %}
-                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">View Score</button>
+                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="medium{{item.topic_id}}" class="level-button" onclick="showScore('medium{{item.topic_id}}', 'medium')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
                     {% endif %}
@@ -112,7 +112,7 @@
                 <div class="col-4">
                   <div class="level hard">
                     {% if item.question_answered_difficult >= item.difficult_word_count %}
-                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">View Score</button>
+                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="difficult{{item.topic_id}}" class="level-button" onclick="showScore('difficult{{item.topic_id}}', 'difficult')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
                     {% endif %}
@@ -592,6 +592,15 @@ function resetDifficulty(form_id, topic_id, difficulty) {
   });
 }
 
+function showScore(buttonId, difficulty) {
+  stringReplace = buttonId.replace(difficulty, "")
+  if (difficulty == 'easy')
+    navigateTo("#ez"+stringReplace, stringReplace, difficulty)
+  else if (difficulty == 'medium')
+    navigateTo("#med"+stringReplace, stringReplace, difficulty)
+  else 
+    navigateTo("#dif"+stringReplace, stringReplace, difficulty)
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("[id^='easy']").forEach(function(el) {
@@ -622,6 +631,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // Call navigateTo function here
                 navigateTo("#med"+stringReplace, stringReplace, "medium")
               });  
+  
           });
         })
     })
@@ -637,8 +647,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 navigateTo("#dif"+stringReplace, stringReplace, "difficult")
-              });  
-              
+              });           
           });
         })
     })
