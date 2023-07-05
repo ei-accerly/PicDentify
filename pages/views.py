@@ -921,13 +921,25 @@ class StudentActivity(TemplateView):
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
+            
+            if request.POST.get('choice') != cleaned_words[persistent_variable-1]:
+                return JsonResponse({'answerVerify': False,'correct_answer':cleaned_words[persistent_variable-1]})
+            else:
+                return JsonResponse({'answerVerify': True,'points_per_question':questions.points_per_question})
+        elif request.POST.get('choice1'):
+            persistent_variable = cache.get('my_persistent_variable')
+            csrf_token = request.META.get('HTTP_COOKIE','').split(';')
+            try:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
+            except:
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
 
             words1 = questions.words1.split(',')
 
             cleaned_words1 = [word.strip() for word in words1]
             
-            if request.POST.get('choice') not in cleaned_words and request.POST.get('choice') not in cleaned_words1:
-                return JsonResponse({'answerVerify': False,'correct_answer':cleaned_words[persistent_variable-1]})
+            if request.POST.get('choice1') != cleaned_words1[persistent_variable-1]:
+                return JsonResponse({'answerVerify': False,'correct_answer':cleaned_words1[persistent_variable-1]})
             else:
                 return JsonResponse({'answerVerify': True,'points_per_question':questions.points_per_question})
         else:
