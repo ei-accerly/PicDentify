@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -723,7 +724,7 @@ label{
                     <button class="btn btn-danger" type="button" onclick="cancelInput2()">
                       <i class="fas fa-times"></i>
                     </button>
-                    <button class="btn btn-dark" type="button" onclick="deleteInput2()" data-bs-toggle="modal" data-bs-target="#deleteModal2">
+                    <button class="btn btn-dark" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal2">
                       <i class="fas fa-trash"></i>
                     </button>
 
@@ -810,6 +811,7 @@ label{
     var wordInputContainerMain = "";
     var topicIdFetch = "";
     var topicTitleGlobalVar = "";
+    var wordInputContainer = "";
     function saveInput() {
       var myForm = document.querySelector("#editWord1");
       var formData = new FormData(myForm);
@@ -861,11 +863,13 @@ label{
         var inputFieldContainer = document.getElementById("inputFieldContainer");
         inputFieldContainer.style.display = "none";
         document.getElementById("inputField").value = ""
+        $('#confirmModal').modal('hide');
       });
 
   }
 
   function deleteInput2() {
+   
       var myForm = document.querySelector("#editWord2");
       var formData = new FormData(myForm);
       formData.append("wordToDelete1", document.getElementById("selectedWord2").value);
@@ -880,6 +884,7 @@ label{
         var inputFieldContainer = document.getElementById("inputFieldContainer2");
         inputFieldContainer.style.display = "none";
         document.getElementById("inputField2").value = ""
+        $('#deleteModal2').modal('hide');
       });
   }
   // Function to retrieve the value of a cookie
@@ -914,7 +919,7 @@ addButton.addEventListener("click", function(event) {
   csrfTokenInput.value = csrfToken;
   form.appendChild(csrfTokenInput);
 
-  var wordInputContainer = document.createElement("div");
+  wordInputContainer = document.createElement("div");
   wordInputContainer.classList.add("form-group");
 
   var wordInputGroup = document.createElement("div");
@@ -986,9 +991,6 @@ addButton.addEventListener("click", function(event) {
   wordInputsContainer.appendChild(form);
 });
 
-
-
-
     function setRequired(inputElement) {
         var value = inputElement.value.trim();
         if (value.length > 0) {
@@ -1011,7 +1013,6 @@ addButton.addEventListener("click", function(event) {
         }
       }
     
-   
       document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
           var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
@@ -1091,6 +1092,7 @@ addButton.addEventListener("click", function(event) {
 
       if (selectedValue2 !== "") {
         inputFieldContainer2.style.display = "block";
+        document.getElementById("inputField2").value = document.getElementById("selectedWord2").value
       } else {
         inputFieldContainer2.style.display = "none";
       }
@@ -1099,6 +1101,7 @@ addButton.addEventListener("click", function(event) {
       event.preventDefault()
       var inputFieldContainer = document.getElementById("inputFieldContainer2");
       inputFieldContainer.style.display = "none";
+      document.getElementById("inputField2").value = "";
     }
     
 
@@ -1546,6 +1549,8 @@ function zoomImage(imageId) {
             changePicture(selectedOption, selectWords1.options[selectWords.selectedIndex].value, select.options[select.selectedIndex].value, data.topic);
             selectWords1.selectedIndex = selectWords.selectedIndex;
             word2Value.value = selectWords1.options[selectWords1.selectedIndex].value
+            document.getElementById("inputField").value = document.getElementById("selectedWord1").value
+            document.getElementById("inputField2").value = document.getElementById("selectedWord2").value
           }
         });
 
@@ -1559,6 +1564,8 @@ function zoomImage(imageId) {
             changePicture(selectWords.options[selectWords1.selectedIndex].value, selectedOption, select.options[select.selectedIndex].value, data.topic);
             selectWords.selectedIndex = selectWords1.selectedIndex;
             word1Value.value = selectWords.options[selectWords.selectedIndex].value
+            document.getElementById("inputField").value = document.getElementById("selectedWord1").value
+            document.getElementById("inputField2").value = document.getElementById("selectedWord2").value
           }
         });
         title.value = data.topic

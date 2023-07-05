@@ -243,7 +243,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             try: 
                 choices1 = Choices.objects.get(difficulty_id=request.POST['topicId'],choices_name=request.POST['difficultyWord2'])
                 choices_input1 = request.POST['word_choices2']
-                choices1.word_choices = choices_input
+                choices1.word_choices = choices_input1
                 choices1.save()
 
             except:
