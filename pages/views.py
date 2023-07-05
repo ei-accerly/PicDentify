@@ -30,7 +30,7 @@ def protected_view(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
-# Create your views here.       
+# Create your views here.
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
     def get(self,request):
@@ -38,10 +38,10 @@ class LoginPage(TemplateView):
             AdminKey.objects.get(pk=1)
         except:
             AdminKey.objects.create(key_id=1,admin_key="deped143")
-        
+
         admins = AdminUser.objects.all()
         return render(request,'loginPage.html',{'admins': admins})
-    
+
     def post(self,request):
         def generate_random_string():
             characters = string.ascii_letters + string.digits
@@ -70,8 +70,8 @@ class LoginPage(TemplateView):
                                                    password=request.POST['password'],user_key=teacher_key)
                 admin_user.save()
             else:
-                messages.success(request,("Password didn't match!"))	
-                return redirect('/')	
+                messages.success(request,("Password didn't match!"))
+                return redirect('/')
         else:
             username = request.POST['existing_user']
             password = request.POST['password_existing']
@@ -81,10 +81,10 @@ class LoginPage(TemplateView):
                 request.session['username'] = username
                 request.session.save()
             return render(request,'teacherDashboard.html')
-            
+
 class Dashboard(LoginRequiredMixin,TemplateView):
     template_name = 'teacherDashboard.html'
-    
+
 
     def get(self,request):
         user = AdminUser.objects.get(username=request.session.get('username'))
@@ -209,14 +209,14 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1,difficulty_name='difficult',
                                             words=word_list,topic_id=topic.topic_id,points_per_question=30,maxpoints=150,answered=0,words1=homographs)
                             difficulty_save.save()
-            
+
         create_topics = ["Synonyms","Antonyms","Homonyms","Hyponyms","Homographs"]
         for topic in create_topics:
             create_topic(topic)
         topics = Topics.objects.filter(owner_id=user.admin_id)
         difficulty = Difficulty.objects.all()
         return render(request,'teacherDashboard.html',{'user_key':user.user_key,'topics': topics,'difficulty':difficulty})
-    
+
     def post(self,request):
         user = AdminUser.objects.get(username=request.session.get('username'))
         difficulty = Difficulty.objects.all()
@@ -228,7 +228,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             difficulties.points_per_question = request.POST['points_per_question_edit']
             difficulties.maxpoints = int(request.POST['points_per_question_edit']) * int(difficulty_words_length)
             difficulties.save()
-            
+
             try:
                 choices = Choices.objects.get(difficulty_id=request.POST['topicId'],choices_name=request.POST['difficultyWord1'])
                 choices_input = request.POST['word_choices1']
@@ -239,8 +239,8 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                 choices_input = request.POST['word_choices1']
                 choices_save = Choices.objects.create(choices_id=len(choices)+1,choices_name=request.POST['difficultyWord1'],word_choices=choices_input,difficulty_id=request.POST['topicId'])
                 choices_save.save()
-            
-            try: 
+
+            try:
                 choices1 = Choices.objects.get(difficulty_id=request.POST['topicId'],choices_name=request.POST['difficultyWord2'])
                 choices_input1 = request.POST['word_choices2']
                 choices1.word_choices = choices_input1
@@ -255,30 +255,30 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             return JsonResponse({'doneSave': True})
 
         elif request.POST.get('topic_to_edit_samp'):
-            
+
             difficulties = Difficulty.objects.filter(topic_id=request.POST['topic_to_edit_samp'])
             topic = Topics.objects.get(topic_id=request.POST['topic_to_edit_samp'])
             easy_difficulty = Difficulty.objects.get(topic_id=request.POST['topic_to_edit_samp'],difficulty_name="easy")
             easy_difficulty_split = easy_difficulty.words.split(",")
             easy1_difficulty_split = easy_difficulty.words1.split(",")
 
-            
+
             image_urls = []
             for filename in os.listdir(media_root):
                 if easy_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
-                    image_path = os.path.join(media_url,filename)  
+                    image_path = os.path.join(media_url,filename)
                     image_urls.append(image_path)
             if topic.topic_name != "Homographs":
                 image_urls1 = []
                 for filename in os.listdir(media_root):
                     if easy1_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
-                        image_path1 = os.path.join(media_url,filename)  
+                        image_path1 = os.path.join(media_url,filename)
                         image_urls1.append(image_path1)
             else:
                 image_urls1 = []
                 for filename in os.listdir(media_root):
                     if "HG"+easy1_difficulty_split[0] == os.path.splitext(filename)[0][:-1]:
-                        image_path1 = os.path.join(media_url,filename)  
+                        image_path1 = os.path.join(media_url,filename)
                         image_urls1.append(image_path1)
 
             difficulties_data = []
@@ -288,14 +288,14 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             try:
                 choices = Choices.objects.get(difficulty_id=easy_difficulty.difficulty_id,choices_name=easy_difficulty_split[0])
                 choices_split = choices.word_choices.split(",")
-                
+
             except:
                 choices_split = ""
 
             try:
                 choices1 = Choices.objects.get(difficulty_id=easy_difficulty.difficulty_id,choices_name=easy1_difficulty_split[0])
                 choices_split1 = choices1.word_choices.split(",")
-                
+
             except:
                 choices_split1 = ""
             # Return a JSON response with both the topic and difficulties data
@@ -315,46 +315,46 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                             words=request.POST['words_list'],topic_id=topic.topic_id,points_per_question=request.POST['points_per_question'])
 
             return render(request,'teacherDashboard.html')
-        
+
         elif request.POST.get('fetch_picture'):
             isTopic = Topics.objects.get(topic_name=request.POST['topic_to_get'])
             difficulty = Difficulty.objects.get(difficulty_name=request.POST['difficulty_to_get'],topic_id=isTopic.topic_id)
-         
+
             image_urls = []
             for filename in os.listdir(media_root):
                 if request.POST.get('fetch_picture').replace(" ","") == os.path.splitext(filename)[0][:-1]:
-                    image_path = os.path.join(media_url,filename)  
+                    image_path = os.path.join(media_url,filename)
                     image_urls.append(image_path)
 
             if difficulty.topic.topic_name != "Homographs":
                 image_urls1 = []
                 for filename in os.listdir(media_root):
                     if request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
-                        image_path1 = os.path.join(media_url,filename)  
+                        image_path1 = os.path.join(media_url,filename)
                         image_urls1.append(image_path1)
             else:
                 image_urls1 = []
                 for filename in os.listdir(media_root):
                     if "HG"+request.POST.get('fetch_picture1').replace(" ","") == os.path.splitext(filename)[0][:-1]:
-                        image_path1 = os.path.join(media_url,filename)  
+                        image_path1 = os.path.join(media_url,filename)
                         image_urls1.append(image_path1)
-            
+
             try:
                 choices = Choices.objects.get(difficulty_id=difficulty.difficulty_id,choices_name=request.POST.get('fetch_picture'))
                 choices_split = choices.word_choices.split(",")
-                
+
             except:
                 choices_split = ""
 
             try:
                 choices1 = Choices.objects.get(difficulty_id=difficulty.difficulty_id,choices_name=request.POST.get('fetch_picture1'))
                 choices_split1 = choices1.word_choices.split(",")
-                
+
             except:
                 choices_split1 = ""
 
             return JsonResponse({'images':image_urls,'images1':image_urls1,'choices':choices_split, 'choices1':choices_split1})
-        
+
         elif request.POST.get('word'):
             print(request.POST['imagePos'])
             for filename in os.listdir(media_root):
@@ -362,14 +362,14 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                     file_path = os.path.join(settings.MEDIA_ROOT,filename)
                     os.remove(file_path)
                     break
-          
+
             # Assuming you have a file upload field named 'picture' in your form
             uploaded_file = request.FILES['picture-' + request.POST['imagePos']]
 
             file_path = default_storage.save(uploaded_file.name,uploaded_file)
-    
+
             # Generate a new file name or use a different naming logic
-         
+
             new_file_name = request.POST['word'] + os.path.splitext(file_path)[1]  # Preserve the file extension
             full_file_path = os.path.join(settings.MEDIA_ROOT,file_path)
             # Get the full file path of the new file name
@@ -379,7 +379,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             os.rename(full_file_path,new_full_file_path)
 
             return render(request,'teacherDashboard.html')
-        
+
         elif request.POST.get('addAWord'):
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdToBeAdded'])
             if difficulty.topic.topic_name != "Homographs" and difficulty.topic.topic_name != "Hyponyms":
@@ -401,7 +401,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                 difficulty_nextquery.maxpoints = int(difficulty_nextquery.points_per_question) * int(difficulty_words_length)
                 difficulty_nextquery.save()
             return render(request,'teacherDashboard.html')
-        
+
         elif request.POST.get("wordToEdit"):
             wordToEdit = False
             difficulty_check_all = Difficulty.objects.all()
@@ -417,7 +417,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                     if request.POST['inputField'] in words or request.POST['inputField'] in words1:
                         wordToEdit = True
                         break
-            
+
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Edit'])
             if difficulty.topic.topic_name == "Homographs" or difficulty.topic.topic_name == "Hyponyms":
                 difficulty.words = difficulty.words.replace(request.POST["wordToEdit"], request.POST["inputField"])
@@ -442,7 +442,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                 if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                     new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
                                     new_filepath = os.path.join(media_root, new_filename)
-                                    image_path = os.path.join(media_root,filename)  
+                                    image_path = os.path.join(media_root,filename)
                                     try:
                                         shutil.copy(image_path, new_filepath)
                                     except (IOError, OSError) as e:
@@ -451,7 +451,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                     if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                         new_filename = filename.replace("HG"+request.POST["wordToEdit"], "HG"+request.POST["inputField"])
                                         new_filepath = os.path.join(media_root, new_filename)
-                                        image_path = os.path.join(media_root,filename)  
+                                        image_path = os.path.join(media_root,filename)
                                         try:
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
@@ -465,7 +465,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                 if request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                     new_filename = filename.replace(request.POST["wordToEdit"], request.POST["inputField"])
                                     new_filepath = os.path.join(media_root, new_filename)
-                                    image_path = os.path.join(media_root,filename)  
+                                    image_path = os.path.join(media_root,filename)
                                     try:
                                         shutil.copy(image_path, new_filepath)
                                     except (IOError, OSError) as e:
@@ -474,7 +474,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                     if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                         new_filename = filename.replace("HG"+request.POST["wordToEdit"], "HG"+request.POST["inputField"])
                                         new_filepath = os.path.join(media_root, new_filename)
-                                        image_path = os.path.join(media_root,filename)  
+                                        image_path = os.path.join(media_root,filename)
                                         try:
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
@@ -504,7 +504,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                             file_path = os.path.join(settings.MEDIA_ROOT,filename)
                             os.remove(file_path)
             return render(request,'teacherDashboard.html')
-    
+
         elif request.POST.get("wordToEdit1"):
             wordToEdit = False
             difficulty_check_all = Difficulty.objects.all()
@@ -544,7 +544,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                     if request.POST['wordToEdit1'] == os.path.splitext(filename)[0][:-1]:
                                         new_filename = filename.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
                                         new_filepath = os.path.join(media_root, new_filename)
-                                        image_path = os.path.join(media_root,filename)  
+                                        image_path = os.path.join(media_root,filename)
                                         try:
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
@@ -553,7 +553,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                         if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                             new_filename = filename.replace("HG"+request.POST["wordToEdit1"], "HG"+request.POST["inputField2"])
                                             new_filepath = os.path.join(media_root, new_filename)
-                                            image_path = os.path.join(media_root,filename)  
+                                            image_path = os.path.join(media_root,filename)
                                             try:
                                                 shutil.copy(image_path, new_filepath)
                                             except (IOError, OSError) as e:
@@ -567,7 +567,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                     if request.POST['wordToEdit1'] == os.path.splitext(filename)[0][:-1]:
                                         new_filename = filename.replace(request.POST["wordToEdit1"], request.POST["inputField2"])
                                         new_filepath = os.path.join(media_root, new_filename)
-                                        image_path = os.path.join(media_root,filename)  
+                                        image_path = os.path.join(media_root,filename)
                                         try:
                                             shutil.copy(image_path, new_filepath)
                                         except (IOError, OSError) as e:
@@ -576,7 +576,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                         if "HG"+request.POST['wordToEdit'] == os.path.splitext(filename)[0][:-1]:
                                             new_filename = filename.replace("HG"+request.POST["wordToEdit1"], "HG"+request.POST["inputField2"])
                                             new_filepath = os.path.join(media_root, new_filename)
-                                            image_path = os.path.join(media_root,filename)  
+                                            image_path = os.path.join(media_root,filename)
                                             try:
                                                 shutil.copy(image_path, new_filepath)
                                             except (IOError, OSError) as e:
@@ -606,12 +606,12 @@ class Dashboard(LoginRequiredMixin,TemplateView):
                                     file_path = os.path.join(settings.MEDIA_ROOT,filename)
                                     os.remove(file_path)
             return render(request,'teacherDashboard.html')
-        
+
         elif request.POST.get("wordToDelete"):
 
             wordToDelete = False
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord1Delete'])
-            
+
             wordArray = difficulty.words.split(",")
             wordArray1 = difficulty.words1.split(",")
             index = wordArray.index(request.POST["wordToDelete"])
@@ -636,15 +636,15 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             if wordToDelete == False:
                 for filename in os.listdir(media_root):
                     if request.POST['wordToDelete'] == os.path.splitext(filename)[0][:-1] or "HG"+request.POST['wordToDelete'] == os.path.splitext(filename)[0][:-1]:
-                        image_path = os.path.join(media_root,filename)  
+                        image_path = os.path.join(media_root,filename)
                         os.remove(image_path)
             return render(request,'teacherDashboard.html')
-        
+
         elif request.POST.get("wordToDelete1"):
 
             wordToDelete = False
             difficulty = Difficulty.objects.get(difficulty_id=request.POST['topicIdWord2Delete'])
-            
+
             wordArray = difficulty.words.split(",")
             wordArray1 = difficulty.words1.split(",")
             index = wordArray1.index(request.POST["wordToDelete1"])
@@ -669,7 +669,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             if wordToDelete == False:
                 for filename in os.listdir(media_root):
                     if request.POST['wordToDelete1'] == os.path.splitext(filename)[0][:-1] or "HG"+request.POST['wordToDelete1'] == os.path.splitext(filename)[0][:-1]:
-                        image_path = os.path.join(media_root,filename)  
+                        image_path = os.path.join(media_root,filename)
                         os.remove(image_path)
             return render(request,'teacherDashboard.html')
 
@@ -694,7 +694,7 @@ class StudentDashboard(TemplateView):
                     'topic_id': topic.topic_id,
                     'question_answered_easy': easyQuery.answered,
                     'question_answered_medium':  mediumQuery.answered,
-                    'question_answered_difficult': difficultQuery.answered, 
+                    'question_answered_difficult': difficultQuery.answered,
                     'easy_word_count': len(easyWordCount),
                     'medium_word_count': len(mediumWordCount),
                     'difficult_word_count': len(difficultWordCount),
@@ -705,25 +705,25 @@ class StudentDashboard(TemplateView):
         except:
 
             return redirect('/studentlogin/')
-        
+
     def post(self,request):
         if request.POST.get('difficulty') == 'easy':
             try:
                 questions = Difficulty.objects.get(difficulty_name='easy',topic_id=request.POST.get('topic_id'))
                 return JsonResponse({'questions': questions.difficulty_id})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
         elif request.POST.get('difficulty') == 'medium':
             try:
                 questions = Difficulty.objects.get(difficulty_name='medium',topic_id=request.POST.get('topic_id'))
                 return JsonResponse({'questions': questions.difficulty_id})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
         elif request.POST.get('difficulty') == 'difficult':
             try:
                 questions = Difficulty.objects.get(difficulty_name='difficult',topic_id=request.POST.get('topic_id'))
                 return JsonResponse({'questions': questions.difficulty_id})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
         elif request.POST.get('resetdifficulty') == 'easy':
             try:
@@ -732,7 +732,7 @@ class StudentDashboard(TemplateView):
                 questions.score = 0
                 questions.save()
                 return JsonResponse({'isReset': True})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
         elif request.POST.get('resetdifficulty') == 'medium':
             try:
@@ -741,7 +741,7 @@ class StudentDashboard(TemplateView):
                 questions.score = 0
                 questions.save()
                 return JsonResponse({'isReset': True})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
         elif request.POST.get('resetdifficulty') == 'difficult':
             try:
@@ -750,7 +750,7 @@ class StudentDashboard(TemplateView):
                 questions.score = 0
                 questions.save()
                 return JsonResponse({'isReset': True})
-            except: 
+            except:
                 return redirect('/studentdashboard/')
 
 class StudentActivity(TemplateView):
@@ -791,10 +791,13 @@ class StudentActivity(TemplateView):
 
 
         csrf_token = request.META.get('HTTP_COOKIE','').split(';')
-        try:
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
-        except:
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+        for csrf_value in csrf_token:
+            try:
+                questions = Difficulty.objects.get(difficulty_id=csrf_value.replace(' ',''))
+                break
+            except:
+                continue
+
         topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
         cleaned_words = [word.strip() for word in words]
@@ -805,7 +808,7 @@ class StudentActivity(TemplateView):
             questions.answered = len(words)
             questions.maxpoints = questions.maxpoints - questions.points_per_question
             questions.save()
-        
+
         if questions.score > questions.maxpoints:
             questions.score = questions.maxpoints
             questions.save()
@@ -837,7 +840,7 @@ class StudentActivity(TemplateView):
                 return image_url[result[0]],image_url1[result[1]]
 
         persistent_variable = cache.get('my_persistent_variable')
-        
+
         # If the persistent variable doesn't exist yet,initialize it
         if persistent_variable is None:
             persistent_variable = 0
@@ -872,7 +875,7 @@ class StudentActivity(TemplateView):
             choices1.append(cleaned_words1[questions.answered-1])
             random.shuffle(choices)
             random.shuffle(choices1)
-            
+
             return render(request,'studentActivity.html',{'questions':questions,'words': cleaned_words[questions.answered-1],'words1': cleaned_words1[questions.answered-1],'start_index':questions.answered,
                                                          'img_url':img_urls[0],'img_url2': img_urls[1],'length':len(words),'choices':choices,'choices1':choices1,'answered':'done'})
         # Increment the persistent variable
@@ -903,7 +906,7 @@ class StudentActivity(TemplateView):
         except:
             for i in range(3):
                 choices1.append(fetch_words(questions.difficulty_name))
-    
+
         choices.append(cleaned_words[persistent_variable-1])
         choices1.append(cleaned_words1[persistent_variable-1])
         random.shuffle(choices)
@@ -914,14 +917,16 @@ class StudentActivity(TemplateView):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE','').split(';')
-            try:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
-            except:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            for csrf_value in csrf_token:
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_value.replace(' ',''))
+                    break
+                except:
+                    continue
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
-            
+
             if request.POST.get('choice') != cleaned_words[persistent_variable-1]:
                 return JsonResponse({'answerVerify': False,'correct_answer':cleaned_words[persistent_variable-1]})
             else:
@@ -929,15 +934,17 @@ class StudentActivity(TemplateView):
         elif request.POST.get('choice1'):
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE','').split(';')
-            try:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
-            except:
-                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            for csrf_value in csrf_token:
+                try:
+                    questions = Difficulty.objects.get(difficulty_id=csrf_value.replace(' ',''))
+                    break
+                except:
+                    continue
 
             words1 = questions.words1.split(',')
 
             cleaned_words1 = [word.strip() for word in words1]
-            
+
             if request.POST.get('choice1') != cleaned_words1[persistent_variable-1]:
                 return JsonResponse({'answerVerify': False,'correct_answer':cleaned_words1[persistent_variable-1]})
             else:
@@ -945,19 +952,23 @@ class StudentActivity(TemplateView):
         else:
             if request.POST.get('isCorrect') == "correct":
                 csrf_token = request.META.get('HTTP_COOKIE','').split(';')
-                try:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
-                except:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                for csrf_value in csrf_token:
+                    try:
+                        questions = Difficulty.objects.get(difficulty_id=csrf_value.replace(' ',''))
+                        break
+                    except:
+                        continue
                 questions.score = questions.score + questions.points_per_question
                 questions.answered = questions.answered + 1
                 questions.save()
             else:
                 csrf_token = request.META.get('HTTP_COOKIE','').split(';')
-                try:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[len(csrf_token)-1].replace(' ',''))
-                except:
-                    questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                for csrf_value in csrf_token:
+                    try:
+                        questions = Difficulty.objects.get(difficulty_id=csrf_value.replace(' ',''))
+                        break
+                    except:
+                        continue
                 questions.answered = questions.answered + 1
                 questions.save()
 
