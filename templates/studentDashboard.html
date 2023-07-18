@@ -33,18 +33,24 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <form class="form-inline my-2 my-lg-0">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link d-sm-none" href="/logout_view">
+              <i class="fas fa-sign-out-alt"></i> 
+              <span style="font-weight: bold; text-transform: uppercase;">Logout</span>
+            </a>
+          </li>
+          <li class="nav-item d-none d-sm-inline">
+            <form class="form-inline my-2 my-lg-0">
               <a class="mr-sm-2" href="/logout_view">
                 <i class="fas fa-sign-out-alt"></i> 
-                <span style="font-weight: bold; text-transform: uppercase;" class="d-none d-sm-inline logout-link">Logout</span>
+                <span style="font-weight: bold; text-transform: uppercase;" class="logout-link">Logout</span>
               </a>
-            </li>
-          </ul>
-        </form>
-        
+            </form>
+          </li>
+        </ul>
       </div>
+      
     </div>
   </nav>
   
@@ -79,7 +85,7 @@
                 <div class="col-4">
                   <div class="level easy">
                     {% if item.question_answered_easy >= item.easy_word_count %}
-                    <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="easy{{item.topic_id}}" class="level-button" onclick="showScore('easy{{item.topic_id}}', 'easy')">View Score</button>
+                    <button style="background-color: #27ae60; color: #ffffff;  border: none; border-radius: 3px; font-size: 10px; font-weight: bold; text-transform: uppercase;" id="easy{{item.topic_id}}" class="level-button" onclick="showScore('easy{{item.topic_id}}', 'easy')">View Score</button>
 
                     {% else %}
                       <a style="color: #2c3e50;" id="easy{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('easy{{item.topic_id}}')">Easy</a>
@@ -99,7 +105,7 @@
                 <div class="col-4">
                   <div class="level medium">
                     {% if item.question_answered_medium >= item.medium_word_count %}
-                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="medium{{item.topic_id}}" class="level-button" onclick="showScore('medium{{item.topic_id}}', 'medium')">View Score</button>
+                      <button style="background-color: #27ae60; color: #ffffff; border: none; border-radius: 3px; font-size: 10px; font-weight: bold; text-transform: uppercase;" id="medium{{item.topic_id}}" class="level-button" onclick="showScore('medium{{item.topic_id}}', 'medium')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="medium{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('medium{{item.topic_id}}')">Medium</a>
                     {% endif %}
@@ -118,7 +124,7 @@
                 <div class="col-4">
                   <div class="level hard">
                     {% if item.question_answered_difficult >= item.difficult_word_count %}
-                      <button style="background-color: #27ae60; margin-bottom: 1.3rem; color: #ffffff; padding: 10px 10px; border: none; border-radius: 3px; font-size: 12px; font-weight: bold; text-transform: uppercase;" id="difficult{{item.topic_id}}" class="level-button" onclick="showScore('difficult{{item.topic_id}}', 'difficult')">View Score</button>
+                      <button style=" margin-left: 0.5rem; background-color: #27ae60; color: #ffffff; border: none; border-radius: 3px; font-size: 10px; font-weight: bold; text-transform: uppercase;" id="difficult{{item.topic_id}}" class="level-button" onclick="showScore('difficult{{item.topic_id}}', 'difficult')">View Score</button>
                     {% else %}
                       <a style="color: #2c3e50;" id="difficult{{item.topic_id}}" class="level-button" onclick="showConfirmationModal('difficult{{item.topic_id}}')">Difficult</a>
                     {% endif %}
@@ -200,6 +206,48 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* Media query for bigger screens */
+@media (min-width: 768px) {
+  .level-button {
+    padding: 12px 24px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .level-button:hover {
+    background-color: #999;
+    transform: translateY(-2px);
+  }
+
+  .level-button:active {
+    background-color: #555;
+    box-shadow: none;
+    transform: translateY(0);
+  }
+}
+
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  .level-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .level-button:hover {
+    background-color: #999;
+  }
+
+  .level-button:active {
+    background-color: #555;
+    box-shadow: none;
+  }
+}
+
 
 .level-button:hover {
   background-color: #aaa;
