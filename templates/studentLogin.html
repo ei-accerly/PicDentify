@@ -44,7 +44,7 @@ body {
 		  </ul>
 		  <ul class="navbar-nav">
 			<li class="nav-item">
-				<button type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" data-toggle="modal" data-target="#studentModal">
+				<button onclick="navigateTo()" type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" >
 					Teacher
 				</button>
 			</li>
@@ -53,7 +53,7 @@ body {
 	  </nav>
 
 	  <!-- Modal -->
-    <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -71,7 +71,7 @@ body {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
 		<div class="container">
 			<h1 class="move-in">Student Login Page</h1>
@@ -91,6 +91,11 @@ body {
 </html>
 
 <script>
+
+	function navigateTo() {
+		window.location.href = "/";
+	}
+
   const adminKeyInput = document.getElementById('admin_key');
 	adminKeyInput.addEventListener('keydown', function(event) {
 		if (event.key === 'Enter') {
