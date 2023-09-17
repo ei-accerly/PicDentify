@@ -14,6 +14,38 @@
       crossorigin="anonymous" />
 
       <link rel="stylesheet" type="text/css" href="{% static 'css/studentActivity.css' %}">
+
+      <style>
+
+    .column {
+      flex: 1; /* Allow width to adjust based on content */
+      height: 450px; /* Set a fixed height for the columns */
+      padding: 10px;
+      text-align: center;
+      background-color: #ffffff;
+      border: 3px solid #cccccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    @media only screen and (max-width: 600px) {
+      .modal {
+        width: 100%;
+      }
+
+      .modal-content {
+        max-width: 90%;
+        margin: 0 auto; /* Center the modal content horizontally */
+        padding: 0 20px; /* Apply padding to the left and right sides */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a subtle box shadow */
+        background-color: #ffffff; /* Set a background color */
+        border-radius: 10px; /* Add rounded corners */
+      }
+    }
+
+
+      </style>
+
   </head>
   <body>
   <form id="hidden-value" method="post">
@@ -329,11 +361,12 @@ for (var i = 0; i < buttons.length; i++) {
                   var checkmark = document.getElementById('checkmark');
                   var imgURL = image.getAttribute('src');
                   checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  checkmark.style.backgroundSize = 'cover';
                   checkmark.style.display = 'inline-block';
                   checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                   checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
                   checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
-                  checkmark.style.height = '50%'; // Adjust the height of the checkmark as desired
+                  checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                   image.style.display = 'none';
                   answer1 = "true"
                   checkBothAnswer(answer1, answer2)
@@ -346,6 +379,7 @@ for (var i = 0; i < buttons.length; i++) {
                   var imgURL = image.getAttribute('src');
 
                   exmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  exmark.style.backgroundSize = 'cover';
                   exmark.style.display = 'inline-block';
                   exmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                   exmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
@@ -498,7 +532,7 @@ for (var i = 0; i < buttons1.length; i++) {
                     checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                     checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
                     checkmark.style.width = '100%'; // Adjust the width of the checkmark as desired
-                    checkmark.style.height = '50%'; // Adjust the height of the checkmark as desired
+                    checkmark.style.height = '66%'; // Adjust the height of the checkmark as desired
                     image.style.display = 'none';
                     answer2 = "true"
                     checkBothAnswer(answer1, answer2)
@@ -513,6 +547,7 @@ for (var i = 0; i < buttons1.length; i++) {
                     var imgURL1 = image1.getAttribute('src');
 
                     checkmark.style.backgroundImage = 'url(' + imgURL + ')';
+                    checkmark.style.backgroundSize = 'cover';
                     checkmark.style.display = 'inline-block';
                     checkmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                     checkmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
@@ -521,6 +556,7 @@ for (var i = 0; i < buttons1.length; i++) {
                     image.style.display = 'none';
 
                     checkmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                    checkmark1.style.backgroundSize = 'cover';
                     checkmark1.style.display = 'inline-block';
                     checkmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                     checkmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
@@ -538,11 +574,12 @@ for (var i = 0; i < buttons1.length; i++) {
                     var checkmark1 = document.getElementById('checkmark1');
                     var imgURL1 = image1.getAttribute('src');
                     checkmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                    checkmark1.style.backgroundSize = 'cover';
                     checkmark1.style.display = 'inline-block';
                     checkmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                     checkmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
-                    checkmark1.style.width = '100%'; // Adjust the width of the checkmark as desired
-                    checkmark1.style.height = '66%'; // Adjust the height of the checkmark as desired
+                    checkmark1.style.width = '40%'; // Adjust the width of the checkmark as desired
+                    checkmark1.style.height = '30%'; // Adjust the height of the checkmark as desired
                     image1.style.display = 'none';
                     answer2 = "true"
                     answer1 = "true"
@@ -581,19 +618,21 @@ for (var i = 0; i < buttons1.length; i++) {
                   var imgURL1 = image1.getAttribute('src');
 
                   exmark.style.backgroundImage = 'url(' + imgURL + ')';
+                  exmark.style.backgroundSize = 'cover';
                   exmark.style.display = 'inline-block';
                   exmark.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                   exmark.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
                   exmark.style.width = '100%'; // Adjust the width of the exmark as desired
-                  exmark.style.height = '66%'; // Adjust the height of the exmark as desired
+                  exmark.style.height = '50%'; // Adjust the height of the exmark as desired
                   image.style.display = 'none';
 
                   exmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                  exmark1.style.backgroundSize = 'cover';
                   exmark1.style.display = 'inline-block';
                   exmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                   exmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
                   exmark1.style.width = '100%'; // Adjust the width of the exmark as desired
-                  exmark1.style.height = '66%'; // Adjust the height of the exmark as desired
+                  exmark1.style.height = '50%'; // Adjust the height of the exmark as desired
                   image1.style.display = 'none';
                   answer2 = "false"
                   answer1 = "false"
@@ -606,6 +645,7 @@ for (var i = 0; i < buttons1.length; i++) {
                   var imgURL1 = image1.getAttribute('src');
 
                   exmark1.style.backgroundImage = 'url(' + imgURL1 + ')';
+                  exmark1.style.backgroundSize = 'cover';
                   exmark1.style.display = 'inline-block';
                   exmark1.style.backgroundSize = 'cover'; // Set background size to 'contain' for resizing
                   exmark1.style.backgroundPosition = 'center'; // Set background position to 'center' for centering
