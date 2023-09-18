@@ -19,25 +19,48 @@
   <style>
 
 body {
-  background-image: url("{% static 'img/classroom.png' %}");
-  background-size: 1200px 800px; /* Replace with the pixel values that work for you */
+  background-image: url("{% static 'img/back2.png' %}");
+  background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif; 
   color: #fff;
   margin: 0;
   padding: 0;
+  z-index: -1;
 }
 
+/* Adjust the logo size for different screen sizes */
 .logo-img {
-	max-height: 50px;
+    max-width: 200px; /* Default size for larger screens */
+}
+
+/* Media query for screens smaller than 576px (e.g., mobile phones) */
+@media (max-width: 575px) {
+    .logo-img {
+        max-width: 100px; /* Adjust the size for smaller screens */
+    }
+}
+
+/* Media query for screens between 576px and 991px (e.g., tablets) */
+@media (min-width: 576px) and (max-width: 991px) {
+    .logo-img {
+        max-width: 150px; /* Adjust the size for tablets */
+    }
+}
+
+/* Media query for screens larger than 991px (e.g., desktops) */
+@media (min-width: 992px) {
+    .logo-img {
+        max-width: 200px; /* Adjust the size for larger screens */
+    }
 }
 
   </style>
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: transparent; z-index: 1;">
 		<img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>

@@ -240,13 +240,6 @@ input[type="submit"]:hover {
   opacity: 1;
 }
 
-
-  .navbar {
-    background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
-  border-bottom: 1px solid #1e2b38;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .navbar-brand {
   color: #fff;
   font-size: 24px;

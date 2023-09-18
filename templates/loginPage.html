@@ -15,41 +15,61 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/loginPage.css' %}">
 <style>
 body {
-  background-image: url("{% static 'img/classroom.png' %}");
-  background-size: 1200px 800px; /* Replace with the pixel values that work for you */
+  background-image: url("{% static 'img/back2.png' %}");
+  background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif; 
   color: #fff;
   margin: 0;
   padding: 0;
+  z-index: -1;
 }
 
 .logo-img {
-	max-height: 50px;
+    max-width: 200px; 
+}
+
+@media (max-width: 575px) {
+    .logo-img {
+        max-width: 100px; 
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+    .logo-img {
+        max-width: 150px; 
+    }
+}
+
+@media (min-width: 992px) {
+    .logo-img {
+        max-width: 200px;
+    }
 }
 
 </style>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: transparent; z-index: 1;">
 		<img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
+			<span class="navbar-toggler-icon"></span>
 		</button>
 	  
 		<div class="collapse navbar-collapse" id="navbarNav">
-		  <ul class="navbar-nav mr-auto">
-		  </ul>
-		  <ul class="navbar-nav">
-			<li class="nav-item">
-				<button onclick="navigateTo()" type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" >
-					Student
-				</button>
-			</li>
-		  </ul>
+			<ul class="navbar-nav mr-auto">
+			</ul>
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<button onclick="navigateTo()" type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" >
+						Student
+					</button>
+				</li>
+			</ul>
 		</div>
-	  </nav>
+	</nav>
+	
 	  
 	<div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
