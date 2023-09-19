@@ -35,16 +35,6 @@
   font-weight: bold;
   }
 
-  .container {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 30px;
-  border-radius: 10px;
-  margin: 10vh auto; /* Changed margin to use auto for left and right */
-  max-width: 90vw;
-  max-height: 90vw;
-  text-align: center;
-}
-
 
 h1 {
 	font-size: 36px;
@@ -309,52 +299,4 @@ input[type="submit"]:hover {
   }
 }
 
-.navbar {
-  background: linear-gradient(to right, #AACBBE, #E2DAAC); /* Gradient from light blue-green to light yellow */
-  border-bottom: 1px solid #051016; /* Dark navy border */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-
-
-.navbar-brand {
-  color: #fff;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.nav-link {
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  margin-left: 20px;
-  text-transform: uppercase;
-}
-
-.nav-link:hover {
-  color: #ddd;
-}
-
-.navbar-toggler {
-  border: none;
-}
-
-.navbar-toggler-icon {
-  background-image: url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/../icons/bootstrap.svg');
-}
-
-@media (max-width: 991px) {
-  .navbar-collapse {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-  }
-
-  .nav-link {
-    display: block;
-    margin: 0;
-  }
-
-  .nav-link:hover {
-    background-color: #1e2b38;
-  }
-}
