@@ -4,7 +4,7 @@
 	{% load static %}
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grade 3 Dashboard</title>
+    <title>PicDentify</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src=//cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js> </script>
@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JK"
       crossorigin="anonymous" />
+   <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}?v=3">
+
 
       <link rel="stylesheet" type="text/css" href="{% static 'css/studentActivity.css' %}">
   </head>
@@ -56,7 +58,7 @@
         </div>
       </div>
     </div>
-    
+
     </div>
 	</div>
   {% else %}
@@ -70,7 +72,7 @@
 		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
+		<p id="question-counter">  {{questions.topic.topic_name}} </p>
 		<div id="timer-container">
 		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
       <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
@@ -84,13 +86,13 @@
         <img id="checkmark" class="checkmark" src="{% static 'img/check.png' %}">
         <img id="exmark" class="exmark" src="{% static 'img/ex.png' %}">
         <div id="choices-container">
-          <form id="checkAnswer"> 
+          <form id="checkAnswer">
             {% csrf_token %}
             {% for choice in choices %}
                 <button class="choice-btn" value="{{choice}}">{{choice}}</button>
             {% endfor %}
           </form>
-          
+
           </div>
       </div>
       <div class="column">
@@ -98,13 +100,13 @@
         <img id="checkmark1" class="checkmark" src="{% static 'img/check.png' %}">
         <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
         <div id="choices-container1">
-          <form id="checkAnswer1"> 
+          <form id="checkAnswer1">
             {% csrf_token %}
             {% for choice in choices1 %}
                 <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
             {% endfor %}
           </form>
-          
+
           </div>
       </div>
       <button id="hiddenButton" style="display: none;">Hidden Button</button>
@@ -114,7 +116,7 @@
 		{% endif %}
 	  </div>
 	</div>
-  {% elif questions.topic.topic_name == "Homographs" %} 
+  {% elif questions.topic.topic_name == "Homographs" %}
   <div class="quiz-container">
     <div id="level-container">
       <label>Level:</label>
@@ -160,17 +162,17 @@
       </div>
       {% endif %}
     </div>
-    
+
   </div>
-  
-  {% elif questions.topic.topic_name == "Hyponyms" %} 
+
+  {% elif questions.topic.topic_name == "Hyponyms" %}
   <div class="quiz-container">
 	  <div id="level-container">
 		<label>Level:</label>
 		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">  {{questions.topic.topic_name}} </p> 
+		<p id="question-counter">  {{questions.topic.topic_name}} </p>
 		<div id="timer-container">
 		  <p id="time-remaining">Question {{start_index}} of {{length}}</p>
       <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
@@ -186,7 +188,7 @@
               <img id="exmark1" class="exmark" src="{% static 'img/ex.png' %}">
             </div>
             <div id="choices-container1" style="display: flex; flex-direction: column; align-items: center;">
-              <form id="checkAnswer1"> 
+              <form id="checkAnswer1">
                 {% csrf_token %}
                 {% for choice in choices %}
                   <button class="choice-btn1" value="{{choice}}">{{choice}}</button>
@@ -202,7 +204,7 @@
         </div>
       {% endif %}
     </div>
-    
+
 	</div>
   {% endif %}
   {% endif %}
@@ -226,7 +228,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-  
+
 
 var answer1 = ""
 var answer2 = ""
@@ -311,7 +313,7 @@ var buttons = container.querySelectorAll('.choice-btn');
 for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function() {
         // Retrieve the value of the clicked button
-        event.preventDefault(); 
+        event.preventDefault();
         var value = this.value;
         var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
@@ -380,7 +382,7 @@ function navigateTo() {
 }
 
 function checkBothAnswer(answer1, answer2) {
-  
+
   var modal = document.createElement('div');
   modal.classList.add('modal');
   var modalContent = document.createElement('div');
@@ -440,7 +442,7 @@ function checkBothAnswer(answer1, answer2) {
       modal.appendChild(modalContent);
       document.body.appendChild(modal);
    }
-  
+
   }
 
 }
@@ -467,10 +469,10 @@ var container1 = document.getElementById('choices-container1');
 var buttons1 = container1.querySelectorAll('.choice-btn1');
 for (var i = 0; i < buttons1.length; i++) {
     buttons1[i].addEventListener('click', function() {
-        event.preventDefault(); 
+        event.preventDefault();
         // Retrieve the value of the clicked button
         var value = this.value;
-        
+
         var myForm = document.querySelector("#checkAnswer1");
         var formData = new FormData(myForm);
         formData.append("choice1", value),
@@ -549,7 +551,7 @@ for (var i = 0; i < buttons1.length; i++) {
                     checkBothAnswer(answer1, answer2)
 
                   }
-                  
+
                 }
 
                 else {

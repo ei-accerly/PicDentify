@@ -2,7 +2,7 @@
 <html>
 <head>
 	{% load static %}
-	<title>Teacher Login Page</title>
+	<title>PicDentify</title>
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -11,6 +11,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/loginPage.css' %}">
+	<link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}?v=3">
+
+
 <style>
 body {
   background-image: url("{% static 'img/classroom.png' %}");
@@ -30,7 +33,7 @@ body {
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
-	  
+
 		<div class="collapse navbar-collapse" id="navbarNav">
 		  <ul class="navbar-nav mr-auto">
 		  </ul>
@@ -43,7 +46,7 @@ body {
 		  </ul>
 		</div>
 	  </nav>
-	  
+
 	  Modal
 	<div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
@@ -67,7 +70,7 @@ body {
 
 	<div class="container">
 		<h1 class="move-in">Welcome to the Teacher's Lounge!</h1>
-		<form id="admin_key_submit"> 
+		<form id="admin_key_submit">
 			{% csrf_token %}
 			<div style="color: whitesmoke; text-align: center;" class="form-group">
 			  <label for="admin_key">ADMIN KEY</label>
@@ -78,7 +81,7 @@ body {
 			</div>
 			<div id="error-message"></div>
 		  </form>
-		  
+
 		  <div id="myModal" class="modal">
 			<!-- Modal content -->
 			<div class="modal-content1">
@@ -88,7 +91,7 @@ body {
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
-				  
+
 			  <form id="new_admin_name">
 				{% csrf_token %}
 				{% if admins %}
@@ -135,8 +138,8 @@ body {
 			  </form>
 			</div>
 		  </div>
-		  
-	
+
+
 		</div>
 	</div>
 </body>
@@ -173,7 +176,7 @@ body {
 		modalContainer.style.display = "none";
 	});
 	var modal = document.getElementById("myModal");
-	
+
 	// When the user clicks anywhere outside of the modal, close it
 	function noButton() {
 		modal.style.display = "none";
@@ -238,7 +241,7 @@ body {
 					}
 				}).then((value) => {
 					if (value === "login") {
-						location.reload()	
+						location.reload()
 					}
 				});
 			}

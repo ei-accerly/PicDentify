@@ -4,7 +4,7 @@
   {% load static %}
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Student Dashboard</title>
+	<title>PicDentify</title>
 	<!-- Bootstrap CSS -->
 	<!-- CSS files -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}?v=3">
+
 <!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-M1GZhkKjJPhzvyvESX9k+OC4A4V7Qih8sO/Gg7Kx+pkT0Tl3qyntvDy9uIR4j4K7VW2c8KVv7RjKxt+dnTFFVg==" crossorigin="anonymous"></script>
 
@@ -36,7 +38,7 @@
 </head>
 <body>
 	<!-- Navigation bar -->
-    
+
   <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
       <a style="color: #2c3e50;" class="navbar-brand" href="#">{{ user.username|title }}'s Class</a>
@@ -47,24 +49,24 @@
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
             <a class="nav-link d-sm-none" href="/logout_view">
-              <i class="fas fa-sign-out-alt"></i> 
+              <i class="fas fa-sign-out-alt"></i>
               <span style="font-weight: bold; text-transform: uppercase;">Logout</span>
             </a>
           </li>
           <li class="nav-item d-none d-sm-inline">
             <form class="form-inline my-2 my-lg-0">
               <a class="mr-sm-2" href="/logout_view">
-                <i class="fas fa-sign-out-alt"></i> 
+                <i class="fas fa-sign-out-alt"></i>
                 <span style="font-weight: bold; text-transform: uppercase;" class="logout-link">Logout</span>
               </a>
             </form>
           </li>
         </ul>
       </div>
-      
+
     </div>
   </nav>
-  
+
 
   <div class="container">
       <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
@@ -103,11 +105,11 @@
                     {% endif %}
                     <button style="background-color: #2c3e50; color: #ffffff; margin-top: 0.5rem; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="easyreset{{item.topic_id}}" class="level-button" onclick="showResetModal('easyreset{{item.topic_id}}')">Reset</button>
 
-                    <form id="ez{{item.topic_id}}"> 
+                    <form id="ez{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="easy" name="easy{{item.topic_id}}">
                     </form>
-                    <form id="ezreset{{item.topic_id}}"> 
+                    <form id="ezreset{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="easyreset" name="easyreset{{item.topic_id}}">
                     </form>
@@ -122,11 +124,11 @@
                     {% endif %}
                     <button style="background-color: #2c3e50; margin-top: 0.5rem; color: #ffffff; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="mediumreset{{item.topic_id}}" class="level-button" onclick="showResetModal('mediumreset{{item.topic_id}}')">Reset</button>
 
-                    <form id="med{{item.topic_id}}"> 
+                    <form id="med{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="medium" name="medium{{item.topic_id}}">
                     </form>
-                    <form id="medreset{{item.topic_id}}"> 
+                    <form id="medreset{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="mediumreset" name="mediumreset{{item.topic_id}}">
                     </form>
@@ -141,11 +143,11 @@
                     {% endif %}
                     <button style="background-color: #2c3e50; margin-top: 0.5rem; color: #ffffff; padding: 8px 16px; border: none; border-radius: 4px; font-size: 14px; font-weight: bold;" id="difficultreset{{item.topic_id}}" class="level-button" onclick="showResetModal('difficultreset{{item.topic_id}}')">Reset</button>
 
-                    <form id="dif{{item.topic_id}}"> 
+                    <form id="dif{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="difficult" name="difficult{{item.topic_id}}">
                     </form>
-                    <form id="difreset{{item.topic_id}}"> 
+                    <form id="difreset{{item.topic_id}}">
                       {% csrf_token %}
                       <input hidden value="difficultreset" name="difficultreset{{item.topic_id}}">
                     </form>
@@ -199,8 +201,8 @@
       </div>
     </div>
 
-      
-      
+
+
 </body>
 </html>
 
@@ -229,7 +231,7 @@ function navigateTo(form_id, topic_id, difficulty) {
   .then(data => {
     document.cookie = data.questions
     window.location.href = window.location.origin + "/studentdashboard/studentactivity"
-    
+
   }).catch(error => {
     $('#error-modal').modal('show')
     setTimeout(function() {
@@ -243,7 +245,7 @@ function resetDifficulty(form_id, topic_id, difficulty) {
   var formData = new FormData(myForm);
   formData.append('resetdifficulty', difficulty);
   formData.append('topic_id_reset', topic_id);
-  
+
   fetch('/studentdashboard/', {
     method: 'POST',
     body: formData
@@ -277,7 +279,7 @@ function showScore(buttonId, difficulty) {
     navigateTo("#ez"+stringReplace, stringReplace, difficulty)
   else if (difficulty == 'medium')
     navigateTo("#med"+stringReplace, stringReplace, difficulty)
-  else 
+  else
     navigateTo("#dif"+stringReplace, stringReplace, difficulty)
 }
 
@@ -294,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
           // Call navigateTo function here
           navigateTo("#ez"+stringReplace, stringReplace, "easy")
         });
-        
+
       });
     })
   })
@@ -309,8 +311,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 navigateTo("#med"+stringReplace, stringReplace, "medium")
-              });  
-  
+              });
+
           });
         })
     })
@@ -326,13 +328,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 navigateTo("#dif"+stringReplace, stringReplace, "difficult")
-              });           
+              });
           });
         })
     })
 
 
-    
+
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("[id^='easyreset']").forEach(function(el) {
       // Add an event listener to each element
@@ -346,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
           // Call navigateTo function here
           resetDifficulty("#ezreset"+stringReplace, stringReplace, "easy")
         });
-        
+
       });
     })
   })
@@ -361,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 resetDifficulty("#medreset"+stringReplace, stringReplace, "medium")
-              });  
+              });
           });
         })
     })
@@ -377,10 +379,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 event.preventDefault();
                 // Call navigateTo function here
                 resetDifficulty("#difreset"+stringReplace, stringReplace, "difficult")
-              });  
-              
+              });
+
           });
         })
     })
-    
+
 </script>
