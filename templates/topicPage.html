@@ -2,78 +2,80 @@
 <html lang="en">
 <head>
     {% load static %}
-    <title>My Topics</title>
+    <title>PicDentify</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}?v=3">
+
 
   <style>
     body {
       background-color: #ffebcd00; /* PeachPuff */
     }
-    
+
     h1, h2, h3, h4, h5, h6 {
       font-family: 'Luckiest Guy', cursive;
     }
-    
+
     .container {
       margin-top: 30px;
     }
-    
+
     .card {
       background-color: #fffacd; /* LemonChiffon */
       border: 2px solid #ff8c00; /* DarkOrange */
       transition: box-shadow 0.3s ease-in-out;
     }
-    
+
     .card:hover {
       box-shadow: 5px 5px 15px #ff8c00; /* DarkOrange */
     }
-    
+
     .card-title {
       font-size: 24px;
       font-weight: bold;
       color: #ff8c00; /* DarkOrange */
     }
-    
+
     .card-text {
       font-size: 18px;
       font-weight: bold;
       color: #8b0000; /* DarkRed */
     }
-    
+
     .btn-primary {
       background-color: #ff8c00; /* DarkOrange */
       border: none;
     }
-    
+
     .btn-primary:hover {
       background-color: #ff4500; /* OrangeRed */
       border: none;
     }
-    
+
     .btn-primary:focus {
       box-shadow: none;
     }
-    
+
     .btn-primary:active {
       background-color: #8b0000; /* DarkRed */
       border: none;
     }
-    
+
     .modal-header {
       background-color: #ff8c00; /* DarkOrange */
       color: white;
       border-bottom: none;
     }
-    
+
     .modal-footer {
       border-top: none;
     }
-    
+
     .form-group label {
       font-weight: bold;
     }
@@ -157,7 +159,7 @@
           </div>
         </div>
       </nav>
-      
+
 
   <div class="container mt-5">
 
@@ -165,12 +167,12 @@
         <div class="col-md-8 float-right">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClassModal">
                 Create Topic
-            </button>              
+            </button>
         </div>
       </div>
-  
+
       <div class="row mt-4">
-  
+
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
@@ -180,7 +182,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
@@ -190,7 +192,7 @@
             </div>
           </div>
         </div>
-  
+
         <div class="col-md-4">
           <div class="card">
             <div class="card-body">
