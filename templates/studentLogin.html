@@ -54,68 +54,76 @@ body {
 /* Media query for screens larger than 991px (e.g., desktops) */
 @media (min-width: 992px) {
     .logo-img {
-        max-width: 200px; /* Adjust the size for larger screens */
+        max-width: 150px; /* Adjust the size for larger screens */
     }
 }
 
+#content {
+    position: relative;
+    z-index: 1; /* Set a positive z-index to position it in front of the animated background */
+  }
   </style>
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: transparent; z-index: 1;">
-		<img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
+	<div id="content">
+		{% include 'animated.html' %}
 
-		<div class="collapse navbar-collapse" id="navbarNav">
-		  <ul class="navbar-nav mr-auto">
-		  </ul>
-		  <ul class="navbar-nav">
-			<li class="nav-item">
-				<button onclick="navigateTo()" type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" >
-					Teacher
-				</button>
-			</li>
-		  </ul>
-		</div>
-	  </nav>
-
-	  <!-- Modal -->
-    <!-- <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-          <h5 class="modal-title" id="studentModalLabel">Confirmation</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          </div>
-          <div class="modal-body"  style="color: #080101;">
-          Are you sure you want to navigate to the teacher login page?
-          </div>
-          <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="/">Proceed</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
+		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: transparent; z-index: 1;">
+			<img src="{% static 'img/PicDentify.png' %}" alt="" class="logo-img">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+	
+			<div class="collapse navbar-collapse" id="navbarNav">
+			  <ul class="navbar-nav mr-auto">
+			  </ul>
+			  <ul class="navbar-nav">
+				<li class="nav-item">
+					<button onclick="navigateTo()" type="button" class="btn btn-outline-secondary my-2 my-sm-0 mr-3" >
+						Teacher
+					</button>
+				</li>
+			  </ul>
+			</div>
+		  </nav>
+	
+		  <!-- Modal -->
+		<!-- <div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+			  <h5 class="modal-title" id="studentModalLabel">Confirmation</h5>
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			  </button>
+			  </div>
+			  <div class="modal-body"  style="color: #080101;">
+			  Are you sure you want to navigate to the teacher login page?
+			  </div>
+			  <div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			  <a class="btn btn-primary" href="/">Proceed</a>
+			  </div>
+			</div>
+		  </div>
+		</div> -->
+	
 		<div class="container">
 			<h1 class="move-in">Student Login Page</h1>
 			<form method="post" id="admin_key_submit">
-        		{% csrf_token %}
+				{% csrf_token %}
 				<div style="color: whitesmoke; text-align: center;" class="form-group">
-				  <label>TEACHER KEY</label>
-				  <input type="text" id="admin_key" name="admin_key" required>
+					<label>TEACHER KEY</label>
+					<input type="text" id="admin_key" name="admin_key" required>
 				</div>
 				<div class="form-group" style="text-align: center;">
-          		<input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
+					<input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
 				</div>
-      			<div id="error-message"></div>
-			  </form>
+					<div id="error-message"></div>
+				</form>
 		</div>
+	</div>
 </body>
 </html>
 

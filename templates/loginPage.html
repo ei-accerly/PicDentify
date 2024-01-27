@@ -31,7 +31,6 @@
 }
 
 body {
-  background-image: url("{% static 'img/back2.png' %}");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -70,15 +69,24 @@ body {
 
 @media (min-width: 992px) {
     .logo-img {
-        max-width: 200px;
+        max-width: 150px;
     }
 }
+
+#content {
+    position: relative;
+    z-index: 1; /* Set a positive z-index to position it in front of the animated background */
+  }
 
 </style>
 </head>
 <body>
+	<div id="content">
+		{% include 'animated.html' %}
+		
+		
 	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: transparent; z-index: 1;">
-		<img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
+		<img src="{% static 'img/PicDentify.png' %}" alt="" class="logo-img">
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -94,15 +102,8 @@ body {
 				</li>
 			</ul>
 		</div>
-<<<<<<< HEAD
-	  </nav>
-	</nav>
-
-=======
 	</nav>
 		
-	  
->>>>>>> 1ccd0677a782d82e738529500a1541b4dedb4cf5
 	<div class="modal fade" id="studentModal" tabindex="-1" role="dialog" aria-labelledby="studentModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -196,6 +197,7 @@ body {
 
 
 		</div>
+	</div>
 	</div>
 </body>
 </html>
