@@ -1,7 +1,7 @@
 **/migrations/
 venv
-/picdentify/settings.py
-/pages/urls.py
-/pages/views.py
-/picdentify/urls.py
+# /picdentify/settings.py
+# /pages/urls.py
+# /pages/views.py
+# /picdentify/urls.py
 /images
