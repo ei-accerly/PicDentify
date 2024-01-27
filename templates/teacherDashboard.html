@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
-    <title>Teacher Dashboard</title>
+    <title>PicDentify</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-    
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}?v=3">
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -207,7 +208,7 @@ margin-bottom: 10px;
           <button type="button" class="btn btn-primary" id="copy-btn" onclick="CopyUserKey()">Copy Key</button>
         </div>
         <p hidden id="user-key" style="color:rgb(10, 9, 9)">{{ user_key }}</p>
-      </div>    
+      </div>
     </div>
 
     <div class="container mt-4">
@@ -215,11 +216,11 @@ margin-bottom: 10px;
       <div class="row">
           <div class="col-md-8 float-right">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createClassModal">
-                  Create Topic 
-              </button>               
+                  Create Topic
+              </button>
           </div>
       </div>
-    
+
       <div class="row mt-4">
         {% for item in topics %}
         <div class="col-md-3 mb-2">
@@ -232,7 +233,7 @@ margin-bottom: 10px;
                 <p class="card-text difficulty-level hover-effect2">{{items.difficulty_name|title}}</p>
                 {% endif %}
                 {% endfor %}
-              </div>                           
+              </div>
               <div class="mt-auto">
                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal1" id="edit-topic{{forloop.counter}}">Edit Details</a>
                 <form id="topic_to_edit{{forloop.counter}}" method="post">
@@ -252,10 +253,10 @@ margin-bottom: 10px;
         </div>
         {% endfor %}
       </div>
-    
+
     </div>
-    
-  
+
+
   <!-- Create Topic Modal -->
   <div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -290,12 +291,12 @@ margin-bottom: 10px;
                 <label for="wordCount">Number of Words</label>
                 <input type="number" class="form-control" id="wordCount" placeholder="Enter the number of words" min="1" oninput="showWordFields()">
               </div>
-              
+
               <div id="wordFieldsContainer" style="display: none; overflow: auto; max-height: 300px;">
                 <div class="upload-container">
                   <div id="wordFieldsSection"></div>
                 </div>
-              </div>              
+              </div>
 
           </div>
           <div style="display: flex; justify-content: center; text-align: center;" class="modal-footer">
@@ -306,7 +307,7 @@ margin-bottom: 10px;
         </div>
       </div>
     </div>
-  
+
     <div style="position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 1000;" class="modal fade" id="editModal1" tabindex="-1" role="dialog" aria-labelledby="editModal1Label" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -336,14 +337,14 @@ margin-bottom: 10px;
                 <input type="number" class="form-control" id="points_per_question_edit" placeholder="Enter time limit" name="points_per_question_edit">
               </div>
               <div class="form-group">
-                <button class="btn btn-primary mb-1" id="addWordButton">Add Word</button>           
+                <button class="btn btn-primary mb-1" id="addWordButton">Add Word</button>
                 <form method="post" id="addWordsAtTopic">
                   {% csrf_token %}
                   <div id="wordInputs"></div>
                 </form>
-                
+
               </div>
-             
+
 
               <div class="form-group">
                 <label for="topicWords2">Words</label>
@@ -351,12 +352,12 @@ margin-bottom: 10px;
                   <select class="form-control" id="topicWords2" name="topicWords"></select>
                   <button class="btn btn-primary" onclick="showInputField()">Edit</button>
                 </div>
-              </div>              
+              </div>
 
               <div class="form-group">
                 <input type="text" class="form-control" id="selectedWord1" name="selectedWord1" hidden>
               </div>
-           
+
               <div id="inputFieldContainer" style="display: none;" >
                 <label for="inputField">Edit Word</label>
                 <div class="input-group">
@@ -392,12 +393,12 @@ margin-bottom: 10px;
                         </div>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
-              
-              
+
+
               <div class="form-group">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="choice_edit1" placeholder="Choice 1" name="choice1" onkeyup="setRequired(this)">
@@ -426,9 +427,9 @@ margin-bottom: 10px;
                     <i id="icon-check-{{ counter }}" class="fas fa-check" style="display: none; color: green;"></i>
                   </div>
                 </div>
-                
+
                 {% endfor %}
-              
+
               </div>
               <div class="form-group" id="wordNumber2">
                 <label for="topicWords3">Words2</label>
@@ -436,8 +437,8 @@ margin-bottom: 10px;
                   <select class="form-control" id="topicWords3" name="topicWords1"></select>
                   <button class="btn btn-primary" onclick="showInputField2()">Edit</button>
                 </div>
-              </div>  
-              
+              </div>
+
               <div id="inputFieldContainer2" style="display: none;">
                 <label for="inputField2">Edit Word:</label>
                 <div class="input-group">
@@ -473,11 +474,11 @@ margin-bottom: 10px;
                         </div>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
-                
+
               <div class="form-group" id="choiceNumber2">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="secondchoice_edit1" placeholder="Choice 1" name="secondchoice1">
@@ -500,14 +501,14 @@ margin-bottom: 10px;
                         <input type="file" class="form-control" accept="image/*" name="picture-{{ counter }}" style="display: none;" />
                         <i id="icon-edit-{{ counter }}" class="fas fa-edit" style="color:black"></i>
                       </label>
-                    </form> 
+                    </form>
                   </div>
                   <div class="button-container">
                     <button id="save-button-{{ counter }}" class="btn btn-primary" style="display: none;">Save</button>
                     <i id="icon-check-{{ counter }}" class="fas fa-check" style="display: none; color: green;"></i>
                   </div>
                 </div>
-                
+
                 {% endfor %}
               </div>
             </form>
@@ -538,8 +539,8 @@ margin-bottom: 10px;
       formData.append("wordToEdit", document.getElementById("selectedWord1").value);
       var title_id = document.querySelector('#topicId');
       formData.append("topicIdWord1Edit", title_id.value);
-      
-      
+
+
       fetch('/dashboard/', {
         method: 'POST',
         body: formData
@@ -574,7 +575,7 @@ margin-bottom: 10px;
       formData.append("wordToDelete", document.getElementById("selectedWord1").value);
       var title_id = document.querySelector('#topicId');
       formData.append("topicIdWord1Delete", title_id.value);
-      
+
       fetch('/dashboard/', {
         method: 'POST',
         body: formData
@@ -589,13 +590,13 @@ margin-bottom: 10px;
   }
 
   function deleteInput2() {
-   
+
       var myForm = document.querySelector("#editWord2");
       var formData = new FormData(myForm);
       formData.append("wordToDelete1", document.getElementById("selectedWord2").value);
       var title_id = document.querySelector('#topicId');
       formData.append("topicIdWord2Delete", title_id.value);
-      
+
       fetch('/dashboard/', {
         method: 'POST',
         body: formData
@@ -733,7 +734,7 @@ addButton.addEventListener("click", function(event) {
           document.getElementById('choice_edit3').required = false;
         }
       }
-    
+
       document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll("[id^='icon-edit']").forEach(function(el) {
           var fileId = el.getAttribute("id").split("-")[2]; // Extract the file ID from the element's ID
@@ -767,10 +768,10 @@ addButton.addEventListener("click", function(event) {
             var myForm = document.querySelector("#image-change"+fileId);
             var formData = new FormData(myForm);
             if (fileId <= 4) {
-              var word1Value = document.querySelector('#selectedWord1'); 
+              var word1Value = document.querySelector('#selectedWord1');
               formData.append("word", word1Value.value + (parseInt(fileId) + 1).toString());
             } else {
-              var word2Value = document.querySelector('#selectedWord2'); 
+              var word2Value = document.querySelector('#selectedWord2');
               if (topicTitleGlobalVar == "Homographs") {
                 formData.append("word", "HG"+word2Value.value + (parseInt(fileId) - 4).toString())
               }
@@ -792,7 +793,7 @@ addButton.addEventListener("click", function(event) {
                   setTimeout(() => {
                     icon.style.display = 'none';
                   }, 3000); // 3000 milliseconds = 3 seconds
-                 
+
                 })
                 .catch(error => {
                   console.log('Error:', error);
@@ -838,7 +839,7 @@ addButton.addEventListener("click", function(event) {
       inputFieldContainer.style.display = "none";
       document.getElementById("inputField2").value = "";
     }
-    
+
 
   function showWordFields() {
       var wordCount = parseInt(document.getElementById("wordCount").value);
@@ -971,7 +972,7 @@ function changePicture(selectedOption, selectWords, select, topic) {
   for (var i = 1; i < 4; i++) {
         var choice = document.querySelector('#choice_edit'+i)
         choice.value = ""
-  }  
+  }
   for (var i = 1; i < 4; i++) {
         var choice = document.querySelector('#secondchoice_edit'+i)
         choice.value = ""
@@ -988,47 +989,47 @@ function changePicture(selectedOption, selectWords, select, topic) {
   }).then(response => response.json())
   .then(data => {
     var images_url = data.images
-    
+
     var images_url1 = data.images1
-    for (var i = 0; i < 5; i++) {             
-        var image = document.getElementById('image'+i);     
+    for (var i = 0; i < 5; i++) {
+        var image = document.getElementById('image'+i);
         if (images_url[i] != undefined) {
 
           image.src = images_url[i]+"?v=3"
           console.log(image.src)
-        
-        }   
+
+        }
         else {
           image.src = "/PicDentify.png"
-        }            
+        }
     }
-  
+
     for (var i = 0; i < 5; i++) {
         var j = i + 5;
         var image1 = document.getElementById('image'+j);
         if (images_url1[i] != undefined) {
           image1.src = images_url1[i] + "?v=3"
-        }    
+        }
         else {
           image1.src = "/PicDentify.png"
-        } 
-       
+        }
+
     }
 
- 
+
     var choices_rendered = data.choices
     var choices_rendered1 = data.choices1
     if (choices_rendered != "") {
       for (var i = 1; i < 4; i++) {
         var choice = document.querySelector('#choice_edit'+i)
         choice.value = choices_rendered[i-1]
-      }   
+      }
     }
     if (choices_rendered1 != "") {
       for (var i = 1; i < 4; i++) {
         var choice = document.querySelector('#secondchoice_edit'+i)
         choice.value = choices_rendered1[i-1]
-      }   
+      }
     }
   })
 }
@@ -1071,7 +1072,7 @@ function zoomImage(imageId) {
       modal.style.display = 'none';
     }
 
-    
+
     function showPopUp() {
       modal.style.display = "block";
     }
@@ -1129,7 +1130,7 @@ function zoomImage(imageId) {
               }
             })
       }
-  
+
     function fetchTopicDetails(stringReplace, num) {
       var myForm = document.querySelector('#topic_to_edit'+stringReplace);
       var formData = new FormData(myForm);
@@ -1147,13 +1148,13 @@ function zoomImage(imageId) {
           for (var i = 1; i < 4; i++) {
             var choice = document.querySelector('#choice_edit'+i)
             choice.value = choices_rendered[i-1]
-          }   
+          }
         }
         if (choices_rendered1 != "") {
           for (var i = 1; i < 4; i++) {
             var choice = document.querySelector('#secondchoice_edit'+i)
             choice.value = choices_rendered1[i-1]
-          }   
+          }
         }
         var pictures = document.getElementById("pictures1");
         var wordNumber2 = document.getElementById("wordNumber2")
@@ -1176,7 +1177,7 @@ function zoomImage(imageId) {
         var points_per_question = document.querySelector('#points_per_question_edit');
         var difficulties = data.difficulties;
         var image_url = data.image
-        var image_url1 = data.image1  
+        var image_url1 = data.image1
         if (num == 1) {
           for (var i = 0; i < image_url.length; i++) {
               var image = document.getElementById('image'+i);
@@ -1190,15 +1191,15 @@ function zoomImage(imageId) {
           }
         }
         var selectWords = document.getElementById('topicWords2');
-        var word1Value = document.querySelector('#selectedWord1'); 
-        var word2Value = document.querySelector('#selectedWord2'); 
+        var word1Value = document.querySelector('#selectedWord1');
+        var word2Value = document.querySelector('#selectedWord2');
 
         var selectWords1 = document.getElementById('topicWords3');
-        
+
 
         var select = document.getElementById("topicDifficulty2");
 
-        
+
         // Clear all existing options in the select element
         select.innerHTML = '';
         title_id.value = difficulties[0].difficulty_id
@@ -1272,7 +1273,7 @@ function zoomImage(imageId) {
               var option = document.createElement('option');
               option.value = wordList;
               option.text = capitalizedWordList;
-          
+
               selectWords1.appendChild(option);
             }
           }
