@@ -1,22 +1,26 @@
+<head>
+  <!-- Add this line to include FontAwesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
 <div id="animation-container">  
-    <div class="animateme">
-        <ul class="bg-bubbles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        </ul>
-    </div>
+  <div class="animateme">
+    <ul class="bg-bubbles">
+      <li><i class="fas fa-book" style="color: #3498db;"></i></li>
+      <li><i class="fas fa-book-reader" style="color: #e74c3c;"></i></li>
+      <li><i class="fas fa-scroll" style="color: #2ecc71;"></i></li>
+      <li><i class="fas fa-file-alt" style="color: #f39c12;"></i></li>
+      <li><i class="fas fa-journal-whills" style="color: #9b59b6;"></i></li>
+      <li><i class="fas fa-clipboard-check" style="color: #1abc9c;"></i></li>
+      <li><i class="fas fa-book-medical" style="color: #e67e22;"></i></li>
+      <li><i class="fas fa-book-dead" style="color: #c0392b;"></i></li>
+      <li><i class="fas fa-bookmark" style="color: #3498db;"></i></li>
+      <li><i class="fas fa-graduation-cap" style="color: #27ae60;"></i></li>
+    </ul>
+  </div>
 </div>
+
   
 <style>
 
@@ -37,7 +41,7 @@
 }
 
 body{
-  background: #66a5ff;
+  background: #eff1f3;
 }
 
 .animateme {
@@ -64,121 +68,100 @@ body{
   display: block;
   width: 40px;
   height: 40px;
-  background-color: #353535;
   bottom: 60px;
   -webkit-animation: square 25s infinite;
   animation: square 25s infinite;
   -webkit-transition-timing-function: linear;
   transition-timing-function: linear;
-  opacity:0;
+  opacity: 0;
 }
 
 .bg-bubbles li:nth-child(1) {
   left: 3%;
-  border-radius:50em;
-  background:transparent;
-  border:4px solid #353535;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 .bg-bubbles li:nth-child(2) {
   left: 6%;
-  width: 75px;
-  height: 75px;
   -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  animation-delay: 2s;
   -webkit-animation-duration: 17s;
-          animation-duration: 17s;
+  animation-duration: 17s;
 }
 .bg-bubbles li:nth-child(3) {
   left: 15%;
-  width: 175px;
-  height: 175px;
   -webkit-animation-delay: 4s;
-          animation-delay: 4s;
+  animation-delay: 4s;
 }
 .bg-bubbles li:nth-child(4) {
   left: 40%;
-  width: 90px;
-  height: 90px;
   -webkit-animation-duration: 22s;
-          animation-duration: 22s;
+  animation-duration: 22s;
 }
 .bg-bubbles li:nth-child(5) {
   left: 70%;
-  background:transparent;
-  border:4px solid #353535;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 .bg-bubbles li:nth-child(6) {
   left: 90%;
-  width: 90px;
-  height: 90px;
   -webkit-animation-delay: 3s;
-          animation-delay: 3s;
-  border-radius:50em;
-  background:transparent;
-  border:4px solid #353535;
+  animation-delay: 3s;
 }
 .bg-bubbles li:nth-child(7) {
   left: 32%;
-  width: 60px;
-  height: 60px;
   -webkit-animation-delay: 7s;
-          animation-delay: 7s;
-  background:transparent;
-  border:4px solid #353535;
+  animation-delay: 7s;
 }
 .bg-bubbles li:nth-child(8) {
   left: 55%;
-  width: 50px;
-  height: 50px;
   -webkit-animation-delay: 15s;
-          animation-delay: 15s;
+  animation-delay: 15s;
   -webkit-animation-duration: 40s;
-          animation-duration: 40s;
+  animation-duration: 40s;
 }
 .bg-bubbles li:nth-child(9) {
   left: 30%;
-  width: 140px;
-  height: 140px;
   -webkit-animation-delay: 2s;
-          animation-delay: 2s;
+  animation-delay: 2s;
   -webkit-animation-duration: 40s;
-          animation-duration: 40s;
-  border-radius:50em;
-  background:transparent;
-  border:4px solid #353535;
+  animation-duration: 40s;
 }
 .bg-bubbles li:nth-child(10) {
   left: 90%;
-  width: 60px;
-  height: 60px;
   -webkit-animation-delay: 11s;
-          animation-delay: 11s;
+  animation-delay: 11s;
 }
 .bg-bubbles li:nth-child(11) {
   left: 10%;
-  width: 40px;
-  height: 40px;
   -webkit-animation-delay: 13s;
-          animation-delay: 13s;
-  border-radius:50em;
+  animation-delay: 13s;
 }
 .bg-bubbles li:nth-child(12) {
   left: 55%;
-  width: 175px;
-  height: 175px;
   -webkit-animation-delay: 7s;
-          animation-delay: 7s;
-  background:transparent;
-  border:4px solid #353535;
+  animation-delay: 7s;
 }
 
 .bg-bubbles li:nth-child(13) {
   left: 65%;
-  width: 100px;
-  height: 100px;
   -webkit-animation-delay: 8s;
-          animation-delay: 8s;
-  border-radius:50em;
+  animation-delay: 8s;
+}
+
+.bg-bubbles li i {
+  font-size: 45px; /* Adjust the font size as needed */
+  color: #001f3f; /* Dark Blue color */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.bg-bubbles li:hover i {
+  transform: scale(1.5); /* Adjust the scale factor for the hover effect */
+  color: #3498db; /* Light Blue color on hover, complementing with the background */
 }
 
 @-webkit-keyframes square {
@@ -212,3 +195,29 @@ body{
   }
 }
 </style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const icons = document.querySelectorAll(".bg-bubbles li i");
+
+    icons.forEach(icon => {
+      icon.addEventListener("mousedown", function(e) {
+        let offsetX = e.clientX - icon.getBoundingClientRect().left;
+        let offsetY = e.clientY - icon.getBoundingClientRect().top;
+
+        function moveIcon(event) {
+          icon.style.left = event.clientX - offsetX + "px";
+          icon.style.top = event.clientY - offsetY + "px";
+        }
+
+        function releaseIcon() {
+          document.removeEventListener("mousemove", moveIcon);
+          document.removeEventListener("mouseup", releaseIcon);
+        }
+
+        document.addEventListener("mousemove", moveIcon);
+        document.addEventListener("mouseup", releaseIcon);
+      });
+    });
+  });
+</script>
