@@ -673,7 +673,7 @@ class Dashboard(LoginRequiredMixin,TemplateView):
             return render(request,'teacherDashboard.html')
 
 
-class StudentDashboard(LoginRequiredMixin, TemplateView):
+class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
     login_url = '/studentlogin/'
     def get(self,request):
@@ -985,8 +985,10 @@ class StudentLogin(TemplateView):
                     login(request,user)
                     request.session['username'] = username
                     request.session.save()
-                return render(request,'studentDashboard.html')
+                    print("if ok")
+                    return JsonResponse({'adminKeyVerify': True})
             except:
+                print("ok")
                 return JsonResponse({'adminKeyVerify': False})
 
 
