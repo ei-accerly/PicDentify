@@ -397,8 +397,6 @@ margin-bottom: 10px;
                   </div>
                 </div>
               </div>
-
-
               <div class="form-group">
                 <label for="choice_edit">Choices</label>
                 <input type="text" class="form-control" id="choice_edit1" placeholder="Choice 1" name="choice1" onkeyup="setRequired(this)">
@@ -508,7 +506,6 @@ margin-bottom: 10px;
                     <i id="icon-check-{{ counter }}" class="fas fa-check" style="display: none; color: green;"></i>
                   </div>
                 </div>
-
                 {% endfor %}
               </div>
             </form>
@@ -994,9 +991,9 @@ function changePicture(selectedOption, selectWords, select, topic) {
     for (var i = 0; i < 5; i++) {
         var image = document.getElementById('image'+i);
         if (images_url[i] != undefined) {
-
+          let version = new Date().getTime();
           image.src = images_url[i]+"?v=3"
-          console.log(image.src)
+          console.log(images_url[i]+"?v=3")
 
         }
         else {
@@ -1009,6 +1006,7 @@ function changePicture(selectedOption, selectWords, select, topic) {
         var image1 = document.getElementById('image'+j);
         if (images_url1[i] != undefined) {
           image1.src = images_url1[i] + "?v=3"
+          console.log(images_url[i]+"?v=3")
         }
         else {
           image1.src = "/PicDentify.png"
@@ -1058,6 +1056,8 @@ function zoomImage(imageId) {
       document.querySelectorAll("[id^='edit-topic']").forEach(function(el) {
           // Add an event listener to each element
           el.addEventListener("click", function(event) {
+            cancelInput2()
+            cancelInput()
             stringReplace = el.id.replace("edit-topic", "")
             topicIdFetch = stringReplace
             event.preventDefault();
@@ -1244,6 +1244,7 @@ function zoomImage(imageId) {
         }
 
         select.addEventListener("change", function() {
+          alert("triggered")
           var selectedOption = select.options[select.selectedIndex].value;
           title_id.value = difficulties[select.selectedIndex].difficulty_id
           var selectedDifficulty = data.difficulties.find(function(difficulty) {
