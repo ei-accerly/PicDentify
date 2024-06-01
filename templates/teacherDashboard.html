@@ -1244,7 +1244,6 @@ function zoomImage(imageId) {
         }
 
         select.addEventListener("change", function() {
-          alert("triggered")
           var selectedOption = select.options[select.selectedIndex].value;
           title_id.value = difficulties[select.selectedIndex].difficulty_id
           var selectedDifficulty = data.difficulties.find(function(difficulty) {
