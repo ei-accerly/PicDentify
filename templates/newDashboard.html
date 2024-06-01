@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard with Sidebar and Carousel</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #f8f9fa;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+        }
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            padding: 15px;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+        }
+        .sidebar h2 {
+            text-align: center;
+            padding: 10px 0;
+            margin-bottom: 30px;
+        }
+        .sidebar a {
+            color: white;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 250px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .carousel-item .row {
+            display: flex;
+            justify-content: center;
+        }
+        .carousel-item img {
+            max-width: 45%;
+            height: auto;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+        .carousel-caption {
+            text-align: center;
+        }
+        .dropdown-menu {
+            border-radius: 5px;
+        }
+        .sample-answer {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .difficulty-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .difficulty-buttons button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="sidebar">
+            <h2>Categories</h2>
+            <a href="#synonyms">Synonyms</a>
+            <a href="#antonyms">Antonyms</a>
+            <a href="#homonyms">Homonyms</a>
+            <a href="#hyponyms">Hyponyms</a>
+            <a href="#homographs">Homographs</a>
+        </nav>
+        <div class="content">
+            <div id="synonyms" class="section">
+                <h3 class="mb-4">Synonyms</h3>
+                <div class="difficulty-buttons">
+                    <button type="button" class="btn btn-outline-primary">Easy</button>
+                    <button type="button" class="btn btn-outline-primary">Medium</button>
+                    <button type="button" class="btn btn-outline-primary">Hard</button>
+                </div>
+                <div id="questionCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#questionCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#questionCarousel" data-slide-to="1"></li>
+                        <li data-target="#questionCarousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 1 Image 1">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 1 Image 2">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Question 1 (Easy)</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 2 Image 1">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 2 Image 2">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Question 2 (Medium)</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="row">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 3 Image 1">
+                                <img src="https://via.placeholder.com/800x400" class="d-block w-100" alt="Slide 3 Image 2">
+                            </div>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5>Question 3 (Hard)</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#questionCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#questionCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sample-answer text-center">
+                <button id="answer1Btn" class="btn btn-primary">Sample Answer 1</button>
+                <button id="answer2Btn" class="btn btn-primary">Sample Answer 2</button>
+                <button id="answer3Btn" class="btn btn-primary">Sample Answer 3</button>
+            </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>

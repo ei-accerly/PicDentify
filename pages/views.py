@@ -994,3 +994,6 @@ class StudentLogin(TemplateView):
 
 class TopicPage(TemplateView):
     template_name = 'topicPage.html'
+    
+class NewDashboard(TemplateView):
+    template_name = 'newDashboard.html'
